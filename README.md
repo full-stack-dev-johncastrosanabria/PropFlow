@@ -1,53 +1,155 @@
 # PropFlow - Property Management System
 
-A modern, mobile-first property management application for small landlords in Costa Rica and the EU. Built with .NET 10 Web API backend and React 19 frontend.
+A modern, **mobile-first** property management application designed for small landlords in Costa Rica and the EU. Built with .NET 10 Web API backend and React 19 frontend with responsive design optimized for smartphones and tablets.
 
 ## 🏗️ Architecture
 
-- **Backend**: .NET 10 Web API with Clean Architecture
-- **Frontend**: React 19 + TypeScript + Vite
-- **Database**: MySQL
-- **Authentication**: JWT Bearer tokens
+- **Backend**: .NET 10 Web API with Clean Architecture (Domain, Application, Infrastructure, API layers)
+- **Frontend**: React 19 + TypeScript + Vite with mobile-first responsive design
+- **Database**: MySQL with Entity Framework Core migrations
+- **Authentication**: JWT Bearer tokens with secure password hashing (BCrypt)
+- **API Documentation**: Swagger/OpenAPI with interactive testing
+
+## 📱 Mobile-First Design
+
+PropFlow is designed with a **mobile-first approach**:
+- **Responsive Layout**: Optimized for smartphones (320px+), tablets, and desktop
+- **Touch-Friendly**: Large tap targets and intuitive gestures
+- **Fast Loading**: Optimized bundle size and lazy loading
+- **Offline-Ready**: Prepared for future PWA capabilities
+- **Modern UI**: Clean, intuitive interface following mobile design patterns
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- .NET 10 SDK
-- Node.js 18+ and npm
-- MySQL 8.0+
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+- [Node.js 18+](https://nodejs.org/) and npm
+- [MySQL 8.0+](https://dev.mysql.com/downloads/mysql/)
 
-### 1. Automated Setup
-
-Run the setup script to initialize the project:
+### Option 1: Automated Setup (Recommended)
 
 ```bash
+# Clone and navigate to the project
+cd PropFlow
+
+# Run the automated setup script
 ./setup.sh
+
+# Follow the prompts to configure your database credentials
 ```
 
-### 2. Manual Setup
+### Option 2: Manual Setup
 
-#### Database Setup
+#### 1. Database Setup
 
-1. Install and start MySQL server
-2. Create database and user:
+Create the MySQL database and user:
+
 ```sql
 CREATE DATABASE propflow_dev;
-CREATE USER 'propflow'@'localhost' IDENTIFIED BY 'your_password';
+CREATE USER 'propflow'@'localhost' IDENTIFIED BY 'your_secure_password';
 GRANT ALL PRIVILEGES ON propflow_dev.* TO 'propflow'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-3. Apply EF Core migrations to create the database schema:
+#### 2. Backend Configuration
+
+Copy and configure the development settings:
+
+```bash
+cp PropFlow.Api/appsettings.Development.json.template PropFlow.Api/appsettings.Development.json
+```
+
+Update `PropFlow.Api/appsettings.Development.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=propflow_dev;User=propflow;Password=your_secure_password;"
+  },
+  "JwtSettings": {
+    "SecretKey": "YourSuperSecretJWTKeyThatIsAtLeast32CharactersLong!"
+  }
+}
+```
+
+#### 3. Create Database Schema
+
+Apply Entity Framework migrations:
+
 ```bash
 dotnet ef database update --project PropFlow.Infrastructure --startup-project PropFlow.Api
 ```
 
-#### Backend Setup
+#### 4. Start Backend
 
-1. Copy the development settings template:
 ```bash
-cp PropFlow.Api/appsettings.Development.json.template PropFlow.Api/appsettings.Development.json
+dotnet run --project PropFlow.Api --urls "http://localhost:5050;https://localhost:5051"
+```
+
+#### 5. Start Frontend
+
+```bash
+cd propflow-web
+npm install
+npm run dev
+```
+
+## 🎯 Access the Application
+
+- **Frontend (Mobile-Optimized)**: http://localhost:5173 or http://localhost:5174
+- **API Documentation**: http://localhost:5050/swagger
+- **Backend API**: http://localhost:5050/api
+
+## 📋 MVP Features
+
+### Core Functionality
+
+1. **🔐 Authentication**
+   - Landlord registration and secure login
+   - JWT-based session management
+   - Protected routes and API endpoints
+
+2. **🏠 Property Management**
+   - Add, edit, and delete properties
+   - Property details: name, address, city, country, notes
+   - Mobile-optimized property cards and forms
+
+3. **🏢 Rental Units**
+   - Manage units within properties
+   - Unit status tracking (Available, Occupied, Maintenance)
+   - Monthly rent and currency management
+   - Touch-friendly unit selection
+
+4. **👥 Tenant Management**
+   - Complete tenant profiles
+   - Contact information and identification
+   - Notes and communication history
+   - Mobile-friendly contact cards
+
+5. **📄 Contract Management**
+   - Link tenants to rental units
+   - Contract terms and conditions
+   - Status tracking (Active, Finished, Cancelled)
+   - Mobile contract viewer
+
+6. **💰 Payment Tracking**
+   - Rent payment management
+   - Payment status (Pending, Paid, Late)
+   - Due date notifications
+   - Mobile payment interface
+
+7. **🔧 Maintenance Requests**
+   - Property and unit maintenance tracking
+   - Priority levels and status management
+   - Mobile-friendly request forms
+   - Photo upload ready (future feature)
+
+8. **📊 Dashboard**
+   - Mobile-optimized summary cards
+   - Key metrics at a glance
+   - Quick action buttons
+   - Responsive charts and statistics
 ```
 
 2. Update `PropFlow.Api/appsettings.Development.json` with your MySQL credentials:
@@ -183,20 +285,22 @@ The frontend will be available at `http://localhost:5173` or `http://localhost:5
 
 ## 🛠️ Development
 
-### Backend Structure
+### Backend Structure (Clean Architecture)
 ```
-PropFlow.Api/          # Web API layer
-PropFlow.Application/  # Business logic layer
-PropFlow.Domain/       # Domain entities and interfaces
-PropFlow.Infrastructure/ # Data access and external services
+PropFlow.Api/          # Web API layer - Controllers, middleware, configuration
+PropFlow.Application/  # Business logic - Services, DTOs, validation
+PropFlow.Domain/       # Domain entities - Models, enums, interfaces  
+PropFlow.Infrastructure/ # Data access - EF Core, repositories, external services
 ```
 
-### Frontend Structure
+### Frontend Structure (Mobile-First)
 ```
 src/
 ├── app/              # App configuration and routing
+│   ├── contexts/     # React contexts (Auth, Theme)
+│   └── styles/       # Global styles and CSS framework
 ├── features/         # Feature-based modules
-│   ├── auth/         # Authentication
+│   ├── auth/         # Authentication (Login, Register)
 │   ├── properties/   # Properties management
 │   ├── units/        # Rental units
 │   ├── tenants/      # Tenants management
@@ -205,11 +309,30 @@ src/
 │   ├── maintenance/  # Maintenance requests
 │   └── dashboard/    # Dashboard and analytics
 └── shared/           # Shared components and utilities
-    ├── api/          # API client
+    ├── api/          # API client and endpoints
     ├── components/   # Reusable UI components
     ├── types/        # TypeScript type definitions
     └── utils/        # Utility functions
 ```
+
+### Mobile-First CSS Framework
+
+PropFlow includes a custom mobile-first CSS framework with:
+
+- **Responsive Grid System**: Mobile-first breakpoints (320px, 640px, 768px, 1024px, 1280px)
+- **Touch-Friendly Components**: 44px minimum touch targets for iOS/Android
+- **Design Tokens**: Consistent spacing, colors, typography, and shadows
+- **Dark Mode Support**: Automatic dark mode detection and styling
+- **Accessibility**: Focus indicators, screen reader support, keyboard navigation
+
+### Key Mobile Features
+
+- **Bottom Navigation**: Quick access to main features on mobile
+- **Hamburger Menu**: Collapsible navigation for smaller screens  
+- **Touch Gestures**: Swipe-friendly interfaces and large tap targets
+- **Responsive Typography**: Scales appropriately across device sizes
+- **Mobile-Optimized Forms**: Large inputs with proper keyboard types
+- **Fast Loading**: Optimized bundle size and lazy loading
 
 ## 🔒 Security
 

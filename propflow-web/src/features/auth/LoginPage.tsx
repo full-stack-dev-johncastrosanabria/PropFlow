@@ -24,81 +24,106 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '1rem',
-    }}>
-      <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
-        <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '0.5rem', textAlign: 'center' }}>
-          Welcome to PropFlow
-        </h1>
-        <p style={{ color: 'var(--gray-600)', marginBottom: '2rem', textAlign: 'center' }}>
-          Sign in to manage your properties
-        </p>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              className="form-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-            />
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-3 md:p-4">
+      <div className="w-full max-w-md">
+        {/* Logo and Header */}
+        <div className="text-center mb-6 md:mb-8">
+          <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg">
+            <span className="text-2xl md:text-3xl">🏠</span>
           </div>
+          <h1 className="mb-2 text-2xl md:text-3xl">Welcome to PropFlow</h1>
+          <p className="text-base md:text-lg text-gray-600">
+            Sign in to manage your properties
+          </p>
+        </div>
 
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-            />
-          </div>
-
-          {error && (
-            <div style={{
-              padding: '0.75rem',
-              backgroundColor: '#fee2e2',
-              color: 'var(--danger)',
-              borderRadius: 'var(--border-radius)',
-              marginBottom: '1rem',
-              fontSize: '0.875rem',
-            }}>
-              {error}
+        {/* Login Form */}
+        <div className="card">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                className="form-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                autoComplete="email"
+              />
             </div>
-          )}
 
-          <button
-            type="submit"
-            className="btn btn-primary btn-lg"
-            disabled={isLoading}
-            style={{ width: '100%' }}
-          >
-            {isLoading ? 'Signing in...' : 'Sign In'}
-          </button>
-        </form>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                className="form-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter your password"
+                autoComplete="current-password"
+              />
+            </div>
 
-        <p style={{ marginTop: '1.5rem', textAlign: 'center', color: 'var(--gray-600)', fontSize: '0.875rem' }}>
-          Don't have an account?{' '}
-          <Link to="/register" style={{ color: 'var(--primary)', fontWeight: '500' }}>
-            Sign up
-          </Link>
-        </p>
+            {error && (
+              <div className="alert alert-danger">
+                <strong>Error:</strong> {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="spinner"></div>
+                  <span>Signing in...</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span>🔐</span>
+                  <span>Sign In</span>
+                </div>
+              )}
+            </button>
+          </form>
+
+          {/* Register Link */}
+          <div className="mt-6 text-center">
+            <p className="text-gray-600">
+              Don't have an account?{' '}
+              <Link 
+                to="/register" 
+                className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                Sign up for free
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Demo Credentials */}
+        <div className="mt-4 md:mt-6 p-3 md:p-4 bg-blue-50 rounded-xl border border-blue-200">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs">🧪</span>
+            </div>
+            <h3 className="text-sm font-bold text-blue-900">Demo Credentials</h3>
+          </div>
+          <div className="text-sm text-blue-800 bg-white p-3 rounded-lg">
+            <p><strong>Email:</strong> john@test.com</p>
+            <p><strong>Password:</strong> Cnzmws</p>
+          </div>
+        </div>
       </div>
     </div>
   );
