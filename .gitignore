@@ -1,0 +1,74 @@
+# Build results
+bin/
+obj/
+out/
+
+# IDE files
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.rsuser
+*.sln.docstates
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment and secrets
+.env
+.env.local
+.env.development
+.env.production
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Frontend
+node_modules/
+dist/
+build/
+.vite/
+.next/
+.nuxt/
+coverage/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Package files
+*.nupkg
+*.snupkg
+
+# Test results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Backup files
+*.bak
+*.backup
+
+# Local development scripts
+setup-*.sh
+start-*.sh
+test-*.sh
+migrate-*.sh

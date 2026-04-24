@@ -1,0 +1,15 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=propflow_dev;User=YOUR_MYSQL_USER;Password=YOUR_MYSQL_PASSWORD;"
+  },
+  "JwtSettings": {
+    "SecretKey": "YOUR_JWT_SECRET_KEY_AT_LEAST_32_CHARACTERS_LONG"
+  }
+}

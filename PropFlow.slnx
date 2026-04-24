@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PropFlow.Api/PropFlow.Api.csproj" />
+  <Project Path="PropFlow.Application/PropFlow.Application.csproj" />
+  <Project Path="PropFlow.Domain/PropFlow.Domain.csproj" />
+  <Project Path="PropFlow.Infrastructure/PropFlow.Infrastructure.csproj" />
+</Solution>
