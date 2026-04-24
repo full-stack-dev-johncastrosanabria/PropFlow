@@ -4,6 +4,11 @@ import LoginPage from '../features/auth/LoginPage';
 import RegisterPage from '../features/auth/RegisterPage';
 import DashboardPage from '../features/dashboard/DashboardPage';
 import PropertiesPage from '../features/properties/PropertiesPage';
+import UnitsPage from '../features/units/UnitsPage';
+import TenantsPage from '../features/tenants/TenantsPage';
+import ContractsPage from '../features/contracts/ContractsPage';
+import PaymentsPage from '../features/payments/PaymentsPage';
+import MaintenancePage from '../features/maintenance/MaintenancePage';
 import Layout from './Layout';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -64,6 +69,11 @@ function AppRoutes() {
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="properties" element={<PropertiesPage />} />
+        <Route path="units" element={<UnitsPage />} />
+        <Route path="tenants" element={<TenantsPage />} />
+        <Route path="contracts" element={<ContractsPage />} />
+        <Route path="payments" element={<PaymentsPage />} />
+        <Route path="maintenance" element={<MaintenancePage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>
