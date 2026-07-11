@@ -29,6 +29,25 @@ export enum MaintenanceStatus {
   Closed = 2,
 }
 
+export enum LeadStage {
+  New = 0,
+  Contacted = 1,
+  Qualified = 2,
+  Viewing = 3,
+  Negotiation = 4,
+  Won = 5,
+  Lost = 6,
+}
+
+export enum LeadSource {
+  Website = 0,
+  Referral = 1,
+  SocialMedia = 2,
+  Portal = 3,
+  WalkIn = 4,
+  Other = 5,
+}
+
 // Auth types
 export interface LoginDto {
   email: string;
@@ -215,12 +234,188 @@ export interface UpdateMaintenanceRequestDto {
   status: MaintenanceStatus;
 }
 
+// Lead types
+export interface LeadDto {
+  id: string;
+  fullName: string;
+  email: string;
+  phone?: string;
+  source: LeadSource;
+  stage: LeadStage;
+  estimatedValue: number;
+  currency: string;
+  interestedIn?: string;
+  notes?: string;
+  lastContactedUtc?: string;
+  createdAtUtc: string;
+}
+
+export interface CreateLeadDto {
+  fullName: string;
+  email: string;
+  phone?: string;
+  source: LeadSource;
+  stage: LeadStage;
+  estimatedValue: number;
+  currency: string;
+  interestedIn?: string;
+  notes?: string;
+}
+
+export interface UpdateLeadDto extends CreateLeadDto {}
+
+// Productivity (Keller Williams) types
+export interface DailyActivityDto {
+  id: string;
+  date: string;
+  contacts: number;
+  conversations: number;
+  leadsAdded: number;
+  appointmentsSet: number;
+  appointmentsMet: number;
+  agreementsSigned: number;
+  offersWritten: number;
+  leadGenHours: number;
+  notes?: string;
+}
+
+export interface UpsertDailyActivityDto {
+  date: string;
+  contacts: number;
+  conversations: number;
+  leadsAdded: number;
+  appointmentsSet: number;
+  appointmentsMet: number;
+  agreementsSigned: number;
+  offersWritten: number;
+  leadGenHours: number;
+  notes?: string;
+}
+
+export interface ActivityTotalsDto {
+  contacts: number;
+  conversations: number;
+  leadsAdded: number;
+  appointmentsSet: number;
+  appointmentsMet: number;
+  agreementsSigned: number;
+  offersWritten: number;
+  leadGenHours: number;
+  daysLogged: number;
+}
+
+export interface DayPointDto {
+  date: string;
+  label: string;
+  contacts: number;
+  conversations: number;
+  appointmentsMet: number;
+  leadGenHours: number;
+  blockDone: boolean;
+}
+
+export interface ProductivityGoalsDto {
+  leadGenHours: number;
+  contacts: number;
+  conversations: number;
+  appointmentsSet: number;
+  leadsAdded: number;
+  appointmentsMet: number;
+}
+
+export interface ProductivitySummaryDto {
+  today: string;
+  todayActivity: DailyActivityDto;
+  weekTotals: ActivityTotalsDto;
+  monthTotals: ActivityTotalsDto;
+  last30Totals: ActivityTotalsDto;
+  leadGenStreak: number;
+  bestStreak: number;
+  last7Days: DayPointDto[];
+  goals: ProductivityGoalsDto;
+}
+
 // Dashboard types
+export interface StageCountDto {
+  stage: number;
+  label: string;
+  count: number;
+  value: number;
+}
+
+export interface MonthlyRevenueDto {
+  month: string;
+  year: number;
+  collected: number;
+  expected: number;
+}
+
+export interface UpcomingPaymentDto {
+  id: string;
+  tenantName: string;
+  unitName: string;
+  amount: number;
+  currency: string;
+  dueDate: string;
+  status: number;
+  isOverdue: boolean;
+  daysUntilDue: number;
+}
+
+export interface ExpiringContractDto {
+  id: string;
+  tenantName: string;
+  unitName: string;
+  endDate: string;
+  daysLeft: number;
+  monthlyRent: number;
+  currency: string;
+}
+
+export interface ActivityItemDto {
+  type: string;
+  title: string;
+  subtitle: string;
+  when: string;
+}
+
 export interface DashboardDto {
+  currency: string;
+
   totalProperties: number;
   totalUnits: number;
   occupiedUnits: number;
+  availableUnits: number;
+  maintenanceUnits: number;
+  occupancyRate: number;
+
+  collectedThisMonth: number;
+  expectedThisMonth: number;
+  collectionRate: number;
+  outstandingAmount: number;
+  overdueAmount: number;
+  monthlyRecurringRevenue: number;
+
   pendingPayments: number;
   latePayments: number;
+  paidPaymentsThisMonth: number;
+
+  totalTenants: number;
+  activeContracts: number;
+  expiringContracts: number;
+
   openMaintenanceRequests: number;
+  inProgressMaintenance: number;
+  highPriorityMaintenance: number;
+
+  totalLeads: number;
+  activeLeads: number;
+  wonLeads: number;
+  pipelineValue: number;
+  leadsByStage: StageCountDto[];
+
+  revenueTrend: MonthlyRevenueDto[];
+  upcomingPayments: UpcomingPaymentDto[];
+  expiringContractsList: ExpiringContractDto[];
+  recentActivity: ActivityItemDto[];
 }

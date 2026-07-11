@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropFlow.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using PropFlow.Infrastructure.Data;
 namespace PropFlow.Infrastructure.Migrations
 {
     [DbContext(typeof(PropFlowDbContext))]
-    partial class PropFlowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260711041955_AddProductivityGoals")]
+    partial class AddProductivityGoals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

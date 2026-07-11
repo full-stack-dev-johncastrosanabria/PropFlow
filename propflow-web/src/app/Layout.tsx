@@ -11,6 +11,8 @@ export default function Layout() {
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/leads', label: 'Leads', icon: '🎯' },
+    { path: '/productivity', label: 'Productivity', icon: '🔥' },
     { path: '/properties', label: 'Properties', icon: '🏠' },
     { path: '/units', label: 'Units', icon: '🏢' },
     { path: '/tenants', label: 'Tenants', icon: '👥' },
@@ -26,13 +28,18 @@ export default function Layout() {
         <div className="container">
           <div className="flex items-center justify-between py-3 md:py-4">
             {/* Logo */}
-            <Link 
-              to="/dashboard" 
-              className="text-xl md:text-2xl font-bold text-blue-600 flex items-center gap-2 hover:text-blue-700 transition-colors"
-            >
-              <span className="text-xl md:text-2xl">🏠</span>
-              PropFlow
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/dashboard"
+                className="text-xl md:text-2xl font-bold text-blue-600 flex items-center gap-2 hover:text-blue-700 transition-colors"
+              >
+                <span className="text-xl md:text-2xl">🏠</span>
+                PropFlow
+              </Link>
+              {import.meta.env.VITE_DEMO_MODE === 'true' && (
+                <span className="demo-badge" title="Interactive demo with sample data">DEMO</span>
+              )}
+            </div>
 
             {/* Desktop Navigation */}
             <div className="nav-desktop">

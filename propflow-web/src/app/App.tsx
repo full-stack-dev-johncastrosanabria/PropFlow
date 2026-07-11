@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginPage from '../features/auth/LoginPage';
 import RegisterPage from '../features/auth/RegisterPage';
@@ -9,6 +9,8 @@ import TenantsPage from '../features/tenants/TenantsPage';
 import ContractsPage from '../features/contracts/ContractsPage';
 import PaymentsPage from '../features/payments/PaymentsPage';
 import MaintenancePage from '../features/maintenance/MaintenancePage';
+import LeadsPage from '../features/leads/LeadsPage';
+import ProductivityPage from '../features/productivity/ProductivityPage';
 import Layout from './Layout';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -68,6 +70,8 @@ function AppRoutes() {
       >
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="leads" element={<LeadsPage />} />
+        <Route path="productivity" element={<ProductivityPage />} />
         <Route path="properties" element={<PropertiesPage />} />
         <Route path="units" element={<UnitsPage />} />
         <Route path="tenants" element={<TenantsPage />} />
@@ -81,11 +85,14 @@ function AppRoutes() {
 }
 
 export default function App() {
+  // Static demo (GitHub Pages) uses hash routing so deep links work without
+  // server rewrites; the normal app uses browser history.
+  const Router = import.meta.env.VITE_DEMO_MODE === 'true' ? HashRouter : BrowserRouter;
   return (
-    <BrowserRouter>
+    <Router>
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>
-    </BrowserRouter>
+    </Router>
   );
 }

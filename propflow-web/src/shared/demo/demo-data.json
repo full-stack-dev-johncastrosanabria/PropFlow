@@ -1,0 +1,1694 @@
+{
+ "landlord": {
+  "id": "b7093384-6d96-4b3c-ba43-8e503057e10d",
+  "email": "demo@propflow.app",
+  "fullName": "Alex Morgan",
+  "createdAtUtc": "2026-07-10T23:40:54.661492"
+ },
+ "dashboard": {
+  "currency": "USD",
+  "totalProperties": 4,
+  "totalUnits": 12,
+  "occupiedUnits": 9,
+  "availableUnits": 2,
+  "maintenanceUnits": 1,
+  "occupancyRate": 75,
+  "collectedThisMonth": 14850.0,
+  "expectedThisMonth": 18700.0,
+  "collectionRate": 79.4,
+  "outstandingAmount": 22550.0,
+  "overdueAmount": 3850.0,
+  "monthlyRecurringRevenue": 18700.0,
+  "pendingPayments": 9,
+  "latePayments": 2,
+  "paidPaymentsThisMonth": 7,
+  "totalTenants": 9,
+  "activeContracts": 9,
+  "expiringContracts": 2,
+  "openMaintenanceRequests": 3,
+  "inProgressMaintenance": 1,
+  "highPriorityMaintenance": 3,
+  "totalLeads": 14,
+  "activeLeads": 11,
+  "wonLeads": 2,
+  "pipelineValue": 18600.0,
+  "leadsByStage": [
+   {
+    "stage": 0,
+    "label": "New",
+    "count": 3,
+    "value": 4250.0
+   },
+   {
+    "stage": 1,
+    "label": "Contacted",
+    "count": 1,
+    "value": 1600.0
+   },
+   {
+    "stage": 2,
+    "label": "Qualified",
+    "count": 3,
+    "value": 4850.0
+   },
+   {
+    "stage": 3,
+    "label": "Viewing",
+    "count": 2,
+    "value": 3200.0
+   },
+   {
+    "stage": 4,
+    "label": "Negotiation",
+    "count": 2,
+    "value": 4700.0
+   },
+   {
+    "stage": 5,
+    "label": "Won",
+    "count": 2,
+    "value": 3750.0
+   },
+   {
+    "stage": 6,
+    "label": "Lost",
+    "count": 1,
+    "value": 1000.0
+   }
+  ],
+  "revenueTrend": [
+   {
+    "month": "Feb",
+    "year": 2026,
+    "collected": 18700.0,
+    "expected": 18700.0
+   },
+   {
+    "month": "Mar",
+    "year": 2026,
+    "collected": 18700.0,
+    "expected": 18700.0
+   },
+   {
+    "month": "Apr",
+    "year": 2026,
+    "collected": 18700.0,
+    "expected": 18700.0
+   },
+   {
+    "month": "May",
+    "year": 2026,
+    "collected": 18700.0,
+    "expected": 18700.0
+   },
+   {
+    "month": "Jun",
+    "year": 2026,
+    "collected": 18700.0,
+    "expected": 18700.0
+   },
+   {
+    "month": "Jul",
+    "year": 2026,
+    "collected": 14850.0,
+    "expected": 18700.0
+   }
+  ],
+  "upcomingPayments": [
+   {
+    "id": "851675d3-7ba5-4df0-ba7d-bbc3e41fa393",
+    "tenantName": "Michael Brown",
+    "unitName": "Unit 201",
+    "amount": 2400.0,
+    "currency": "USD",
+    "dueDate": "2026-07-01T00:00:00",
+    "status": 2,
+    "isOverdue": true,
+    "daysUntilDue": -10
+   },
+   {
+    "id": "88a7fdbc-431d-456b-8f23-92522d469d9f",
+    "tenantName": "James O'Connor",
+    "unitName": "Unit 303",
+    "amount": 1450.0,
+    "currency": "USD",
+    "dueDate": "2026-07-01T00:00:00",
+    "status": 2,
+    "isOverdue": true,
+    "daysUntilDue": -10
+   },
+   {
+    "id": "098ba246-b943-4cb9-9d22-94f96108bed2",
+    "tenantName": "Fatima Al-Sayed",
+    "unitName": "Unit 401",
+    "amount": 2800.0,
+    "currency": "USD",
+    "dueDate": "2026-08-01T00:00:00",
+    "status": 0,
+    "isOverdue": false,
+    "daysUntilDue": 21
+   },
+   {
+    "id": "21effe1c-3134-4de3-979c-edb6bf39a60e",
+    "tenantName": "David Kim",
+    "unitName": "Unit 301",
+    "amount": 1500.0,
+    "currency": "USD",
+    "dueDate": "2026-08-01T00:00:00",
+    "status": 0,
+    "isOverdue": false,
+    "daysUntilDue": 21
+   },
+   {
+    "id": "2fc0da7c-1693-4ef7-b772-d51271ab9c95",
+    "tenantName": "Jennifer Lopez",
+    "unitName": "Unit 102",
+    "amount": 1950.0,
+    "currency": "USD",
+    "dueDate": "2026-08-01T00:00:00",
+    "status": 0,
+    "isOverdue": false,
+    "daysUntilDue": 21
+   },
+   {
+    "id": "3894824d-fb02-4171-807c-2e2ce93a271a",
+    "tenantName": "Thomas Müller",
+    "unitName": "Unit 403",
+    "amount": 3000.0,
+    "currency": "USD",
+    "dueDate": "2026-08-01T00:00:00",
+    "status": 0,
+    "isOverdue": false,
+    "daysUntilDue": 21
+   }
+  ],
+  "expiringContractsList": [
+   {
+    "id": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+    "tenantName": "Robert Williams",
+    "unitName": "Unit 101",
+    "endDate": "2026-07-25T00:00:00",
+    "daysLeft": 14,
+    "monthlyRent": 1800.0,
+    "currency": "USD"
+   },
+   {
+    "id": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+    "tenantName": "Jennifer Lopez",
+    "unitName": "Unit 102",
+    "endDate": "2026-08-01T00:00:00",
+    "daysLeft": 21,
+    "monthlyRent": 1950.0,
+    "currency": "USD"
+   }
+  ],
+  "recentActivity": [
+   {
+    "type": "maintenance",
+    "title": "Maintenance reported",
+    "subtitle": "Water heater replacement · Sunset Residences",
+    "when": "2026-07-08T12:00:00"
+   },
+   {
+    "type": "lead",
+    "title": "Lead won",
+    "subtitle": "Ahmed Hassan · USD 1,550/mo",
+    "when": "2026-07-07T23:43:08"
+   },
+   {
+    "type": "maintenance",
+    "title": "Maintenance reported",
+    "subtitle": "AC not cooling · The Grove Lofts",
+    "when": "2026-07-07T12:00:00"
+   },
+   {
+    "type": "lead",
+    "title": "Lead won",
+    "subtitle": "Charlotte Dubois · EUR 2,200/mo",
+    "when": "2026-07-05T23:43:08"
+   },
+   {
+    "type": "maintenance",
+    "title": "Maintenance reported",
+    "subtitle": "Leaking kitchen faucet · Harbor View Apartments",
+    "when": "2026-07-05T12:00:00"
+   },
+   {
+    "type": "payment",
+    "title": "Payment received",
+    "subtitle": "USD 3,000 · Thomas Müller",
+    "when": "2026-07-04T00:00:00"
+   }
+  ]
+ },
+ "productivitySummary": {
+  "today": "2026-07-11T00:00:00Z",
+  "todayActivity": {
+   "id": "3264fce8-7cbe-11f1-bdb5-3f7db41139ea",
+   "date": "2026-07-11T00:00:00",
+   "contacts": 13,
+   "conversations": 6,
+   "leadsAdded": 1,
+   "appointmentsSet": 1,
+   "appointmentsMet": 1,
+   "agreementsSigned": 0,
+   "offersWritten": 0,
+   "leadGenHours": 2.0,
+   "notes": "block in progress"
+  },
+  "weekTotals": {
+   "contacts": 159,
+   "conversations": 53,
+   "leadsAdded": 14,
+   "appointmentsSet": 15,
+   "appointmentsMet": 8,
+   "agreementsSigned": 1,
+   "offersWritten": 0,
+   "leadGenHours": 22.2,
+   "daysLogged": 6
+  },
+  "monthTotals": {
+   "contacts": 227,
+   "conversations": 80,
+   "leadsAdded": 19,
+   "appointmentsSet": 23,
+   "appointmentsMet": 8,
+   "agreementsSigned": 1,
+   "offersWritten": 1,
+   "leadGenHours": 28.6,
+   "daysLogged": 8
+  },
+  "last30Totals": {
+   "contacts": 617,
+   "conversations": 219,
+   "leadsAdded": 54,
+   "appointmentsSet": 57,
+   "appointmentsMet": 22,
+   "agreementsSigned": 4,
+   "offersWritten": 4,
+   "leadGenHours": 78.1,
+   "daysLogged": 22
+  },
+  "leadGenStreak": 5,
+  "bestStreak": 6,
+  "last7Days": [
+   {
+    "date": "2026-07-05T00:00:00Z",
+    "label": "Sun",
+    "contacts": 0,
+    "conversations": 0,
+    "appointmentsMet": 0,
+    "leadGenHours": 0,
+    "blockDone": false
+   },
+   {
+    "date": "2026-07-06T00:00:00Z",
+    "label": "Mon",
+    "contacts": 37,
+    "conversations": 7,
+    "appointmentsMet": 2,
+    "leadGenHours": 4.4,
+    "blockDone": true
+   },
+   {
+    "date": "2026-07-07T00:00:00Z",
+    "label": "Tue",
+    "contacts": 18,
+    "conversations": 11,
+    "appointmentsMet": 0,
+    "leadGenHours": 4.2,
+    "blockDone": true
+   },
+   {
+    "date": "2026-07-08T00:00:00Z",
+    "label": "Wed",
+    "contacts": 41,
+    "conversations": 14,
+    "appointmentsMet": 3,
+    "leadGenHours": 4.2,
+    "blockDone": true
+   },
+   {
+    "date": "2026-07-09T00:00:00Z",
+    "label": "Thu",
+    "contacts": 22,
+    "conversations": 8,
+    "appointmentsMet": 1,
+    "leadGenHours": 3.2,
+    "blockDone": true
+   },
+   {
+    "date": "2026-07-10T00:00:00Z",
+    "label": "Fri",
+    "contacts": 28,
+    "conversations": 7,
+    "appointmentsMet": 1,
+    "leadGenHours": 4.2,
+    "blockDone": true
+   },
+   {
+    "date": "2026-07-11T00:00:00Z",
+    "label": "Sat",
+    "contacts": 13,
+    "conversations": 6,
+    "appointmentsMet": 1,
+    "leadGenHours": 2.0,
+    "blockDone": false
+   }
+  ],
+  "goals": {
+   "leadGenHours": 3.0,
+   "contacts": 20,
+   "conversations": 10,
+   "appointmentsSet": 2,
+   "leadsAdded": 2,
+   "appointmentsMet": 1
+  }
+ },
+ "leads": [
+  {
+   "id": "1a8e90a2-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "María González",
+   "email": "maria.gonzalez@gmail.com",
+   "phone": "+34 611 234 567",
+   "source": 0,
+   "stage": 0,
+   "estimatedValue": 1200.0,
+   "currency": "EUR",
+   "interestedIn": "2BR apartment, city center",
+   "notes": "Inquiry from website contact form.",
+   "lastContactedUtc": null,
+   "createdAtUtc": "2026-07-08T23:43:08"
+  },
+  {
+   "id": "1a8e9ab6-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "James Whitfield",
+   "email": "james.whitfield@outlook.com",
+   "phone": "+1 415 555 0182",
+   "source": 3,
+   "stage": 0,
+   "estimatedValue": 2100.0,
+   "currency": "USD",
+   "interestedIn": "Studio near downtown",
+   "notes": "Found us on Zillow portal.",
+   "lastContactedUtc": null,
+   "createdAtUtc": "2026-07-09T23:43:08"
+  },
+  {
+   "id": "1a8e9c78-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Sofía Ramírez",
+   "email": "sofia.ramirez@hotmail.com",
+   "phone": "+34 622 987 321",
+   "source": 2,
+   "stage": 0,
+   "estimatedValue": 950.0,
+   "currency": "EUR",
+   "interestedIn": "1BR, pet-friendly",
+   "notes": "Reached out via Instagram DM.",
+   "lastContactedUtc": null,
+   "createdAtUtc": "2026-07-10T18:43:08"
+  },
+  {
+   "id": "1a8e9e62-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Daniel Okafor",
+   "email": "d.okafor@gmail.com",
+   "phone": "+44 7700 900123",
+   "source": 0,
+   "stage": 1,
+   "estimatedValue": 1600.0,
+   "currency": "GBP",
+   "interestedIn": "3BR house, suburbs",
+   "notes": "Called back, interested in a viewing next week.",
+   "lastContactedUtc": "2026-07-09T23:43:08",
+   "createdAtUtc": "2026-07-04T23:43:08"
+  },
+  {
+   "id": "1a8e9fc0-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Emma Laurent",
+   "email": "emma.laurent@gmail.com",
+   "phone": "+33 6 12 34 56 78",
+   "source": 1,
+   "stage": 2,
+   "estimatedValue": 1350.0,
+   "currency": "EUR",
+   "interestedIn": "2BR with balcony",
+   "notes": "Referred by current tenant. Sent brochure.",
+   "lastContactedUtc": "2026-07-08T23:43:08",
+   "createdAtUtc": "2026-07-02T23:43:08"
+  },
+  {
+   "id": "1a8ea114-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Carlos Mendoza",
+   "email": "carlos.mendoza@yahoo.com",
+   "phone": "+52 55 1234 5678",
+   "source": 4,
+   "stage": 2,
+   "estimatedValue": 1100.0,
+   "currency": "USD",
+   "interestedIn": "1BR loft",
+   "notes": "Budget confirmed, employment verified.",
+   "lastContactedUtc": "2026-07-07T23:43:08",
+   "createdAtUtc": "2026-06-28T23:43:08"
+  },
+  {
+   "id": "1a8ea24a-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Aisha Khan",
+   "email": "aisha.khan@gmail.com",
+   "phone": "+971 50 123 4567",
+   "source": 0,
+   "stage": 2,
+   "estimatedValue": 2400.0,
+   "currency": "USD",
+   "interestedIn": "Luxury 2BR, sea view",
+   "notes": "Pre-qualified, high intent buyer.",
+   "lastContactedUtc": "2026-07-06T23:43:08",
+   "createdAtUtc": "2026-06-26T23:43:08"
+  },
+  {
+   "id": "1a8ea376-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Lucas Fernández",
+   "email": "lucas.fernandez@gmail.com",
+   "phone": "+34 633 111 222",
+   "source": 1,
+   "stage": 3,
+   "estimatedValue": 1450.0,
+   "currency": "EUR",
+   "interestedIn": "2BR renovated",
+   "notes": "Property tour scheduled for Friday.",
+   "lastContactedUtc": "2026-07-09T23:43:08",
+   "createdAtUtc": "2026-06-30T23:43:08"
+  },
+  {
+   "id": "1a8ea4a2-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Nina Petrov",
+   "email": "nina.petrov@outlook.com",
+   "phone": "+49 151 23456789",
+   "source": 3,
+   "stage": 3,
+   "estimatedValue": 1750.0,
+   "currency": "EUR",
+   "interestedIn": "Penthouse studio",
+   "notes": "Viewed unit A-12, liked it a lot.",
+   "lastContactedUtc": "2026-07-08T23:43:08",
+   "createdAtUtc": "2026-06-29T23:43:08"
+  },
+  {
+   "id": "1a8ea5c4-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Robert Chen",
+   "email": "robert.chen@gmail.com",
+   "phone": "+1 650 555 0147",
+   "source": 4,
+   "stage": 4,
+   "estimatedValue": 2800.0,
+   "currency": "USD",
+   "interestedIn": "3BR family home",
+   "notes": "Negotiating deposit terms and move-in date.",
+   "lastContactedUtc": "2026-07-09T23:43:08",
+   "createdAtUtc": "2026-06-22T23:43:08"
+  },
+  {
+   "id": "1a8ea70e-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Isabella Rossi",
+   "email": "isabella.rossi@gmail.com",
+   "phone": "+39 320 123 4567",
+   "source": 1,
+   "stage": 4,
+   "estimatedValue": 1900.0,
+   "currency": "EUR",
+   "interestedIn": "2BR historic center",
+   "notes": "Reviewing final contract draft.",
+   "lastContactedUtc": "2026-07-10T11:43:08",
+   "createdAtUtc": "2026-06-20T23:43:08"
+  },
+  {
+   "id": "1a8ea83a-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Ahmed Hassan",
+   "email": "ahmed.hassan@gmail.com",
+   "phone": "+20 100 123 4567",
+   "source": 0,
+   "stage": 5,
+   "estimatedValue": 1550.0,
+   "currency": "USD",
+   "interestedIn": "1BR modern",
+   "notes": "Signed contract! Moves in next month.",
+   "lastContactedUtc": "2026-07-07T23:43:08",
+   "createdAtUtc": "2026-06-15T23:43:08"
+  },
+  {
+   "id": "1a8ea966-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Charlotte Dubois",
+   "email": "charlotte.dubois@gmail.com",
+   "phone": "+33 7 88 99 00 11",
+   "source": 1,
+   "stage": 5,
+   "estimatedValue": 2200.0,
+   "currency": "EUR",
+   "interestedIn": "2BR duplex",
+   "notes": "Deal closed, deposit received.",
+   "lastContactedUtc": "2026-07-05T23:43:08",
+   "createdAtUtc": "2026-06-10T23:43:08"
+  },
+  {
+   "id": "1a8eab46-7cb9-11f1-bdb5-3f7db41139ea",
+   "fullName": "Tom Bradley",
+   "email": "tom.bradley@gmail.com",
+   "phone": "+44 7700 900999",
+   "source": 2,
+   "stage": 6,
+   "estimatedValue": 1000.0,
+   "currency": "GBP",
+   "interestedIn": "Studio",
+   "notes": "Chose a competitor, budget mismatch.",
+   "lastContactedUtc": "2026-07-03T23:43:08",
+   "createdAtUtc": "2026-06-18T23:43:08"
+  }
+ ],
+ "properties": [
+  {
+   "id": "28983368-a936-4c7d-bf02-31dbf1df68da",
+   "name": "Sunset Residences",
+   "address": "1200 Ocean Dr",
+   "city": "Miami",
+   "country": "USA",
+   "notes": null,
+   "createdAtUtc": "2025-06-05T12:00:00"
+  },
+  {
+   "id": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
+   "name": "Harbor View Apartments",
+   "address": "88 Marina Blvd",
+   "city": "Miami",
+   "country": "USA",
+   "notes": null,
+   "createdAtUtc": "2025-06-05T12:00:00"
+  },
+  {
+   "id": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
+   "name": "Maple Court",
+   "address": "455 Maple St",
+   "city": "Austin",
+   "country": "USA",
+   "notes": null,
+   "createdAtUtc": "2025-06-05T12:00:00"
+  },
+  {
+   "id": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
+   "name": "The Grove Lofts",
+   "address": "77 Riverside Ave",
+   "city": "Austin",
+   "country": "USA",
+   "notes": null,
+   "createdAtUtc": "2025-06-05T12:00:00"
+  }
+ ],
+ "rentalunits": [
+  {
+   "id": "0efaffdf-76ca-43f1-ae46-317402c1c7e9",
+   "propertyId": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
+   "name": "Unit 201",
+   "unitNumber": "201",
+   "monthlyRent": 2400.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "3142f3bd-4fe0-4ae6-a51c-20f784ca3f5c",
+   "propertyId": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
+   "name": "Unit 303",
+   "unitNumber": "303",
+   "monthlyRent": 1450.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "498f7406-08a1-4ff1-b06c-7bd95728672f",
+   "propertyId": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
+   "name": "Unit 301",
+   "unitNumber": "301",
+   "monthlyRent": 1500.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "6869d94d-05c2-421d-98b7-010c0a8c33a0",
+   "propertyId": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
+   "name": "Unit 203",
+   "unitNumber": "203",
+   "monthlyRent": 2100.0,
+   "currency": "USD",
+   "status": 2,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "7e18fb8a-a43b-477d-9cfc-aab452b0cb37",
+   "propertyId": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
+   "name": "Unit 403",
+   "unitNumber": "403",
+   "monthlyRent": 3000.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "80a7c771-b255-4b50-950c-793f55cd9023",
+   "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
+   "name": "Unit 102",
+   "unitNumber": "102",
+   "monthlyRent": 1950.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "a6f0da9f-0b46-432f-8bb2-4f8cb67a3a80",
+   "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
+   "name": "Unit 103",
+   "unitNumber": "103",
+   "monthlyRent": 1750.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "b41743ac-25c4-4532-8b6b-545668d1b9bc",
+   "propertyId": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
+   "name": "Unit 401",
+   "unitNumber": "401",
+   "monthlyRent": 2800.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "b88b6d12-17f3-4d5d-8008-e0567763118f",
+   "propertyId": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
+   "name": "Unit 202",
+   "unitNumber": "202",
+   "monthlyRent": 2200.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "c71b3eeb-0bf3-4d74-9975-716b7022fd09",
+   "propertyId": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
+   "name": "Unit 302",
+   "unitNumber": "302",
+   "monthlyRent": 1600.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "f20544c6-1957-43d8-a272-7773a9cb3f37",
+   "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
+   "name": "Unit 101",
+   "unitNumber": "101",
+   "monthlyRent": 1800.0,
+   "currency": "USD",
+   "status": 1,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  },
+  {
+   "id": "f791693c-016a-4f01-91b0-3aca63c84b13",
+   "propertyId": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
+   "name": "Unit 402",
+   "unitNumber": "402",
+   "monthlyRent": 2600.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-06-15T12:00:00"
+  }
+ ],
+ "tenants": [
+  {
+   "id": "154d7e29-1f47-4979-8ea5-677689e72beb",
+   "fullName": "James O'Connor",
+   "email": "james.oconnor@gmail.com",
+   "phone": "+1 305 555 0106",
+   "identificationNumber": "ID90006",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "247a147d-d32f-44e0-a018-f6e27f0bd8a0",
+   "fullName": "Thomas Müller",
+   "email": "thomas.muller@gmail.com",
+   "phone": "+1 305 555 0108",
+   "identificationNumber": "ID90008",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "6464897b-ee36-44c3-8f03-f4ba610a18f7",
+   "fullName": "Priya Patel",
+   "email": "priya.patel@gmail.com",
+   "phone": "+1 305 555 0105",
+   "identificationNumber": "ID90005",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "709a6ac2-51f2-4957-b87b-f5c6c7df06be",
+   "fullName": "David Kim",
+   "email": "david.kim@gmail.com",
+   "phone": "+1 305 555 0104",
+   "identificationNumber": "ID90004",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "a27b43e6-08b1-4e1f-abbf-c1cd127c9e22",
+   "fullName": "Jennifer Lopez",
+   "email": "jennifer.lopez@gmail.com",
+   "phone": "+1 305 555 0101",
+   "identificationNumber": "ID90001",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "a77df1c0-6e8c-47b9-ad3a-2847f1fced33",
+   "fullName": "Fatima Al-Sayed",
+   "email": "fatima.al-sayed@gmail.com",
+   "phone": "+1 305 555 0107",
+   "identificationNumber": "ID90007",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "d2206054-be48-45a8-a931-c1ec574eaf66",
+   "fullName": "Robert Williams",
+   "email": "robert.williams@gmail.com",
+   "phone": "+1 305 555 0100",
+   "identificationNumber": "ID90000",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "f311489d-be48-4f59-8765-3e5a2d080660",
+   "fullName": "Michael Brown",
+   "email": "michael.brown@gmail.com",
+   "phone": "+1 305 555 0102",
+   "identificationNumber": "ID90002",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  },
+  {
+   "id": "ffd3da8f-90c4-4d83-9517-b65b4e78e711",
+   "fullName": "Ana Sofía Herrera",
+   "email": "ana.sofia.herrera@gmail.com",
+   "phone": "+1 305 555 0103",
+   "identificationNumber": "ID90003",
+   "notes": null,
+   "createdAtUtc": "2025-06-25T12:00:00"
+  }
+ ],
+ "contracts": [
+  {
+   "id": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "tenantId": "247a147d-d32f-44e0-a018-f6e27f0bd8a0",
+   "rentalUnitId": "7e18fb8a-a43b-477d-9cfc-aab452b0cb37",
+   "startDate": "2025-12-02T12:00:00",
+   "endDate": "2027-05-10T00:00:00",
+   "monthlyRent": 3000.0,
+   "depositAmount": 3000.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-12-02T12:00:00",
+   "tenantName": "Thomas Müller",
+   "unitName": "Unit 403"
+  },
+  {
+   "id": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "tenantId": "154d7e29-1f47-4979-8ea5-677689e72beb",
+   "rentalUnitId": "3142f3bd-4fe0-4ae6-a51c-20f784ca3f5c",
+   "startDate": "2025-11-12T12:00:00",
+   "endDate": "2027-03-31T00:00:00",
+   "monthlyRent": 1450.0,
+   "depositAmount": 1450.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-11-12T12:00:00",
+   "tenantName": "James O'Connor",
+   "unitName": "Unit 303"
+  },
+  {
+   "id": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "tenantId": "709a6ac2-51f2-4957-b87b-f5c6c7df06be",
+   "rentalUnitId": "498f7406-08a1-4ff1-b06c-7bd95728672f",
+   "startDate": "2025-10-23T12:00:00",
+   "endDate": "2027-02-19T00:00:00",
+   "monthlyRent": 1500.0,
+   "depositAmount": 1500.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-10-23T12:00:00",
+   "tenantName": "David Kim",
+   "unitName": "Unit 301"
+  },
+  {
+   "id": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "tenantId": "6464897b-ee36-44c3-8f03-f4ba610a18f7",
+   "rentalUnitId": "c71b3eeb-0bf3-4d74-9975-716b7022fd09",
+   "startDate": "2025-11-02T12:00:00",
+   "endDate": "2027-03-11T00:00:00",
+   "monthlyRent": 1600.0,
+   "depositAmount": 1600.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-11-02T12:00:00",
+   "tenantName": "Priya Patel",
+   "unitName": "Unit 302"
+  },
+  {
+   "id": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "tenantId": "a27b43e6-08b1-4e1f-abbf-c1cd127c9e22",
+   "rentalUnitId": "80a7c771-b255-4b50-950c-793f55cd9023",
+   "startDate": "2025-09-23T12:00:00",
+   "endDate": "2026-08-01T00:00:00",
+   "monthlyRent": 1950.0,
+   "depositAmount": 1950.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-09-23T12:00:00",
+   "tenantName": "Jennifer Lopez",
+   "unitName": "Unit 102"
+  },
+  {
+   "id": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "tenantId": "f311489d-be48-4f59-8765-3e5a2d080660",
+   "rentalUnitId": "0efaffdf-76ca-43f1-ae46-317402c1c7e9",
+   "startDate": "2025-10-03T12:00:00",
+   "endDate": "2027-01-10T00:00:00",
+   "monthlyRent": 2400.0,
+   "depositAmount": 2400.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-10-03T12:00:00",
+   "tenantName": "Michael Brown",
+   "unitName": "Unit 201"
+  },
+  {
+   "id": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "tenantId": "d2206054-be48-45a8-a931-c1ec574eaf66",
+   "rentalUnitId": "f20544c6-1957-43d8-a272-7773a9cb3f37",
+   "startDate": "2025-09-13T12:00:00",
+   "endDate": "2026-07-25T00:00:00",
+   "monthlyRent": 1800.0,
+   "depositAmount": 1800.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-09-13T12:00:00",
+   "tenantName": "Robert Williams",
+   "unitName": "Unit 101"
+  },
+  {
+   "id": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "tenantId": "ffd3da8f-90c4-4d83-9517-b65b4e78e711",
+   "rentalUnitId": "b88b6d12-17f3-4d5d-8008-e0567763118f",
+   "startDate": "2025-10-13T12:00:00",
+   "endDate": "2027-01-30T00:00:00",
+   "monthlyRent": 2200.0,
+   "depositAmount": 2200.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-10-13T12:00:00",
+   "tenantName": "Ana Sofía Herrera",
+   "unitName": "Unit 202"
+  },
+  {
+   "id": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "tenantId": "a77df1c0-6e8c-47b9-ad3a-2847f1fced33",
+   "rentalUnitId": "b41743ac-25c4-4532-8b6b-545668d1b9bc",
+   "startDate": "2025-11-22T12:00:00",
+   "endDate": "2027-04-20T00:00:00",
+   "monthlyRent": 2800.0,
+   "depositAmount": 2800.0,
+   "currency": "USD",
+   "status": 0,
+   "createdAtUtc": "2025-11-22T12:00:00",
+   "tenantName": "Fatima Al-Sayed",
+   "unitName": "Unit 401"
+  }
+ ],
+ "payments": [
+  {
+   "id": "0665915c-c6f5-40e8-af54-06bd998cfb53",
+   "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 2400.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "08fa55dc-254c-4a91-9627-a5198cab045c",
+   "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 3000.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "098ba246-b943-4cb9-9d22-94f96108bed2",
+   "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 2800.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "18a20d03-56c1-4a7e-87b1-fff13e04f3da",
+   "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 1450.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "1df38b7c-26a8-4aff-8758-f47669814cb1",
+   "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 1450.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "2178cfa2-3aa1-48fd-99f5-e4e30d390b0e",
+   "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 2200.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "21effe1c-3134-4de3-979c-edb6bf39a60e",
+   "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 1500.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "2497ce78-5607-48f1-aa3e-7b8e3c5ece3d",
+   "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": "2026-07-04T00:00:00",
+   "amount": 3000.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "2debeb89-163b-4520-ac68-ab3b60f253aa",
+   "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 2200.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "2ea78572-46fa-4f9d-af2d-34eabb186dc6",
+   "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": "2026-07-04T00:00:00",
+   "amount": 1800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "2fc0da7c-1693-4ef7-b772-d51271ab9c95",
+   "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 1950.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "31b3f49a-f56b-4cbf-9925-668e515a075c",
+   "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 1800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "34e26d43-33fc-466c-afca-af0e49e46d68",
+   "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 2400.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "37515b39-77b2-4f7b-9728-1467978ba7b2",
+   "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 1950.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "3894824d-fb02-4171-807c-2e2ce93a271a",
+   "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 3000.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "39621e12-ac02-4d9a-a671-71083b49e673",
+   "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 2200.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "39bc9e3a-0971-4d9d-8e09-5fe8e31954ba",
+   "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": "2026-07-04T00:00:00",
+   "amount": 2200.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "3d335216-98f5-4e22-8abf-e144a72a971d",
+   "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 1600.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "3ddda092-7dd2-4830-ae16-3a32084fe79a",
+   "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 1600.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "4f2a4ead-ecbd-499c-93bd-e97c9c2c5348",
+   "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 2200.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "53da6e0d-037d-4260-826f-b96be95758e4",
+   "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 1450.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "67dc195b-0ef8-4852-9291-5584b9f1e207",
+   "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 2400.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "6c957998-630c-423f-ae8b-4434400092b0",
+   "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 2400.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "6f70a50b-2ce0-4fd4-9086-d7e6543b86df",
+   "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 3000.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "70eb17da-4f4c-4a91-b8d1-9ae7b7bf4985",
+   "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 3000.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "8246e88a-21c7-42ef-aea4-2853af4768ea",
+   "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 1450.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "83bbc766-178d-439b-aa33-3928cbb0e7a8",
+   "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 2800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "851675d3-7ba5-4df0-ba7d-bbc3e41fa393",
+   "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": null,
+   "amount": 2400.0,
+   "currency": "USD",
+   "status": 2,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "87d63eb2-b010-4f8e-8dd4-f72b7c0c0e4f",
+   "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 1800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "88a7fdbc-431d-456b-8f23-92522d469d9f",
+   "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": null,
+   "amount": 1450.0,
+   "currency": "USD",
+   "status": 2,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "8c61ccd8-234d-4bf1-9889-b5f5fbcc461d",
+   "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 1950.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "90501459-1c55-4f16-99ec-66163ba70b8c",
+   "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 1800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "93046359-1dfe-4b91-ad34-0344eb14a3f6",
+   "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 2200.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "9655566b-fa95-49dd-b2d4-2b43f62a58f6",
+   "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 1500.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "974691e1-b0d4-4a36-b2c1-d97c04c166fd",
+   "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 2400.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "97e2d2ca-37c5-4b8b-bb8a-8cc212daad3c",
+   "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 1500.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "a045965a-6128-4659-823b-db98ddddda7f",
+   "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 1950.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "a7278630-d6a2-4e3e-a7cc-d11dbea06f93",
+   "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 1950.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "ab2165ae-0c8c-46cb-8a91-2fb2f7220c23",
+   "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 3000.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "ad359194-2020-4c7b-bb97-a4014e560d4d",
+   "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 1450.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "afecab80-4ec5-496f-9414-db427c461092",
+   "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 2800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "b05cca9d-482f-47e2-b96a-bf90ead42494",
+   "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": "2026-07-04T00:00:00",
+   "amount": 2800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "b1ac0ae5-d21f-434b-b67e-d418cb47971d",
+   "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 1450.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "b7f512bf-32a1-465c-b032-7756fd876b65",
+   "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 1800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "bb42e42c-dbbe-42c5-a1bf-193d12457eb5",
+   "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 2400.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "be1dd641-da60-4361-abac-b4da06ae3f3b",
+   "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 1950.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "c34d3b62-dd8d-4a34-b122-3c158567a1a9",
+   "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 1600.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "c7df6f50-3451-47b4-ba2e-89e047bb4c33",
+   "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 1600.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "cb5f593c-c227-4fbe-b900-6e87e3fc6a8c",
+   "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 1800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "d0a43b74-0d04-470a-900b-dac1faa02877",
+   "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": "2026-07-04T00:00:00",
+   "amount": 1500.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "d641920a-109d-4d1c-a45e-a4c60bd51bca",
+   "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 2200.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "d8177537-2f25-466a-9149-ce907b059aa3",
+   "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 3000.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "d893d7c0-1494-466d-aea6-b7c1b459d7e7",
+   "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": "2026-07-04T00:00:00",
+   "amount": 1600.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "dfdfcdd9-a6ec-4c80-91f1-14ab165051c2",
+   "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "dueDate": "2026-06-01T00:00:00",
+   "paidDate": "2026-06-03T00:00:00",
+   "amount": 1500.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-05-12T00:00:00"
+  },
+  {
+   "id": "e4452cfd-1cd2-4cc9-a2b9-d8d90bec33d7",
+   "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "dueDate": "2026-02-01T00:00:00",
+   "paidDate": "2026-02-03T00:00:00",
+   "amount": 1500.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-01-12T00:00:00"
+  },
+  {
+   "id": "e70ca763-dc5a-4fd2-a8c4-45ac057bbcee",
+   "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "dueDate": "2026-03-01T00:00:00",
+   "paidDate": "2026-03-03T00:00:00",
+   "amount": 2800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-02-09T00:00:00"
+  },
+  {
+   "id": "e994a645-634b-49a5-8bd5-8f2bae1f9296",
+   "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 1600.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "ea687a92-db73-48bd-834c-01e47e6bae06",
+   "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 1600.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  },
+  {
+   "id": "ee416e9f-c5d0-439d-88f6-9f21957d9063",
+   "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 2800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "f18cc7e6-a95d-4dfe-b129-0e0bafc546d7",
+   "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
+   "dueDate": "2026-08-01T00:00:00",
+   "paidDate": null,
+   "amount": 1800.0,
+   "currency": "USD",
+   "status": 0,
+   "notes": null,
+   "createdAtUtc": "2026-07-12T00:00:00"
+  },
+  {
+   "id": "f47124eb-9422-4361-b2b7-9555e4479a50",
+   "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
+   "dueDate": "2026-07-01T00:00:00",
+   "paidDate": "2026-07-04T00:00:00",
+   "amount": 1950.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-06-11T00:00:00"
+  },
+  {
+   "id": "f6bb4f4e-7c48-410c-bbe6-363ce30f8039",
+   "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
+   "dueDate": "2026-04-01T00:00:00",
+   "paidDate": "2026-04-03T00:00:00",
+   "amount": 1500.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-03-12T00:00:00"
+  },
+  {
+   "id": "fb3fd191-1fc1-4064-b859-40fbdb6879f6",
+   "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
+   "dueDate": "2026-05-01T00:00:00",
+   "paidDate": "2026-05-03T00:00:00",
+   "amount": 2800.0,
+   "currency": "USD",
+   "status": 1,
+   "notes": null,
+   "createdAtUtc": "2026-04-11T00:00:00"
+  }
+ ],
+ "maintenancerequests": [
+  {
+   "id": "134349da-f5d3-4491-9576-1a90ee455fac",
+   "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
+   "rentalUnitId": null,
+   "title": "Broken elevator",
+   "description": "Elevator stuck on 2nd floor.",
+   "priority": 1,
+   "status": 0,
+   "createdAtUtc": "2026-07-02T12:00:00",
+   "propertyName": "Sunset Residences",
+   "unitName": null
+  },
+  {
+   "id": "fd9a557a-80bd-432e-a172-eee66066df18",
+   "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
+   "rentalUnitId": "80a7c771-b255-4b50-950c-793f55cd9023",
+   "title": "Water heater replacement",
+   "description": "Old heater failing, no hot water.",
+   "priority": 2,
+   "status": 0,
+   "createdAtUtc": "2026-07-08T12:00:00",
+   "propertyName": "Sunset Residences",
+   "unitName": "Unit 102"
+  },
+  {
+   "id": "03a53579-8619-4228-a8d6-88a2378baaf6",
+   "propertyId": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
+   "rentalUnitId": "80a7c771-b255-4b50-950c-793f55cd9023",
+   "title": "Leaking kitchen faucet",
+   "description": "Water pooling under the sink cabinet.",
+   "priority": 2,
+   "status": 0,
+   "createdAtUtc": "2026-07-05T12:00:00",
+   "propertyName": "Harbor View Apartments",
+   "unitName": "Unit 102"
+  },
+  {
+   "id": "596d667b-b171-4629-b61c-e840ccb4264b",
+   "propertyId": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
+   "rentalUnitId": null,
+   "title": "Repaint common hallway",
+   "description": "Scheduled cosmetic repaint.",
+   "priority": 0,
+   "status": 2,
+   "createdAtUtc": "2026-06-10T12:00:00",
+   "propertyName": "Maple Court",
+   "unitName": null
+  },
+  {
+   "id": "ee18a100-8ec9-4a6f-8a6c-03f4fa0fd4bc",
+   "propertyId": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
+   "rentalUnitId": "b41743ac-25c4-4532-8b6b-545668d1b9bc",
+   "title": "AC not cooling",
+   "description": "Tenant reports AC blowing warm air.",
+   "priority": 2,
+   "status": 1,
+   "createdAtUtc": "2026-07-07T12:00:00",
+   "propertyName": "The Grove Lofts",
+   "unitName": "Unit 401"
+  }
+ ]
+}

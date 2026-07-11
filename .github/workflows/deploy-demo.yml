@@ -1,0 +1,44 @@
+name: Deploy demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: propflow-web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: propflow-web
+        run: npm ci
+
+      - name: Build demo (mock backend, GitHub Pages base)
+        working-directory: propflow-web
+        run: npm run build -- --base=/PropFlow/
+        env:
+          VITE_DEMO_MODE: 'true'
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: propflow-web/dist
+          publish_branch: gh-pages
