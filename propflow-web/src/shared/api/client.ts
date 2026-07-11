@@ -1,4 +1,7 @@
+import { demoHandle } from '../demo/demoBackend';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050/api';
+const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
 
 class ApiClient {
   private getHeaders(): HeadersInit {
@@ -15,6 +18,10 @@ class ApiClient {
   }
 
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    if (DEMO_MODE) {
+      return demoHandle<T>(endpoint, options);
+    }
+
     const url = `${API_BASE_URL}${endpoint}`;
     const config: RequestInit = {
       ...options,
