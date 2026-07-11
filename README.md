@@ -2,8 +2,20 @@
 
 A modern, full-stack property management application built with .NET 10 and React 19.
 
-**Status**: ✅ Complete and Production Ready  
-**Date**: April 23, 2026
+[![Deploy demo](https://github.com/full-stack-dev-johncastrosanabria/PropFlow/actions/workflows/deploy-demo.yml/badge.svg)](https://github.com/full-stack-dev-johncastrosanabria/PropFlow/actions/workflows/deploy-demo.yml)
+
+**Status**: ✅ Complete and Production Ready
+
+## 🔗 Live Demo
+
+**[full-stack-dev-johncastrosanabria.github.io/PropFlow](https://full-stack-dev-johncastrosanabria.github.io/PropFlow/)**
+
+An interactive, front-end-only demo (mock data, no backend) — including the **Leads sales funnel**, the **daily dashboard**, and the **Keller Williams productivity tracker**. The login comes pre-filled with the demo credentials:
+
+- **Email:** `demo@propflow.app`
+- **Password:** `Demo1234!`
+
+The demo redeploys automatically on every push to `main` via GitHub Actions.
 
 ---
 
