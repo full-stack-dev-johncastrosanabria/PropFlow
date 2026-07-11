@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropFlow.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using PropFlow.Infrastructure.Data;
 namespace PropFlow.Infrastructure.Migrations
 {
     [DbContext(typeof(PropFlowDbContext))]
-    partial class PropFlowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260711001457_AddDailyActivity")]
+    partial class AddDailyActivity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -291,45 +294,6 @@ namespace PropFlow.Infrastructure.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("PropFlow.Domain.Entities.ProductivityGoals", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("AppointmentsMet")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AppointmentsSet")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Contacts")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Conversations")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAtUtc")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("LandlordId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<decimal>("LeadGenHours")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<int>("LeadsAdded")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LandlordId")
-                        .IsUnique();
-
-                    b.ToTable("ProductivityGoals");
-                });
-
             modelBuilder.Entity("PropFlow.Domain.Entities.Property", b =>
                 {
                     b.Property<Guid>("Id")
@@ -522,17 +486,6 @@ namespace PropFlow.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Contract");
-                });
-
-            modelBuilder.Entity("PropFlow.Domain.Entities.ProductivityGoals", b =>
-                {
-                    b.HasOne("PropFlow.Domain.Entities.Landlord", "Landlord")
-                        .WithMany()
-                        .HasForeignKey("LandlordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Landlord");
                 });
 
             modelBuilder.Entity("PropFlow.Domain.Entities.Property", b =>

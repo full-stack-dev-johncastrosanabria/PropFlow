@@ -17,6 +17,9 @@ public class PropFlowDbContext : DbContext
     public DbSet<Contract> Contracts => Set<Contract>();
     public DbSet<Payment> Payments => Set<Payment>();
     public DbSet<MaintenanceRequest> MaintenanceRequests => Set<MaintenanceRequest>();
+    public DbSet<Lead> Leads => Set<Lead>();
+    public DbSet<DailyActivity> DailyActivities => Set<DailyActivity>();
+    public DbSet<ProductivityGoals> ProductivityGoals => Set<ProductivityGoals>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,5 +32,8 @@ public class PropFlowDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ContractConfiguration());
         modelBuilder.ApplyConfiguration(new PaymentConfiguration());
         modelBuilder.ApplyConfiguration(new MaintenanceRequestConfiguration());
+        modelBuilder.ApplyConfiguration(new LeadConfiguration());
+        modelBuilder.ApplyConfiguration(new DailyActivityConfiguration());
+        modelBuilder.ApplyConfiguration(new ProductivityGoalsConfiguration());
     }
 }

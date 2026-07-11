@@ -1,6 +1,8 @@
 using AutoMapper;
 using PropFlow.Application.Common.DTOs.Auth;
 using PropFlow.Application.Common.DTOs.Contracts;
+using PropFlow.Application.Common.DTOs.Leads;
+using PropFlow.Application.Common.DTOs.Productivity;
 using PropFlow.Application.Common.DTOs.MaintenanceRequests;
 using PropFlow.Application.Common.DTOs.Payments;
 using PropFlow.Application.Common.DTOs.Properties;
@@ -50,5 +52,14 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UnitName, opt => opt.MapFrom(src => src.RentalUnit != null ? src.RentalUnit.Name : null));
         CreateMap<CreateMaintenanceRequestDto, MaintenanceRequest>();
         CreateMap<UpdateMaintenanceRequestDto, MaintenanceRequest>();
+
+        // Lead
+        CreateMap<Lead, LeadDto>();
+        CreateMap<CreateLeadDto, Lead>();
+        CreateMap<UpdateLeadDto, Lead>();
+
+        // Productivity
+        CreateMap<DailyActivity, DailyActivityDto>();
+        CreateMap<ProductivityGoals, ProductivityGoalsDto>();
     }
 }

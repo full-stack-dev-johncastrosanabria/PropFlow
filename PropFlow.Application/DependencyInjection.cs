@@ -3,6 +3,8 @@ using PropFlow.Application.Common.Interfaces;
 using PropFlow.Application.Features.Auth;
 using PropFlow.Application.Features.Contracts;
 using PropFlow.Application.Features.Dashboard;
+using PropFlow.Application.Features.Leads;
+using PropFlow.Application.Features.Productivity;
 using PropFlow.Application.Features.MaintenanceRequests;
 using PropFlow.Application.Features.Payments;
 using PropFlow.Application.Features.Properties;
@@ -25,6 +27,8 @@ public static class DependencyInjection
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IMaintenanceRequestService, MaintenanceRequestService>();
         services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<ILeadService, LeadService>();
+        services.AddScoped<IProductivityService, ProductivityService>();
         
         return services;
     }

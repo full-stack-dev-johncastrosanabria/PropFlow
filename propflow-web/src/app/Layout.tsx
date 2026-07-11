@@ -11,6 +11,8 @@ export default function Layout() {
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/leads', label: 'Leads', icon: '🎯' },
+    { path: '/productivity', label: 'Productivity', icon: '🔥' },
     { path: '/properties', label: 'Properties', icon: '🏠' },
     { path: '/units', label: 'Units', icon: '🏢' },
     { path: '/tenants', label: 'Tenants', icon: '👥' },
