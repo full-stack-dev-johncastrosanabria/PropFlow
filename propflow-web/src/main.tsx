@@ -5,11 +5,6 @@ import App from './app/App';
 import './index.css';
 import './App.css';
 
-// Demo build: auto-authenticate so the static site opens straight into the app.
-if (import.meta.env.VITE_DEMO_MODE === 'true' && !localStorage.getItem('token')) {
-  localStorage.setItem('token', 'demo-token');
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

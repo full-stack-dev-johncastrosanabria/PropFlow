@@ -2,10 +2,14 @@ import { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../app/contexts/AuthContext';
 
+const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
+const DEMO_EMAIL = 'demo@propflow.app';
+const DEMO_PASSWORD = 'Demo1234!';
+
 export default function LoginPage() {
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(DEMO_MODE ? DEMO_EMAIL : '');
+  const [password, setPassword] = useState(DEMO_MODE ? DEMO_PASSWORD : '');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -120,8 +124,8 @@ export default function LoginPage() {
             <h3 className="text-sm font-bold text-blue-900">Demo Credentials</h3>
           </div>
           <div className="text-sm text-blue-800 bg-white p-3 rounded-lg">
-            <p><strong>Email:</strong> john@test.com</p>
-            <p><strong>Password:</strong> Cnzmws</p>
+            <p><strong>Email:</strong> demo@propflow.app</p>
+            <p><strong>Password:</strong> Demo1234!</p>
           </div>
         </div>
       </div>
