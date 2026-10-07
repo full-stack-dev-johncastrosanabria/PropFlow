@@ -4,7 +4,7 @@ A modern, full-stack property management application built with .NET 10 and Reac
 
 [![Deploy demo](https://github.com/full-stack-dev-johncastrosanabria/PropFlow/actions/workflows/deploy-demo.yml/badge.svg)](https://github.com/full-stack-dev-johncastrosanabria/PropFlow/actions/workflows/deploy-demo.yml)
 
-**Status**: ✅ Complete and Production Ready
+**Status**: Portfolio application. The hosted demo is a frontend with sample data; backend evaluation requires local setup.
 
 ## 🔗 Live Demo
 
@@ -77,7 +77,7 @@ PropFlow is a comprehensive property management system designed for landlords to
 - 🏠 **8 Complete Features** - Dashboard, Properties, Units, Tenants, Contracts, Payments, Maintenance, Auth
 - 📱 **Mobile-First Design** - Fully responsive on all devices
 - 🔐 **Secure Authentication** - JWT-based with landlord ownership enforcement
-- ⚡ **Production Ready** - Optimized, tested, and documented
+- ⚡ **ready for local evaluation** - Optimized, tested, and documented
 - 📚 **Comprehensive Documentation** - 8 documentation files
 
 ---
@@ -696,7 +696,7 @@ dotnet build
 - [x] Builds successfully with .NET 10
 - [x] EF Core migrations work with MySQL
 - [x] All endpoints enforce landlord ownership via JWT
-- [x] No issues found - fully operational
+- [x] Refresh local verification before deployment
 
 ### Frontend Implementation
 - [x] 8 complete features with CRUD operations
@@ -788,7 +788,7 @@ dotnet build
 
 ## 🎉 Conclusion
 
-PropFlow is now a **fully functional, production-ready property management application** with:
+PropFlow is now a **fully functional, ready for local evaluation property management application** with:
 
 ✅ Complete backend with all CRUD operations  
 ✅ Complete frontend with all features  
@@ -828,7 +828,7 @@ PropFlow is now a **fully functional, production-ready property management appli
 
 - **Start Date**: April 23, 2026
 - **Completion Date**: April 23, 2026
-- **Status**: ✅ Complete and Production Ready
+- **Status**: ✅ Complete and ready for local evaluation
 
 ---
 
