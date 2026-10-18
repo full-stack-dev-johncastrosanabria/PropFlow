@@ -14,9 +14,18 @@
           document.documentElement.classList.toggle('dark', dark);
         } catch {}
       })();
+      // same for the language: saved preference, else the browser language
+      (() => {
+        try {
+          const saved = localStorage.getItem('lang');
+          document.documentElement.lang = saved === 'en' || saved === 'es'
+            ? saved
+            : (navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en';
+        } catch {}
+      })();
     </script>
-    <script type="module" crossorigin src="/PropFlow/assets/index-h6oWRivX.js"></script>
-    <link rel="stylesheet" crossorigin href="/PropFlow/assets/index-DSFbymvt.css">
+    <script type="module" crossorigin src="/PropFlow/assets/index-D11tyRop.js"></script>
+    <link rel="stylesheet" crossorigin href="/PropFlow/assets/index-CE8zZBr7.css">
   </head>
   <body>
     <div id="root"></div>
