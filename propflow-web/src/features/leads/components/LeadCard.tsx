@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { LeadDto } from '../../../shared/types';
 import { sourceMeta, formatCurrency } from '../leadMeta';
 import { portraitFor } from '@/shared/media';
@@ -24,6 +25,7 @@ export default function LeadCard({
   isDragging,
   dimmed,
 }: LeadCardProps) {
+  const { t } = useTranslation();
   const src = sourceMeta(lead.source);
 
   return (
@@ -46,7 +48,7 @@ export default function LeadCard({
       }}
       role="button"
       tabIndex={0}
-      aria-label={`Lead ${lead.fullName}, ${formatCurrency(lead.estimatedValue, lead.currency)} per month, edit`}
+      aria-label={t('leads.cardAria', { name: lead.fullName, value: formatCurrency(lead.estimatedValue, lead.currency) })}
     >
       <div className="flex items-start gap-2.5">
         <img
@@ -62,8 +64,8 @@ export default function LeadCard({
         </div>
         <button
           className="flex size-7 shrink-0 items-center justify-center rounded-[7px] text-carbon-faint opacity-0 transition-all hover:bg-ink-red/10 hover:text-ink-red focus-visible:opacity-100 group-hover:opacity-100"
-          title="Delete lead"
-          aria-label={`Delete lead ${lead.fullName}`}
+          title={t('leads.delete')}
+          aria-label={t('leads.deleteAria', { name: lead.fullName })}
           onClick={(e) => {
             e.stopPropagation();
             onDelete(lead);
@@ -83,11 +85,11 @@ export default function LeadCard({
       <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-rule pt-2.5">
         <span className="text-figure text-[13.5px] font-semibold" style={{ color: accent }}>
           {formatCurrency(lead.estimatedValue, lead.currency)}
-          <span className="text-[10.5px] font-medium text-carbon-faint">/mo</span>
+          <span className="text-[10.5px] font-medium text-carbon-faint">{t('dashboard.perMonth')}</span>
         </span>
-        <span className="flex items-center gap-1 text-[12px] font-medium text-carbon-faint" title={`Source: ${src.label}`}>
+        <span className="flex items-center gap-1 text-[12px] font-medium text-carbon-faint" title={`Source: ${t(src.labelKey)}`}>
           <src.icon className="size-3.5" aria-hidden />
-          {src.label}
+          {t(src.labelKey)}
         </span>
       </div>
     </div>

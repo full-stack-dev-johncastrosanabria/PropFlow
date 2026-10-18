@@ -1,13 +1,60 @@
 // In-memory mock backend for the static GitHub Pages demo.
 // Serves the exported database snapshot and simulates mutations in-session
 // so the UI feels live. State resets on page reload.
+//
+// Bilingual demo: the dataset ships in English; for Spanish the demo store is
+// rebuilt with `demo-overlay-es.json` translations applied to every matching
+// string (notes, titles, descriptions). Derived labels (stages, weekdays,
+// months) are not translated here — the UI resolves those through i18n.
 import demoData from './demo-data.json';
+import esOverlay from './demo-overlay-es.json';
 
 type Any = Record<string, unknown>;
 const clone = <T>(v: T): T =>
   typeof structuredClone === 'function' ? structuredClone(v) : JSON.parse(JSON.stringify(v));
 
-const store: Any = clone(demoData as unknown as Any);
+// flat EN → ES lookup built from the overlay section map
+const ES_STRINGS: Record<string, string> = (() => (
+  Object.values(esOverlay as Record<string, Record<string, string>>)
+    .reduce((acc, section) => Object.assign(acc, section), {})
+))();
+
+function translateStrings<T>(node: T): T {
+  if (typeof node === 'string') {
+    return (ES_STRINGS[node] ?? node) as unknown as T;
+  }
+  if (Array.isArray(node)) {
+    return node.map((v) => translateStrings(v)) as unknown as T;
+  }
+  if (node && typeof node === 'object') {
+    const out: Any = {};
+    for (const [k, v] of Object.entries(node as Any)) out[k] = translateStrings(v);
+    return out as unknown as T;
+  }
+  return node;
+}
+
+function resolveLang(): 'en' | 'es' {
+  try {
+    const saved = localStorage.getItem('lang');
+    if (saved === 'en' || saved === 'es') return saved;
+  } catch {
+    /* private mode */
+  }
+  return typeof navigator !== 'undefined' && navigator.language?.toLowerCase().startsWith('es')
+    ? 'es'
+    : 'en';
+}
+
+let currentLang: 'en' | 'es' = resolveLang();
+let store: Any = currentLang === 'es' ? translateStrings(clone(demoData as unknown as Any)) : clone(demoData as unknown as Any);
+
+/** Swap the demo dataset's language; in-session mutations reset (as they do on reload). */
+export function setDemoLanguage(lang: 'en' | 'es') {
+  if (lang === currentLang) return;
+  currentLang = lang;
+  store = lang === 'es' ? translateStrings(clone(demoData as unknown as Any)) : clone(demoData as unknown as Any);
+}
 
 // Demo records reference bundled photos as `asset:<path-under-public/images>`.
 // Resolve them once to runtime URLs (honors the GitHub Pages base path).
@@ -33,7 +80,8 @@ const uuid = (): string =>
     ? crypto.randomUUID()
     : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
         const r = (Math.random() * 16) | 0;
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
       });
 
 const COLLECTIONS: Record<string, string> = {

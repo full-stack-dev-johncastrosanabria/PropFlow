@@ -1,5 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 export function EmptyState({
@@ -34,7 +35,8 @@ export function EmptyState({
   );
 }
 
-export function PageLoading({ label = 'Loading…' }: { label?: string }) {
+export function PageLoading({ label }: { label?: string }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center justify-center py-20" role="status" aria-live="polite">
       <div className="flex items-center gap-3 text-carbon-soft">
@@ -42,7 +44,7 @@ export function PageLoading({ label = 'Loading…' }: { label?: string }) {
           <span className="absolute inline-flex size-full animate-ping rounded-full border-2 border-ink-red opacity-60" />
           <span className="relative inline-flex size-4 rounded-full border-2 border-ink-red" />
         </span>
-        <span className="text-[15px] font-medium">{label}</span>
+        <span className="text-[15px] font-medium">{label ?? t('common.loading')}</span>
       </div>
     </div>
   );

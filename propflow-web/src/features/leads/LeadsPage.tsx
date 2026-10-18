@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { leadsApi } from '../../shared/api/leads';
@@ -15,6 +16,7 @@ import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 import { cn } from '@/lib/utils';
 
 export default function LeadsPage() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<LeadDto | null>(null);
@@ -78,7 +80,7 @@ export default function LeadsPage() {
   };
 
   const handleDelete = (lead: LeadDto) => {
-    if (window.confirm(`Delete lead "${lead.fullName}"?`)) {
+    if (window.confirm(t('leads.deleteConfirm', { name: lead.fullName }))) {
       deleteMutation.mutate(lead.id);
     }
   };
@@ -94,10 +96,10 @@ export default function LeadsPage() {
     setDraggingId(null);
   };
 
-  if (isLoading) return <PageLoading label="Laying out the board…" />;
+  if (isLoading) return <PageLoading label={t('leads.opening')} />;
 
   if (error) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load leads'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('leads.fail')} />;
   }
 
   return (
@@ -105,36 +107,36 @@ export default function LeadsPage() {
       <BlurFade className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-[30px] font-bold leading-tight text-carbon sm:text-[34px]">
-            Sales funnel
+            {t('leads.title')}
           </h1>
           <p className="mt-1 text-[15px] text-carbon-soft">
-            Drag a lead across the board as it moves — every column keeps its own count and value.
+            {t('leads.copy')}
           </p>
         </div>
         <ShimmerButton onClick={() => handleCreate()} className="h-11 px-5 text-[14.5px]">
           <Plus className="size-4" aria-hidden />
-          New lead
+          {t('leads.new')}
         </ShimmerButton>
       </BlurFade>
 
       {/* the ledger strip */}
       <BlurFade delay={0.05}>
         <section
-          aria-label="Pipeline figures"
+          aria-label={t('leads.pipelineFigures')}
           className="grid grid-cols-2 divide-rule rounded-sheet border border-rule bg-paper-raised shadow-sheet lg:grid-cols-4 lg:divide-x"
         >
-          <MetricCell label="Active leads" value={metrics.active} foot="in play right now" />
+          <MetricCell label={t('leads.active')} value={metrics.active} foot={t('leads.activeFoot')} />
           <MetricCell
-            label="Pipeline / mo"
+            label={t('dashboard.pipeline')}
             value={formatCurrency(metrics.pipelineValue, 'USD')}
-            foot="estimated monthly value"
+            foot={t('leads.pipelineFoot')}
             mono
           />
-          <MetricCell label="Won deals" value={metrics.won} foot={formatCurrency(metrics.wonValue, 'USD') + ' /mo secured'} cellBorder="max-sm:border-t max-sm:border-rule" />
+          <MetricCell label={t('leads.won')} value={metrics.won} foot={t('leads.wonFoot', { amount: formatCurrency(metrics.wonValue, 'USD') })} cellBorder="max-sm:border-t max-sm:border-rule" />
           <MetricCell
-            label="Win rate"
+            label={t('leads.winRate')}
             value={`${metrics.winRate}%`}
-            foot={`${metrics.total} leads all-time`}
+            foot={t('dashboard.funnelHint', { count: metrics.total })}
             mono
             cellBorder="max-sm:border-t max-sm:border-rule"
           />
@@ -176,7 +178,7 @@ export default function LeadsPage() {
                         >
                           <s.icon className="size-3.5" />
                         </span>
-                        <span className="text-[13.5px] font-bold text-carbon">{s.label}</span>
+                        <span className="text-[13.5px] font-bold text-carbon">{t(s.labelKey)}</span>
                         <span className="text-figure rounded-full bg-paper-deep px-1.5 text-[11.5px] font-semibold text-carbon-soft">
                           {items.length}
                         </span>
@@ -207,7 +209,7 @@ export default function LeadsPage() {
 
                     {items.length === 0 && (
                       <div className="flex flex-1 items-center justify-center rounded-[10px] border border-dashed border-rule-strong/70 py-10 text-[12.5px] text-carbon-faint">
-                        Drop leads here
+                        {t('leads.dropHere')}
                       </div>
                     )}
                   </FadingScroll>
@@ -217,7 +219,7 @@ export default function LeadsPage() {
                       className="flex w-full items-center justify-center gap-1.5 rounded-[9px] border border-dashed border-rule-strong/70 py-2 text-[12.5px] font-semibold text-carbon-soft transition-colors hover:border-ink-blue/60 hover:bg-ink-blue/5 hover:text-ink-blue"
                       onClick={() => handleCreate(s.stage)}
                     >
-                      <Plus className="size-3.5" aria-hidden /> Add
+                      <Plus className="size-3.5" aria-hidden /> {t('leads.add')}
                     </button>
                   </div>
                 </div>

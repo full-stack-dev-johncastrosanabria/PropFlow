@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight, ClipboardList, TriangleAlert, FileClock, Wrench, Map, Play } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { dashboardApi } from '../../shared/api/dashboard';
 import { useAuth } from '../../app/contexts/AuthContext';
 import { useTour } from '../../app/tour';
@@ -28,15 +29,16 @@ const activityTypeTone: Record<string, 'red' | 'green' | 'blue' | 'amber' | 'car
   contract: 'amber',
 };
 
-const greeting = () => {
+const greetingKey = () => {
   const h = new Date().getHours();
-  if (h < 12) return 'Good morning';
-  if (h < 18) return 'Good afternoon';
-  return 'Good evening';
+  if (h < 12) return 'dashboard.morning';
+  if (h < 18) return 'dashboard.afternoon';
+  return 'dashboard.evening';
 };
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const tour = useTour();
   const { data: d, isLoading, error } = useQuery({
@@ -44,13 +46,13 @@ export default function DashboardPage() {
     queryFn: dashboardApi.getDashboard,
   });
 
-  if (isLoading) return <PageLoading label="Opening today's sheet…" />;
+  if (isLoading) return <PageLoading label={t('dashboard.openingSheet')} />;
 
   if (error || !d) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load dashboard'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('dashboard.fail')} />;
   }
 
-  const firstName = user?.fullName?.split(' ')[0] || 'there';
+  const firstName = user?.fullName?.split(' ')[0] || t('dashboard.there');
   const cur = d.currency || 'USD';
   const funnelMax = Math.max(1, ...d.leadsByStage.map((s) => s.count));
   const attention =
@@ -72,16 +74,16 @@ export default function DashboardPage() {
       <BlurFade className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-[30px] font-bold leading-tight text-carbon sm:text-[36px]">
-            {greeting()}, {firstName}.
+            {t(greetingKey())}, {firstName}.
           </h1>
           <p className="mt-1 text-[15px] text-carbon-soft">
-            {todayLabel()} — here's where the portfolio stands.
+            {t('dashboard.todayLine', { today: todayLabel() })}
           </p>
         </div>
         <div className="flex items-center gap-3">
           <DateStamp className="hidden sm:inline-flex" />
           <ShimmerButton onClick={() => navigate('/payments')} className="h-11 px-5 text-[14.5px]">
-            Record payment
+            {t('dashboard.recordPayment')}
             <ArrowRight className="size-4" aria-hidden />
           </ShimmerButton>
         </div>
@@ -97,10 +99,10 @@ export default function DashboardPage() {
               </span>
               <div className="min-w-0">
                 <div className="text-[14.5px] font-semibold text-carbon">
-                  First time here? Take the guided tour.
+                  {t('dashboard.tourInvite')}
                 </div>
                 <div className="text-[13px] text-carbon-soft">
-                  Nine stops around the property, about a minute and a half — it drives itself.
+                  {t('dashboard.tourInviteCopy')}
                 </div>
               </div>
             </div>
@@ -116,11 +118,11 @@ export default function DashboardPage() {
                   }
                 }}
               >
-                No thanks
+                {t('dashboard.noThanks')}
               </Button>
               <Button size="sm" onClick={() => tour.start()}>
                 <Play className="size-4" aria-hidden />
-                Start tour
+                {t('dashboard.startTour')}
               </Button>
             </div>
           </div>
@@ -130,36 +132,36 @@ export default function DashboardPage() {
       {/* the ledger strip — figures ruled onto one sheet */}
       <BlurFade delay={0.05}>
         <section
-          aria-label="Key figures"
+          aria-label={t('dashboard.keyFigures')}
           className="grid grid-cols-2 divide-rule rounded-sheet border border-rule bg-paper-raised shadow-sheet sm:grid-cols-2 lg:grid-cols-4 lg:divide-x"
         >
           <LedgerCell
-            label="Collected this month"
+            label={t('dashboard.collected')}
             value={<NumberTicker value={d.collectedThisMonth} format={(v) => money(v, cur)} />}
-            foot={`of ${money(d.expectedThisMonth, cur)} expected`}
+            foot={t('dashboard.ofExpected', { amount: money(d.expectedThisMonth, cur) })}
             meter={{ value: d.collectedThisMonth, goal: d.expectedThisMonth, tone: 'green' }}
             toneClass="text-ink-green-deep"
           />
           <LedgerCell
-            label="Occupancy"
+            label={t('dashboard.occupancy')}
             value={
               <>
                 <NumberTicker value={d.occupancyRate} />
                 <span className="text-[0.6em]">%</span>
               </>
             }
-            foot={`${d.occupiedUnits} of ${d.totalUnits} units · ${money(d.monthlyRecurringRevenue, cur, true)} MRR`}
+            foot={t('dashboard.occupancyFoot', { occupied: d.occupiedUnits, total: d.totalUnits, mrr: money(d.monthlyRecurringRevenue, cur, true) })}
             meter={{ value: d.occupiedUnits, goal: d.totalUnits, tone: 'blue' }}
             toneClass="text-ink-blue-deep"
           />
           <LedgerCell
-            label="Overdue rent"
+            label={t('dashboard.overdue')}
             value={
               <span className={d.overdueAmount > 0 ? 'text-ink-red-deep' : ''}>
                 <NumberTicker value={d.overdueAmount} format={(v) => money(v, cur)} />
               </span>
             }
-            foot={`${d.latePayments} late · ${money(d.outstandingAmount, cur, true)} outstanding`}
+            foot={t('dashboard.overdueFoot', { late: d.latePayments, outstanding: money(d.outstandingAmount, cur, true) })}
             meter={{
               value: d.overdueAmount,
               goal: d.outstandingAmount || 1,
@@ -168,9 +170,9 @@ export default function DashboardPage() {
             }}
           />
           <LedgerCell
-            label="Pipeline / mo"
+            label={t('dashboard.pipeline')}
             value={<NumberTicker value={d.pipelineValue} format={(v) => money(v, cur, true)} />}
-            foot={`${d.activeLeads} active leads · ${d.wonLeads} won`}
+            foot={t('dashboard.pipelineFoot', { active: d.activeLeads, won: d.wonLeads })}
             meter={{ value: d.pipelineValue, goal: d.pipelineValue * 1.25, tone: 'amber', form: 'half' }}
             className="border-t border-rule lg:border-t-0 sm:border-t-0 max-sm:border-r-0"
             cellBorder="max-sm:border-t max-sm:border-rule"
@@ -181,14 +183,14 @@ export default function DashboardPage() {
       {/* charts */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-5 lg:gap-6">
         <BlurFade delay={0.1} className="lg:col-span-3">
-          <Panel title="Rent collected" hint="Collected vs expected · last 6 months">
+          <Panel title={t('dashboard.rentCollected')} hint={t('dashboard.rentCollectedHint')}>
             <RevenueChart data={d.revenueTrend} currency={cur} />
           </Panel>
         </BlurFade>
         <BlurFade delay={0.15} className="lg:col-span-2">
           <Panel
-            title="Occupancy"
-            action={<PanelLink to="/units">Manage units</PanelLink>}
+            title={t('dashboard.occupancy')}
+            action={<PanelLink to="/units">{t('dashboard.manageUnits')}</PanelLink>}
           >
             <OccupancyDonut
               occupied={d.occupiedUnits}
@@ -203,11 +205,11 @@ export default function DashboardPage() {
       {/* funnel + attention */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
         <BlurFade delay={0.05}>
-          <Panel title="Sales funnel" hint={`${d.totalLeads} leads all-time`} action={<PanelLink to="/leads">Open board</PanelLink>}>
+          <Panel title={t('dashboard.funnel')} hint={t('dashboard.funnelHint', { count: d.totalLeads })} action={<PanelLink to="/leads">{t('dashboard.openBoard')}</PanelLink>}>
             <div className="space-y-3">
               {d.leadsByStage.map((s, i) => (
                 <div key={s.stage} className="grid grid-cols-[86px_1fr_auto] items-center gap-3">
-                  <span className="truncate text-[13px] font-semibold text-carbon-soft">{s.label}</span>
+                  <span className="truncate text-[13px] font-semibold text-carbon-soft">{t(`leads.stage${s.stage}`)}</span>
                   <InkMeter
                     value={s.count}
                     max={funnelMax}
@@ -224,41 +226,41 @@ export default function DashboardPage() {
         </BlurFade>
 
         <BlurFade delay={0.1}>
-          <Panel title="Needs attention" hint="The day's open items">
+          <Panel title={t('dashboard.attention')} hint={t('dashboard.attentionHint')}>
             {attention ? (
               <ul className="space-y-2.5">
                 {d.overdueAmount > 0 && (
                   <AttentionRow
                     to="/payments"
                     icon={<TriangleAlert className="size-4 text-ink-red" aria-hidden />}
-                    stamp={<Stamp tone="red">Overdue</Stamp>}
-                    title={`${d.latePayments} overdue ${d.latePayments === 1 ? 'payment' : 'payments'}`}
-                    sub={`${money(d.overdueAmount, cur)} to collect`}
+                    stamp={<Stamp tone="red">{t("dashboard.overdueStamp")}</Stamp>}
+                    title={t('dashboard.overdueTitle', { count: d.latePayments })}
+                    sub={t('dashboard.toCollect', { amount: money(d.overdueAmount, cur) })}
                   />
                 )}
                 {d.expiringContracts > 0 && (
                   <AttentionRow
                     to="/contracts"
                     icon={<FileClock className="size-4 text-ink-amber" aria-hidden />}
-                    stamp={<Stamp tone="amber">Expiring</Stamp>}
-                    title={`${d.expiringContracts} ${d.expiringContracts === 1 ? 'contract' : 'contracts'} expiring`}
-                    sub="within 45 days — line up renewals"
+                    stamp={<Stamp tone="amber">{t("dashboard.expiringStamp")}</Stamp>}
+                    title={t('dashboard.expiringTitle', { count: d.expiringContracts })}
+                    sub={t('dashboard.expiringSub')}
                   />
                 )}
                 {d.highPriorityMaintenance > 0 && (
                   <AttentionRow
                     to="/maintenance"
                     icon={<Wrench className="size-4 text-ink-red" aria-hidden />}
-                    stamp={<Stamp tone="red">Urgent</Stamp>}
-                    title={`${d.highPriorityMaintenance} urgent maintenance ${d.highPriorityMaintenance === 1 ? 'request' : 'requests'}`}
-                    sub="high priority, still open"
+                    stamp={<Stamp tone="red">{t("dashboard.urgentStamp")}</Stamp>}
+                    title={t('dashboard.urgentTitle', { count: d.highPriorityMaintenance })}
+                    sub={t('dashboard.urgentSub')}
                   />
                 )}
               </ul>
             ) : (
               <p className="flex items-center gap-2 py-6 text-[14.5px] text-carbon-soft">
                 <ClipboardList className="size-4 text-ink-green" aria-hidden />
-                Nothing overdue, expiring, or urgent. Clean sheet.
+                {t('dashboard.cleanSheet')}
               </p>
             )}
           </Panel>
@@ -269,13 +271,13 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
         <BlurFade delay={0.05}>
           <Panel
-            title="Upcoming & overdue rent"
-            action={<PanelLink to="/payments">All payments</PanelLink>}
+            title={t('dashboard.upcomingRent')}
+            action={<PanelLink to="/payments">{t('dashboard.allPayments')}</PanelLink>}
             bodyClassName="p-3 sm:p-3"
           >
             {d.upcomingPayments.length === 0 ? (
               <p className="px-3 py-8 text-center text-[14.5px] text-carbon-soft">
-                No outstanding payments — the rent roll is clean.
+                {t('dashboard.noOutstanding')}
               </p>
             ) : (
               <FadingScroll innerClassName="max-h-[336px]">
@@ -292,9 +294,9 @@ export default function DashboardPage() {
                         {money(p.amount, p.currency)}
                       </div>
                       {p.isOverdue ? (
-                        <Badge tone="red" stroke="dashed">{Math.abs(p.daysUntilDue)}d overdue</Badge>
+                        <Badge tone="red" stroke="dashed">{t("dashboard.daysOverdue", { count: Math.abs(p.daysUntilDue) })}</Badge>
                       ) : (
-                        <Badge tone="blue">due {shortDate(p.dueDate)}</Badge>
+                        <Badge tone="blue">{t("dashboard.dueOn", { date: shortDate(p.dueDate) })}</Badge>
                       )}
                     </div>
                   </li>
@@ -306,16 +308,16 @@ export default function DashboardPage() {
         </BlurFade>
 
         <BlurFade delay={0.1}>
-          <Panel title="Recent activity" bodyClassName="p-3 sm:p-3">
+          <Panel title={t('dashboard.recentActivity')} bodyClassName="p-3 sm:p-3">
             {d.recentActivity.length === 0 ? (
-              <p className="px-3 py-8 text-center text-[14.5px] text-carbon-soft">All caught up.</p>
+              <p className="px-3 py-8 text-center text-[14.5px] text-carbon-soft">{t('dashboard.allCaughtUp')}</p>
             ) : (
               <FadingScroll innerClassName="max-h-[336px]">
                 <AnimatedList className="gap-0" delay={120}>
                 {d.recentActivity.map((a, i) => (
                   <div key={i} className="flex items-center gap-3 border-b border-rule px-2 py-2.5 last:border-b-0">
                     <Badge tone={activityTypeTone[a.type] ?? 'carbon'} stroke="solid" className="uppercase tracking-wide">
-                      {a.type}
+                      {t(`dashboard.type.${a.type}`)}
                     </Badge>
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-[14.5px] font-semibold text-carbon">{a.title}</div>
@@ -335,8 +337,8 @@ export default function DashboardPage() {
       {d.expiringContractsList.length > 0 && (
         <BlurFade delay={0.05}>
           <Panel
-            title="Contracts expiring soon"
-            action={<PanelLink to="/contracts">Manage</PanelLink>}
+            title={t('dashboard.expiringSoon')}
+            action={<PanelLink to="/contracts">{t('dashboard.manage')}</PanelLink>}
             bodyClassName="p-3 sm:p-3"
           >
             <FadingScroll innerClassName="max-h-[336px]">
@@ -347,13 +349,13 @@ export default function DashboardPage() {
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-[14.5px] font-semibold text-carbon">{c.tenantName}</div>
                     <div className="truncate text-[13px] text-carbon-faint">
-                      {c.unitName} · {money(c.monthlyRent, c.currency)}/mo
+                      {c.unitName} · {money(c.monthlyRent, c.currency)}{t('dashboard.perMonth')}
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="text-figure text-[14px] font-semibold text-carbon">{shortDate(c.endDate)}</div>
                     <Badge tone={c.daysLeft <= 15 ? 'red' : 'amber'} stroke={c.daysLeft <= 15 ? 'dashed' : 'solid'}>
-                      {c.daysLeft}d left
+                      {t('dashboard.daysLeft', { count: c.daysLeft })}
                     </Badge>
                   </div>
                 </li>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { LogOut, X, Map } from 'lucide-react';
@@ -9,6 +10,7 @@ import { TourCoach } from './TourCoach';
 import { NAV } from '@/components/world/sections';
 import { Avatar } from '@/components/world/Avatar';
 import { Stamp } from '@/components/world/Stamp';
+import { LangSwitcher } from '@/i18n/LangSwitcher';
 import { AnimatedThemeToggler } from '@/components/magicui/animated-theme-toggler';
 import { DotPattern } from '@/components/magicui/dot-pattern';
 import { cn } from '@/lib/utils';
@@ -16,6 +18,7 @@ import { cn } from '@/lib/utils';
 const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
 
 export function BrandMark({ compact }: { compact?: boolean }) {
+  const { t } = useTranslation();
   return (
     <Link to="/dashboard" className="group flex items-center gap-2.5">
       <span className="flex size-9 items-center justify-center rounded-[10px] bg-ink-red font-display text-[19px] font-bold text-[#fdf8ec] shadow-tab">
@@ -26,13 +29,14 @@ export function BrandMark({ compact }: { compact?: boolean }) {
           PropFlow
         </span>
       )}
-      {DEMO_MODE && <Stamp tone="carbon" rotate={false} className="hidden sm:inline-flex">Demo</Stamp>}
+      {DEMO_MODE && <Stamp tone="carbon" rotate={false} className="hidden sm:inline-flex">{t("app.demo")}</Stamp>}
     </Link>
   );
 }
 
 function Rail() {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const tour = useTour();
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-[236px] flex-col border-r border-rule-strong bg-paper-deep lg:flex">
@@ -40,7 +44,7 @@ function Rail() {
         <BrandMark />
       </div>
 
-      <nav aria-label="Sections" className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
+      <nav aria-label={t('nav.sections')} className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
         {NAV.map((item) => (
           <NavLink
             key={item.path}
@@ -61,7 +65,7 @@ function Rail() {
                   style={{ color: isActive ? item.hue : 'currentColor' }}
                   aria-hidden
                 />
-                {item.label}
+                {t(item.labelKey)}
                 {isActive && (
                   <span
                     className="ml-auto size-1.5 rounded-full"
@@ -81,20 +85,21 @@ function Rail() {
           className="mb-2 flex w-full items-center gap-2.5 rounded-[10px] border border-dashed border-rule-strong/80 px-3 py-2 text-[13px] font-semibold text-carbon-soft transition-colors hover:border-ink-blue/60 hover:bg-ink-blue/5 hover:text-ink-blue"
         >
           <Map className="size-4 shrink-0" aria-hidden />
-          Guided tour
-          <span className="text-figure ml-auto text-[11px] font-medium text-carbon-faint">9 stops</span>
+          {t('nav.guidedTour')}
+          <span className="text-figure ml-auto text-[11px] font-medium text-carbon-faint">{t('nav.tourStops')}</span>
         </button>
         <div className="flex items-center gap-3">
-          <Avatar name={user?.fullName ?? 'Landlord'} src={user?.imageUrl} className="size-9" />
+          <Avatar name={user?.fullName ?? t('app.landlord')} src={user?.imageUrl} className="size-9" />
           <div className="min-w-0 flex-1">
             <div className="truncate text-[14px] font-semibold text-carbon">{user?.fullName}</div>
-            <div className="text-[12px] text-carbon-faint">Landlord</div>
+            <div className="text-[12px] text-carbon-faint">{t('app.landlord')}</div>
           </div>
+          <LangSwitcher />
           <AnimatedThemeToggler className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon [&_svg]:size-4" />
           <button
             onClick={logout}
-            aria-label="Log out"
-            title="Log out"
+            aria-label={t('nav.logOut')}
+            title={t('nav.logOut')}
             className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-ink-red"
           >
             <LogOut className="size-4" />
@@ -106,10 +111,11 @@ function Rail() {
 }
 
 function MobileBar({ onMore }: { onMore: () => void }) {
+  const { t } = useTranslation();
   const barItems = NAV.filter((n) => n.mobile === 'bar');
   return (
     <nav
-      aria-label="Sections"
+      aria-label={t('nav.sections')}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-rule-strong bg-paper-raised pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <div className="grid grid-cols-5">
@@ -131,7 +137,7 @@ function MobileBar({ onMore }: { onMore: () => void }) {
                   style={{ color: isActive ? item.hue : 'currentColor' }}
                   aria-hidden
                 />
-                {item.label}
+                {t(item.labelKey)}
               </>
             )}
           </NavLink>
@@ -145,7 +151,7 @@ function MobileBar({ onMore }: { onMore: () => void }) {
             <span className="size-[4px] rounded-full bg-current" />
             <span className="size-[4px] rounded-full bg-current" />
           </span>
-          More
+          {t('nav.more')}
         </button>
       </div>
     </nav>
@@ -153,6 +159,7 @@ function MobileBar({ onMore }: { onMore: () => void }) {
 }
 
 function MoreSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { t } = useTranslation();
   const location = useLocation();
   const tour = useTour();
   useEffect(() => {
@@ -175,7 +182,7 @@ function MoreSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label="All sections"
+            aria-label={t('nav.allSections')}
             className="absolute inset-x-0 bottom-0 rounded-t-sheet border-t border-rule-strong bg-paper-raised px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 shadow-sheet-lift"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
@@ -184,10 +191,10 @@ function MoreSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-display text-[16px] font-semibold">All sections</h2>
+              <h2 className="font-display text-[16px] font-semibold">{t('nav.allSections')}</h2>
               <button
                 onClick={onClose}
-                aria-label="Close"
+                aria-label={t('common.close')}
                 className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft hover:bg-paper-deep"
               >
                 <X className="size-4" />
@@ -208,7 +215,7 @@ function MoreSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
                   }
                 >
                   <item.icon className="size-4" style={{ color: item.hue }} aria-hidden />
-                  {item.label}
+                  {t(item.labelKey)}
                 </NavLink>
               ))}
             </div>
@@ -220,7 +227,7 @@ function MoreSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
               className="mt-1 flex w-full items-center justify-center gap-2 rounded-[10px] border border-dashed border-rule-strong/80 py-2.5 text-[13.5px] font-semibold text-carbon-soft transition-colors hover:border-ink-blue/60 hover:bg-ink-blue/5 hover:text-ink-blue"
             >
               <Map className="size-4" aria-hidden />
-              Take the guided tour
+              {t('nav.takeTour')}
             </button>
           </motion.div>
         </motion.div>
@@ -232,6 +239,7 @@ function MoreSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
 export default function Layout() {
   const [moreOpen, setMoreOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen">
@@ -254,11 +262,12 @@ export default function Layout() {
       <header className="sticky top-0 z-30 flex items-center justify-between border-b border-rule-strong bg-paper/90 px-4 py-3 backdrop-blur-sm lg:hidden">
         <BrandMark compact />
         <div className="flex items-center gap-1">
+          <LangSwitcher className="mr-0.5" />
           <AnimatedThemeToggler className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon [&_svg]:size-4" />
-          <Avatar name={user?.fullName ?? 'Landlord'} src={user?.imageUrl} className="size-8" />
+          <Avatar name={user?.fullName ?? t('app.landlord')} src={user?.imageUrl} className="size-8" />
           <button
             onClick={logout}
-            aria-label="Log out"
+            aria-label={t('nav.logOut')}
             className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft hover:text-ink-red"
           >
             <LogOut className="size-4" />

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { contractsApi } from '../../shared/api/contracts';
@@ -13,6 +14,7 @@ import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function ContractsPage() {
+  const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingContract, setEditingContract] = useState<ContractDto | null>(null);
 
@@ -47,22 +49,22 @@ export default function ContractsPage() {
     refetch();
   };
 
-  if (isLoading) return <PageLoading label="Pulling the lease file…" />;
+  if (isLoading) return <PageLoading label={t('contracts.opening')} />;
 
   if (error) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load contracts'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('contracts.fail')} />;
   }
 
   return (
     <div className="space-y-5">
       <BlurFade>
         <PageHeader
-          title="Contracts"
-          copy="The signed agreements — terms, deposits, and what renews when."
+          title={t('nav.contracts')}
+          copy={t('contracts.copy')}
           action={
             <Button onClick={handleCreate}>
               <Plus className="size-4" aria-hidden />
-              Add contract
+              {t('contracts.add')}
             </Button>
           }
         />

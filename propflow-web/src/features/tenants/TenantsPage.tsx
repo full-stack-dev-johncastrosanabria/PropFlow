@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { tenantsApi } from '../../shared/api/tenants';
@@ -11,6 +12,7 @@ import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function TenantsPage() {
+  const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingTenant, setEditingTenant] = useState<TenantDto | null>(null);
 
@@ -35,22 +37,22 @@ export default function TenantsPage() {
     refetch();
   };
 
-  if (isLoading) return <PageLoading label="Opening the tenant index…" />;
+  if (isLoading) return <PageLoading label={t('tenants.opening')} />;
 
   if (error) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load tenants'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('tenants.fail')} />;
   }
 
   return (
     <div className="space-y-5">
       <BlurFade>
         <PageHeader
-          title="Tenants"
-          copy="Who lives where, and how to reach them."
+          title={t('nav.tenants')}
+          copy={t('tenants.copy')}
           action={
             <Button onClick={handleCreate}>
               <Plus className="size-4" aria-hidden />
-              Add tenant
+              {t('tenants.add')}
             </Button>
           }
         />

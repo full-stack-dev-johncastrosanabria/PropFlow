@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
   useCallback,
@@ -12,56 +13,57 @@ import { useNavigate } from 'react-router-dom';
 
 export interface TourStep {
   path: string;
-  title: string;
-  body: string;
+  /** i18n keys — titles and bodies live in the locale files */
+  titleKey: string;
+  bodyKey: string;
 }
 
 // The guided lap of the property: one coach card per section, auto-advancing.
 export const TOUR_STEPS: TourStep[] = [
   {
     path: '/dashboard',
-    title: "Today's sheet",
-    body: 'The whole portfolio at a glance — collected rent, occupancy, overdue stamps, and the sales funnel, each as an inked meter against its goal.',
+    titleKey: 'tour.s1Title',
+    bodyKey: 'tour.s1Body',
   },
   {
     path: '/leads',
-    title: 'The sales funnel',
-    body: 'Every deal from first touch to won. Drag a card between stages and the board — counts, values, meters — follows instantly.',
+    titleKey: 'tour.s2Title',
+    bodyKey: 'tour.s2Body',
   },
   {
     path: '/productivity',
-    title: 'The 3-hour block',
-    body: 'The Keller Williams scorecard: lead-gen hours against the goal, streaks, the 4-1-1 rollup, and the economic model of your last 30 days.',
+    titleKey: 'tour.s3Title',
+    bodyKey: 'tour.s3Body',
   },
   {
     path: '/properties',
-    title: 'The portfolio',
-    body: 'Every building with its address and photo — open one and its units, tenants and history hang off it.',
+    titleKey: 'tour.s4Title',
+    bodyKey: 'tour.s4Body',
   },
   {
     path: '/units',
-    title: 'Every door',
-    body: 'Each unit with its rent, currency, interior photo and status — available, occupied, or in maintenance.',
+    titleKey: 'tour.s5Title',
+    bodyKey: 'tour.s5Body',
   },
   {
     path: '/tenants',
-    title: 'The tenant index',
-    body: 'Who lives where, with a face, contact details and ID on one ruled card.',
+    titleKey: 'tour.s6Title',
+    bodyKey: 'tour.s6Body',
   },
   {
     path: '/contracts',
-    title: 'Leases on record',
-    body: 'Terms, deposits, start and end dates — and which ones expire soon enough to act on.',
+    titleKey: 'tour.s7Title',
+    bodyKey: 'tour.s7Body',
   },
   {
     path: '/payments',
-    title: 'The rent roll',
-    body: 'What is due, what is paid, what went late — a paginated ledger with the state carried in ink strokes.',
+    titleKey: 'tour.s8Title',
+    bodyKey: 'tour.s8Body',
   },
   {
     path: '/maintenance',
-    title: 'Work orders',
-    body: 'Priority-stamped requests across the portfolio, from open to in progress to closed.',
+    titleKey: 'tour.s9Title',
+    bodyKey: 'tour.s9Body',
   },
 ];
 

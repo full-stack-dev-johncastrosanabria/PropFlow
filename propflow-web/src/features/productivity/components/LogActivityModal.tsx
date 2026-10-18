@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { productivityApi } from '../../../shared/api/productivity';
 import type { DailyActivityDto } from '../../../shared/types';
@@ -12,18 +13,19 @@ interface Props {
   onClose: () => void;
 }
 
-const FIELDS: { key: keyof DailyActivityDto; label: string; step?: number }[] = [
-  { key: 'leadGenHours', label: 'Lead-gen hours (the time block)', step: 0.5 },
-  { key: 'contacts', label: 'Contacts (calls, texts, touches)' },
-  { key: 'conversations', label: 'Conversations' },
-  { key: 'leadsAdded', label: 'New leads added to database' },
-  { key: 'appointmentsSet', label: 'Appointments set' },
-  { key: 'appointmentsMet', label: 'Appointments met' },
-  { key: 'agreementsSigned', label: 'Agreements signed' },
-  { key: 'offersWritten', label: 'Offers written' },
+const FIELDS: { key: keyof DailyActivityDto; labelKey: string; step?: number }[] = [
+  { key: 'leadGenHours', labelKey: 'prod.fLeadGen', step: 0.5 },
+  { key: 'contacts', labelKey: 'prod.fContacts' },
+  { key: 'conversations', labelKey: 'prod.fConversations' },
+  { key: 'leadsAdded', labelKey: 'prod.fLeadsAdded' },
+  { key: 'appointmentsSet', labelKey: 'prod.fApptsSet' },
+  { key: 'appointmentsMet', labelKey: 'prod.fApptsMet' },
+  { key: 'agreementsSigned', labelKey: 'prod.fAgreements' },
+  { key: 'offersWritten', labelKey: 'prod.fOffers' },
 ];
 
 export default function LogActivityModal({ activity, onClose }: Props) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     contacts: activity.contacts,
@@ -49,7 +51,7 @@ export default function LogActivityModal({ activity, onClose }: Props) {
       queryClient.invalidateQueries({ queryKey: ['productivity'] });
       onClose();
     },
-    onError: (err) => setError(err instanceof Error ? err.message : 'Failed to save'),
+    onError: (err) => setError(err instanceof Error ? err.message : t('prod.saveFailed')),
   });
 
   const handleSubmit = (e: FormEvent) => {
@@ -62,11 +64,11 @@ export default function LogActivityModal({ activity, onClose }: Props) {
     setForm({ ...form, [key]: raw === '' ? 0 : Number(raw) });
 
   return (
-    <Modal title="Log today's activity" subtitle="The numbers only count if they go on the sheet." onClose={onClose} wide>
+    <Modal title={t('prod.logTitle')} subtitle={t('prod.logSubtitle')} onClose={onClose} wide>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {FIELDS.map((f) => (
-            <Field key={f.key} label={f.label}>
+            <Field key={f.key} label={t(f.labelKey)}>
               <TextInput
                 type="number"
                 min="0"
@@ -78,11 +80,11 @@ export default function LogActivityModal({ activity, onClose }: Props) {
           ))}
         </div>
 
-        <Field label="Notes">
+        <Field label={t('leads.notes')}>
           <Textarea
             value={form.notes}
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
-            placeholder="Wins, blockers, follow-ups…"
+            placeholder={t('prod.notesPlaceholder')}
             rows={2}
           />
         </Field>
@@ -91,10 +93,10 @@ export default function LogActivityModal({ activity, onClose }: Props) {
 
         <div className="flex gap-3 pt-1">
           <Button type="button" variant="secondary" className="flex-1" onClick={onClose} disabled={mutation.isPending}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button type="submit" className="flex-1" loading={mutation.isPending}>
-            Save activity
+            {t('prod.saveActivity')}
           </Button>
         </div>
       </form>

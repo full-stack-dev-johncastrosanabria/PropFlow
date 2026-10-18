@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { paymentsApi } from '../../../shared/api/payments';
 import { PaymentStatus, type PaymentDto, type ContractDto, type CreatePaymentDto, type UpdatePaymentDto } from '../../../shared/types';
@@ -22,6 +23,7 @@ interface FormErrors {
 }
 
 export default function PaymentForm({ payment, contracts, onClose }: PaymentFormProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     contractId: '',
     dueDate: '',
@@ -51,25 +53,25 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
   const createMutation = useMutation({
     mutationFn: paymentsApi.create,
     onSuccess: onClose,
-    onError: () => setErrors({ submit: 'Failed to create payment. Please try again.' }),
+    onError: () => setErrors({ submit: t('pay.createFailed') }),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdatePaymentDto }) => paymentsApi.update(id, data),
     onSuccess: onClose,
-    onError: () => setErrors({ submit: 'Failed to update payment. Please try again.' }),
+    onError: () => setErrors({ submit: t('pay.updateFailed') }),
   });
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.contractId) newErrors.contractId = 'Pick the contract this payment belongs to.';
-    if (!formData.dueDate) newErrors.dueDate = 'A due date is needed.';
+    if (!formData.contractId) newErrors.contractId = t('pay.errContract');
+    if (!formData.dueDate) newErrors.dueDate = t('pay.errDueDate');
     if (!formData.amount || parseFloat(formData.amount) <= 0) {
-      newErrors.amount = 'The amount has to be greater than zero.';
+      newErrors.amount = t('pay.errAmount');
     }
     if (formData.status === PaymentStatus.Paid && !formData.paidDate) {
-      newErrors.paidDate = 'A paid date is needed once the status is Paid.';
+      newErrors.paidDate = t('pay.errPaidDate');
     }
 
     setErrors(newErrors);
@@ -109,8 +111,8 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
 
   return (
     <Modal
-      title={payment ? 'Edit payment' : 'Add payment'}
-      subtitle="One line on the rent roll."
+      title={payment ? t('pay.edit') : t('pay.add')}
+      subtitle={t('pay.formSubtitle')}
       onClose={onClose}
       wide
     >
@@ -118,7 +120,7 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
         {errors.submit && <ErrorNote message={errors.submit} />}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Contract" required error={errors.contractId}>
+          <Field label={t('contracts.contract')} required error={errors.contractId}>
             <Select
               id="contractId"
               name="contractId"
@@ -127,7 +129,7 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
               invalid={!!errors.contractId}
               disabled={isLoading}
             >
-              <option value="">Select a contract</option>
+              <option value="">{t('pay.selectContract')}</option>
               {contracts.map((contract) => (
                 <option key={contract.id} value={contract.id}>
                   {contract.tenantName} — {contract.unitName} ({contract.currency} {contract.monthlyRent})
@@ -136,7 +138,7 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
             </Select>
           </Field>
 
-          <Field label="Amount" required error={errors.amount}>
+          <Field label={t('pay.amount')} required error={errors.amount}>
             <TextInput
               type="number"
               name="amount"
@@ -152,7 +154,7 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Currency">
+          <Field label={t('leads.currency')}>
             <Select name="currency" value={formData.currency} onChange={handleChange} disabled={isLoading}>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
@@ -161,17 +163,17 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
             </Select>
           </Field>
 
-          <Field label="Status">
+          <Field label={t('contracts.status')}>
             <Select name="status" value={formData.status} onChange={handleChange} disabled={isLoading}>
-              <option value={PaymentStatus.Pending}>Pending</option>
-              <option value={PaymentStatus.Paid}>Paid</option>
-              <option value={PaymentStatus.Late}>Late</option>
+              <option value={PaymentStatus.Pending}>{t('pay.pending')}</option>
+              <option value={PaymentStatus.Paid}>{t('pay.paid')}</option>
+              <option value={PaymentStatus.Late}>{t('pay.late')}</option>
             </Select>
           </Field>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Due date" required error={errors.dueDate}>
+          <Field label={t('pay.dueDate')} required error={errors.dueDate}>
             <TextInput
               type="date"
               name="dueDate"
@@ -183,7 +185,7 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
           </Field>
 
           <Field
-            label={`Paid date${formData.status === PaymentStatus.Paid ? '' : ' (optional)'}`}
+            label={formData.status === PaymentStatus.Paid ? t('pay.paidDate') : t('pay.paidDateOptional')}
             required={formData.status === PaymentStatus.Paid}
             error={errors.paidDate}
           >
@@ -198,23 +200,23 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
           </Field>
         </div>
 
-        <Field label="Notes">
+        <Field label={t('leads.notes')}>
           <Textarea
             name="notes"
             value={formData.notes}
             onChange={handleChange}
             rows={3}
             disabled={isLoading}
-            placeholder="Anything worth noting about this payment…"
+            placeholder={t('pay.notesPlaceholder')}
           />
         </Field>
 
         <div className="flex gap-3 pt-1">
           <Button type="button" variant="secondary" className="flex-1" onClick={onClose} disabled={isLoading}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button type="submit" className="flex-1" loading={isLoading}>
-            {payment ? 'Update payment' : 'Create payment'}
+            {payment ? t('pay.update') : t('pay.create')}
           </Button>
         </div>
       </form>

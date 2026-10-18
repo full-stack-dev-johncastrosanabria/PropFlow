@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { unitsApi } from '../../shared/api/units';
@@ -12,6 +13,7 @@ import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function UnitsPage() {
+  const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingUnit, setEditingUnit] = useState<RentalUnitDto | null>(null);
 
@@ -41,22 +43,22 @@ export default function UnitsPage() {
     refetch();
   };
 
-  if (isLoading) return <PageLoading label="Counting the doors…" />;
+  if (isLoading) return <PageLoading label={t('units.opening')} />;
 
   if (error) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load units'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('units.fail')} />;
   }
 
   return (
     <div className="space-y-5">
       <BlurFade>
         <PageHeader
-          title="Rental units"
-          copy="Each door, its rent, and whether someone is living behind it."
+          title={t('units.title')}
+          copy={t('units.copy')}
           action={
             <Button onClick={handleCreate}>
               <Plus className="size-4" aria-hidden />
-              Add unit
+              {t('units.add')}
             </Button>
           }
         />

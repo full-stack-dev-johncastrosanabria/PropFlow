@@ -93,7 +93,7 @@ export interface CreatePropertyDto {
   notes?: string;
 }
 
-export interface UpdatePropertyDto extends CreatePropertyDto {}
+export type UpdatePropertyDto = CreatePropertyDto;
 
 // Rental Unit types
 export interface RentalUnitDto {
@@ -145,7 +145,7 @@ export interface CreateTenantDto {
   notes?: string;
 }
 
-export interface UpdateTenantDto extends CreateTenantDto {}
+export type UpdateTenantDto = CreateTenantDto;
 
 // Contract types
 export interface ContractDto {
@@ -206,7 +206,7 @@ export interface CreatePaymentDto {
   notes?: string;
 }
 
-export interface UpdatePaymentDto extends CreatePaymentDto {}
+export type UpdatePaymentDto = CreatePaymentDto;
 
 // Maintenance Request types
 export interface MaintenanceRequestDto {
@@ -267,7 +267,7 @@ export interface CreateLeadDto {
   notes?: string;
 }
 
-export interface UpdateLeadDto extends CreateLeadDto {}
+export type UpdateLeadDto = CreateLeadDto;
 
 // Productivity (Keller Williams) types
 export interface DailyActivityDto {

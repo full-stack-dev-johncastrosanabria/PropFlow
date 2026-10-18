@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Flame, Timer, Settings2, PencilLine } from 'lucide-react';
 import { productivityApi } from '../../shared/api/productivity';
 import type { ProductivitySummaryDto, ActivityTotalsDto, ProductivityGoalsDto } from '../../shared/types';
+import { i18n } from '@/i18n';
 import { RING_METRICS, KW_DEFAULT_GOALS } from './kwGoals';
 import ScoreRing from './components/ScoreRing';
 import EconomicModel from './components/EconomicModel';
@@ -17,22 +19,25 @@ import { Field, TextInput } from '@/components/world/fields';
 import { BlurFade } from '@/components/magicui/blur-fade';
 import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 
-const formatDayLabel = (iso: string) =>
-  new Date(iso).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const formatDayLabel = (iso: string) => {
+  const locale = i18n.language?.toLowerCase().startsWith('es') ? 'es' : 'en-US';
+  return new Date(iso).toLocaleDateString(locale, { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' });
+};
 
-type RollupKey = { key: keyof ActivityTotalsDto; label: string };
+type RollupKey = { key: keyof ActivityTotalsDto; labelKey: string };
 const ROLLUP_ROWS: RollupKey[] = [
-  { key: 'leadGenHours', label: 'Lead-gen hours' },
-  { key: 'contacts', label: 'Contacts' },
-  { key: 'conversations', label: 'Conversations' },
-  { key: 'appointmentsSet', label: 'Appts set' },
-  { key: 'appointmentsMet', label: 'Appts met' },
-  { key: 'leadsAdded', label: 'Leads added' },
-  { key: 'agreementsSigned', label: 'Agreements' },
-  { key: 'offersWritten', label: 'Offers' },
+  { key: 'leadGenHours', labelKey: 'prod.mLeadGen' },
+  { key: 'contacts', labelKey: 'prod.mContacts' },
+  { key: 'conversations', labelKey: 'prod.mConversations' },
+  { key: 'appointmentsSet', labelKey: 'prod.mApptsSet' },
+  { key: 'appointmentsMet', labelKey: 'prod.mApptsMet' },
+  { key: 'leadsAdded', labelKey: 'prod.mLeadsAdded' },
+  { key: 'agreementsSigned', labelKey: 'prod.agreements' },
+  { key: 'offersWritten', labelKey: 'prod.offers' },
 ];
 
 export default function ProductivityPage() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [logOpen, setLogOpen] = useState(false);
   const [goalsOpen, setGoalsOpen] = useState(false);
@@ -50,18 +55,18 @@ export default function ProductivityPage() {
     },
   });
 
-  if (isLoading) return <PageLoading label="Adding up the day…" />;
+  if (isLoading) return <PageLoading label={t('prod.opening')} />;
 
   if (error || !data) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('prod.fail')} />;
   }
 
-  const t = data.todayActivity;
+  const day = data.todayActivity;
   const goals = data.goals ?? KW_DEFAULT_GOALS;
-  const blockDone = t.leadGenHours >= goals.leadGenHours;
+  const blockDone = day.leadGenHours >= goals.leadGenHours;
 
   const todayVal = (k: keyof ActivityTotalsDto): number => {
-    const v = (t as unknown as Record<string, number>)[k as string];
+    const v = (day as unknown as Record<string, number>)[k as string];
     return typeof v === 'number' ? v : 0;
   };
 
@@ -70,20 +75,20 @@ export default function ProductivityPage() {
       <BlurFade className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-[30px] font-bold leading-tight text-carbon sm:text-[34px]">
-            Your numbers today
+            {t('prod.title')}
           </h1>
           <p className="mt-1 text-[15px] text-carbon-soft">
-            {formatDayLabel(data.today)} — lead generation is priority one.
+            {t('prod.todayLine', { today: formatDayLabel(data.today) })}
           </p>
         </div>
         <div className="flex items-center gap-2.5">
           <Button variant="secondary" onClick={() => setGoalsOpen(true)}>
             <Settings2 className="size-4" aria-hidden />
-            Goals
+            {t('prod.goals')}
           </Button>
           <Button onClick={() => setLogOpen(true)}>
             <PencilLine className="size-4" aria-hidden />
-            Log today
+            {t('prod.logToday')}
           </Button>
         </div>
       </BlurFade>
@@ -100,19 +105,19 @@ export default function ProductivityPage() {
               <div className="flex items-center gap-2.5">
                 <Timer className="size-[18px] text-ink-red" aria-hidden />
                 <h2 className="font-display text-[18px] font-semibold text-carbon">
-                  The 3-hour lead-gen block
+                  {t('prod.blockTitle')}
                 </h2>
-                {blockDone && <Stamp tone="green">Blocked &amp; done</Stamp>}
+                {blockDone && <Stamp tone="green">{t("prod.blockDone")}</Stamp>}
               </div>
               <div className="mt-3 flex items-baseline gap-2">
                 <span className="text-figure text-[34px] font-semibold leading-none text-carbon">
-                  {t.leadGenHours}h
+                  {day.leadGenHours}h
                 </span>
-                <span className="text-figure text-[15px] text-carbon-faint">/ {goals.leadGenHours}h today</span>
+                <span className="text-figure text-[15px] text-carbon-faint">{t('prod.blockOf', { goal: goals.leadGenHours })}</span>
               </div>
               <div className="mt-3.5 max-w-[520px]">
                 <InkMeter
-                  value={t.leadGenHours}
+                  value={day.leadGenHours}
                   goal={goals.leadGenHours}
                   tone={blockDone ? 'green' : 'red'}
                   form={blockDone ? 'doubled' : 'solid'}
@@ -128,7 +133,7 @@ export default function ProductivityPage() {
                     {data.leadGenStreak}
                   </div>
                   <div className="mt-1 text-[11.5px] font-semibold uppercase tracking-wide text-carbon-faint">
-                    day streak
+                    {t('prod.dayStreak')}
                   </div>
                 </div>
               </div>
@@ -141,7 +146,7 @@ export default function ProductivityPage() {
                     {data.bestStreak}
                   </div>
                   <div className="mt-1 text-[11.5px] font-semibold uppercase tracking-wide text-carbon-faint">
-                    best streak
+                    {t('prod.bestStreak')}
                   </div>
                 </div>
               </div>
@@ -152,14 +157,14 @@ export default function ProductivityPage() {
 
       {/* scorecard rings */}
       <BlurFade delay={0.1}>
-        <Panel title="Today's scorecard" hint="against your daily goals">
+        <Panel title={t('prod.scorecard')} hint={t('prod.scorecardHint')}>
           <div className="grid grid-cols-3 gap-x-2 gap-y-6 sm:grid-cols-6">
             {RING_METRICS.map((m) => (
               <ScoreRing
                 key={m.key}
                 value={todayVal(m.key)}
                 goal={goals[m.key]}
-                label={m.label}
+                label={t(m.labelKey)}
                 color={m.color}
                 unit={m.unit}
               />
@@ -167,12 +172,12 @@ export default function ProductivityPage() {
           </div>
           <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 border-t border-rule pt-4 text-[13.5px] text-carbon-soft">
             <span>
-              <span className="text-figure text-[16px] font-semibold text-carbon">{t.agreementsSigned}</span>{' '}
-              agreements signed
+              <span className="text-figure text-[16px] font-semibold text-carbon">{day.agreementsSigned}</span>{' '}
+              {t('prod.agreementsSigned')}
             </span>
             <span>
-              <span className="text-figure text-[16px] font-semibold text-carbon">{t.offersWritten}</span>{' '}
-              offers written
+              <span className="text-figure text-[16px] font-semibold text-carbon">{day.offersWritten}</span>{' '}
+              {t('prod.offersWritten')}
             </span>
           </div>
         </Panel>
@@ -181,28 +186,28 @@ export default function ProductivityPage() {
       {/* 4-1-1 + economic model */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
         <BlurFade delay={0.05}>
-          <Panel title="The 4-1-1" hint="Today · Week · Month" bodyClassName="p-0 sm:p-0">
+          <Panel title={t('prod.fourOneOne')} hint={t('prod.fourOneOneHint')} bodyClassName="p-0 sm:p-0">
             <table className="w-full text-[14px]">
               <thead>
                 <tr className="border-b border-rule text-left">
                   <th className="px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-faint sm:px-6">
-                    Metric
+                    {t('prod.metric')}
                   </th>
                   <th className="px-3 py-2.5 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-ink-red">
-                    Today
+                    {t('prod.today')}
                   </th>
                   <th className="px-3 py-2.5 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-faint">
-                    Week
+                    {t('prod.week')}
                   </th>
                   <th className="px-5 py-2.5 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-faint sm:px-6">
-                    Month
+                    {t('prod.month')}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {ROLLUP_ROWS.map((r) => (
                   <tr key={r.key} className="border-b border-rule/70 last:border-b-0">
-                    <td className="px-5 py-2 font-medium text-carbon-soft sm:px-6">{r.label}</td>
+                    <td className="px-5 py-2 font-medium text-carbon-soft sm:px-6">{t(r.labelKey)}</td>
                     <td className="text-figure px-3 py-2 text-right font-semibold text-carbon">
                       {todayVal(r.key)}
                     </td>
@@ -215,13 +220,13 @@ export default function ProductivityPage() {
               </tbody>
             </table>
             <div className="border-t border-rule px-5 py-3 text-[12.5px] text-carbon-faint sm:px-6">
-              {data.monthTotals.daysLogged} days logged this month
+              {t('prod.daysLogged', { count: data.monthTotals.daysLogged })}
             </div>
           </Panel>
         </BlurFade>
 
         <BlurFade delay={0.1}>
-          <Panel title="Economic model" hint="last 30 days · conversion">
+          <Panel title={t('prod.economic')} hint={t('prod.economicHint')}>
             <EconomicModel totals={data.last30Totals} />
           </Panel>
         </BlurFade>
@@ -229,12 +234,12 @@ export default function ProductivityPage() {
 
       {/* weekly block strip */}
       <BlurFade delay={0.05}>
-        <Panel title="Lead-gen block · last 7 days" hint="dashed rule = your goal">
+        <Panel title={t('prod.weekStrip')} hint={t('prod.weekStripHint')}>
           <WeekStrip days={data.last7Days} goalHours={goals.leadGenHours} />
         </Panel>
       </BlurFade>
 
-      {logOpen && <LogActivityModal activity={t} onClose={() => setLogOpen(false)} />}
+      {logOpen && <LogActivityModal activity={day} onClose={() => setLogOpen(false)} />}
       {goalsOpen && (
         <GoalsModal
           goals={goals}
@@ -259,19 +264,20 @@ function GoalsModal({
   onSave: (g: ProductivityGoalsDto) => void;
 }) {
   const [g, setG] = useState<ProductivityGoalsDto>(goals);
-  const rows: { key: keyof ProductivityGoalsDto; label: string; step?: number }[] = [
-    { key: 'leadGenHours', label: 'Lead-gen hours', step: 0.5 },
-    { key: 'contacts', label: 'Contacts' },
-    { key: 'conversations', label: 'Conversations' },
-    { key: 'appointmentsSet', label: 'Appointments set' },
-    { key: 'appointmentsMet', label: 'Appointments met' },
-    { key: 'leadsAdded', label: 'Leads added' },
+  const { t } = useTranslation();
+  const rows: { key: keyof ProductivityGoalsDto; labelKey: string; step?: number }[] = [
+    { key: 'leadGenHours', labelKey: 'prod.mLeadGen', step: 0.5 },
+    { key: 'contacts', labelKey: 'prod.mContacts' },
+    { key: 'conversations', labelKey: 'prod.mConversations' },
+    { key: 'appointmentsSet', labelKey: 'prod.fApptsSet' },
+    { key: 'appointmentsMet', labelKey: 'prod.fApptsMet' },
+    { key: 'leadsAdded', labelKey: 'prod.mLeadsAdded' },
   ];
   return (
-    <Modal title="Daily goals" subtitle="What a done day looks like, in numbers." onClose={onClose}>
+    <Modal title={t('prod.goalsTitle')} subtitle={t('prod.goalsSubtitle')} onClose={onClose}>
       <div className="space-y-4">
         {rows.map((r) => (
-          <Field key={r.key} label={r.label}>
+          <Field key={r.key} label={t(r.labelKey)}>
             <TextInput
               type="number"
               min="0"
@@ -284,10 +290,10 @@ function GoalsModal({
       </div>
       <div className="mt-6 flex gap-3">
         <Button variant="secondary" className="flex-1" onClick={() => setG({ ...KW_DEFAULT_GOALS })} disabled={saving}>
-          Reset to KW
+          {t('prod.resetKw')}
         </Button>
         <Button className="flex-1" onClick={() => onSave(g)} loading={saving}>
-          Save goals
+          {t('prod.saveGoals')}
         </Button>
       </div>
     </Modal>

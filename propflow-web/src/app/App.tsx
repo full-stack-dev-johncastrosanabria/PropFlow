@@ -1,4 +1,5 @@
 import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginPage from '../features/auth/LoginPage';
 import RegisterPage from '../features/auth/RegisterPage';
@@ -17,11 +18,12 @@ import { PageLoading } from '@/components/world/EmptyState';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-paper">
-        <PageLoading label="Opening PropFlow…" />
+        <PageLoading label={t('app.opening')} />
       </div>
     );
   }
@@ -31,11 +33,12 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function PublicRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-paper">
-        <PageLoading label="Opening PropFlow…" />
+        <PageLoading label={t('app.opening')} />
       </div>
     );
   }

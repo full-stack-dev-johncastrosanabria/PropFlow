@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { maintenanceApi } from '../../shared/api/maintenance';
@@ -13,6 +14,7 @@ import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function MaintenancePage() {
+  const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingRequest, setEditingRequest] = useState<MaintenanceRequestDto | null>(null);
 
@@ -47,22 +49,22 @@ export default function MaintenancePage() {
     refetch();
   };
 
-  if (isLoading) return <PageLoading label="Checking the work orders…" />;
+  if (isLoading) return <PageLoading label={t('mt.opening')} />;
 
   if (error) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load maintenance requests'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('mt.fail')} />;
   }
 
   return (
     <div className="space-y-5">
       <BlurFade>
         <PageHeader
-          title="Maintenance"
-          copy="Work orders across the portfolio — priority, progress, and what's fixed."
+          title={t('nav.maintenance')}
+          copy={t('mt.copy')}
           action={
             <Button onClick={handleCreate}>
               <Plus className="size-4" aria-hidden />
-              Add request
+              {t('mt.add')}
             </Button>
           }
         />

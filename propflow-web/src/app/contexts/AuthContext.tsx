@@ -37,25 +37,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (data: LoginDto) => {
-    try {
-      const response = await authApi.login(data);
-      localStorage.setItem('token', response.token);
-      setUser(response.landlord);
-    } catch (error) {
-      // Re-throw the error so the component can handle it
-      throw error;
-    }
+    const response = await authApi.login(data);
+    localStorage.setItem('token', response.token);
+    setUser(response.landlord);
   };
 
   const register = async (data: RegisterDto) => {
-    try {
-      const response = await authApi.register(data);
-      localStorage.setItem('token', response.token);
-      setUser(response.landlord);
-    } catch (error) {
-      // Re-throw the error so the component can handle it
-      throw error;
-    }
+    const response = await authApi.register(data);
+    localStorage.setItem('token', response.token);
+    setUser(response.landlord);
   };
 
   const logout = () => {
@@ -79,6 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

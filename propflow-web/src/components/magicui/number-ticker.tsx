@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import { useEffect, useRef, type ComponentPropsWithoutRef } from "react"
 import { useInView, useMotionValue, useSpring } from "motion/react"

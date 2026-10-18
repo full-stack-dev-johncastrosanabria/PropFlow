@@ -1,0 +1,58 @@
+{
+  "notes": {
+    "block in progress": "bloque en curso",
+    "Inquiry from website contact form.": "Consulta del formulario de contacto del sitio web.",
+    "Found us on Zillow portal.": "Nos encontró en el portal Zillow.",
+    "Reached out via Instagram DM.": "Contactó por mensaje directo de Instagram.",
+    "Called back, interested in a viewing next week.": "Se llamó de vuelta, interesado en una visita la próxima semana.",
+    "Referred by current tenant. Sent brochure.": "Referido por un inquilino actual. Se envió folleto.",
+    "Budget confirmed, employment verified.": "Presupuesto confirmado, empleo verificado.",
+    "Pre-qualified, high intent buyer.": "Precalificado, comprador con alta intención.",
+    "Property tour scheduled for Friday.": "Visita a la propiedad programada para el viernes.",
+    "Viewed unit A-12, liked it a lot.": "Visitó la unidad A-12, le gustó mucho.",
+    "Negotiating deposit terms and move-in date.": "Negociando condiciones del depósito y fecha de mudanza.",
+    "Reviewing final contract draft.": "Revisando el borrador final del contrato.",
+    "Signed contract! Moves in next month.": "¡Contrato firmado! Se muda el próximo mes.",
+    "Deal closed, deposit received.": "Trato cerrado, depósito recibido.",
+    "Chose a competitor, budget mismatch.": "Eligió a un competidor, presupuesto insuficiente."
+  },
+  "interestedIn": {
+    "2BR apartment, city center": "Apartamento de 2 habitaciones, centro",
+    "Studio near downtown": "Estudio cerca del centro",
+    "1BR, pet-friendly": "1 habitación, admite mascotas",
+    "3BR house, suburbs": "Casa de 3 habitaciones, afueras",
+    "2BR with balcony": "2 habitaciones con balcón",
+    "1BR loft": "Loft de 1 habitación",
+    "Luxury 2BR, sea view": "2 habitaciones de lujo, vista al mar",
+    "2BR renovated": "2 habitaciones, renovado",
+    "Penthouse studio": "Estudio en ático",
+    "3BR family home": "Casa familiar de 3 habitaciones",
+    "2BR historic center": "2 habitaciones, casco histórico",
+    "1BR modern": "1 habitación, moderno",
+    "2BR duplex": "Dúplex de 2 habitaciones",
+    "Studio": "Estudio"
+  },
+  "maintenance": {
+    "Broken elevator": "Ascensor averiado",
+    "Elevator stuck on 2nd floor.": "Ascensor atascado en el 2.º piso.",
+    "Water heater replacement": "Reemplazo de calentador de agua",
+    "Old heater failing, no hot water.": "Calentador antiguo fallando, no hay agua caliente.",
+    "Leaking kitchen faucet": "Grifo de cocina con fuga",
+    "Water pooling under the sink cabinet.": "Agua acumulada bajo el gabinete del fregadero.",
+    "Repaint common hallway": "Repintado del pasillo común",
+    "Scheduled cosmetic repaint.": "Repintado cosmético programado.",
+    "AC not cooling": "Aire acondicionado no enfría",
+    "Tenant reports AC blowing warm air.": "El inquilino reporta aire caliente del A/A."
+  },
+  "activity": {
+    "Maintenance reported": "Mantenimiento reportado",
+    "Lead won": "Prospecto ganado",
+    "Payment received": "Pago recibido",
+    "Water heater replacement · Sunset Residences": "Reemplazo de calentador de agua · Sunset Residences",
+    "Ahmed Hassan · USD 1,550/mo": "Ahmed Hassan · USD 1,550/mes",
+    "AC not cooling · The Grove Lofts": "Aire acondicionado no enfría · The Grove Lofts",
+    "Charlotte Dubois · EUR 2,200/mo": "Charlotte Dubois · EUR 2,200/mes",
+    "Leaking kitchen faucet · Harbor View Apartments": "Grifo de cocina con fuga · Harbor View Apartments",
+    "USD 3,000 · Thomas Müller": "USD 3,000 · Thomas Müller"
+  }
+}

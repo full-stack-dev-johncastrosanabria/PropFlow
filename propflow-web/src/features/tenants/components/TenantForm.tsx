@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { tenantsApi } from '../../../shared/api/tenants';
 import type { TenantDto, UpdateTenantDto } from '../../../shared/types';
@@ -13,6 +14,7 @@ interface TenantFormProps {
 }
 
 export default function TenantForm({ tenant, onClose }: TenantFormProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     fullName: tenant?.fullName || '',
     email: tenant?.email || '',
@@ -25,13 +27,13 @@ export default function TenantForm({ tenant, onClose }: TenantFormProps) {
   const createMutation = useMutation({
     mutationFn: tenantsApi.create,
     onSuccess: onClose,
-    onError: (err) => setError(err instanceof Error ? err.message : 'Failed to create tenant'),
+    onError: (err) => setError(err instanceof Error ? err.message : t('tenants.createFailed')),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateTenantDto }) => tenantsApi.update(id, data),
     onSuccess: onClose,
-    onError: (err) => setError(err instanceof Error ? err.message : 'Failed to update tenant'),
+    onError: (err) => setError(err instanceof Error ? err.message : t('tenants.updateFailed')),
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -39,7 +41,7 @@ export default function TenantForm({ tenant, onClose }: TenantFormProps) {
     setError('');
 
     if (!formData.fullName || !formData.email) {
-      setError('A name and email are needed before this tenant can be saved.');
+      setError(t('tenants.nameEmailRequired'));
       return;
     }
 
@@ -62,22 +64,22 @@ export default function TenantForm({ tenant, onClose }: TenantFormProps) {
 
   return (
     <Modal
-      title={tenant ? 'Edit tenant' : 'Add tenant'}
-      subtitle="Who they are and how to reach them."
+      title={tenant ? t('tenants.edit') : t('tenants.add')}
+      subtitle={t('tenants.formSubtitle')}
       onClose={onClose}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Field label="Full name" required>
+        <Field label={t('auth.fullName')} required>
           <TextInput
             value={formData.fullName}
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-            placeholder="Tenant's full name"
+            placeholder={t('tenants.namePlaceholder')}
             required
           />
         </Field>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Email" required>
+          <Field label={t('auth.email')} required>
             <TextInput
               type="email"
               value={formData.email}
@@ -86,7 +88,7 @@ export default function TenantForm({ tenant, onClose }: TenantFormProps) {
               required
             />
           </Field>
-          <Field label="Phone">
+          <Field label={t('leads.phone')}>
             <TextInput
               type="tel"
               value={formData.phone}
@@ -96,19 +98,19 @@ export default function TenantForm({ tenant, onClose }: TenantFormProps) {
           </Field>
         </div>
 
-        <Field label="ID number">
+        <Field label={t('tenants.idNumber')}>
           <TextInput
             value={formData.identificationNumber}
             onChange={(e) => setFormData({ ...formData, identificationNumber: e.target.value })}
-            placeholder="ID or passport number"
+            placeholder={t('tenants.idPlaceholder')}
           />
         </Field>
 
-        <Field label="Notes">
+        <Field label={t('leads.notes')}>
           <Textarea
             value={formData.notes}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-            placeholder="Anything worth remembering about this tenant"
+            placeholder={t('tenants.notesPlaceholder')}
             rows={3}
           />
         </Field>
@@ -117,10 +119,10 @@ export default function TenantForm({ tenant, onClose }: TenantFormProps) {
 
         <div className="flex gap-3 pt-1">
           <Button type="button" variant="secondary" className="flex-1" onClick={onClose} disabled={isLoading}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button type="submit" className="flex-1" loading={isLoading}>
-            {tenant ? 'Update tenant' : 'Create tenant'}
+            {tenant ? t('tenants.update') : t('tenants.create')}
           </Button>
         </div>
       </form>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { AnimatedCircularProgressBar } from '@/components/magicui/animated-circular-progress-bar';
 
 interface Props {
@@ -9,10 +10,11 @@ interface Props {
 
 // Occupancy as an inked gauge ring + a ruled legend.
 export default function OccupancyDonut({ occupied, available, maintenance, rate }: Props) {
+  const { t } = useTranslation();
   const segments = [
-    { key: 'Occupied', value: occupied, ink: 'var(--color-ink-green)', form: 'solid' as const },
-    { key: 'Available', value: available, ink: 'var(--color-ink-blue)', form: 'solid' as const },
-    { key: 'Maintenance', value: maintenance, ink: 'var(--color-ink-amber-stroke)', form: 'dashed' as const },
+    { key: 'dashboard.segOccupied', value: occupied, ink: 'var(--color-ink-green)', form: 'solid' as const },
+    { key: 'dashboard.segAvailable', value: available, ink: 'var(--color-ink-blue)', form: 'solid' as const },
+    { key: 'dashboard.segMaintenance', value: maintenance, ink: 'var(--color-ink-amber-stroke)', form: 'dashed' as const },
   ];
 
   return (
@@ -27,7 +29,7 @@ export default function OccupancyDonut({ occupied, available, maintenance, rate 
           <div className="text-center">
             <div className="text-figure text-[26px] font-semibold leading-none text-carbon">{rate}%</div>
             <div className="mt-1 text-[11px] font-bold uppercase tracking-[0.1em] text-carbon-faint">
-              occupied
+              {t('dashboard.occupiedCap')}
             </div>
           </div>
         </AnimatedCircularProgressBar>
@@ -45,7 +47,7 @@ export default function OccupancyDonut({ occupied, available, maintenance, rate 
               }
               aria-hidden
             />
-            <span className="flex-1 text-[13.5px] font-semibold text-carbon-soft">{s.key}</span>
+            <span className="flex-1 text-[13.5px] font-semibold text-carbon-soft">{t(s.key)}</span>
             <span className="text-figure text-[15px] font-semibold text-carbon">{s.value}</span>
           </li>
         ))}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { AnimatedCircularProgressBar } from '@/components/magicui/animated-circular-progress-bar';
 import { Check } from 'lucide-react';
 
@@ -11,6 +12,7 @@ interface Props {
 
 // The goal-vs-actual ring: ink stroke to actual, ruled track to goal.
 export default function ScoreRing({ value, goal, label, color, unit }: Props) {
+  const { t } = useTranslation();
   const pct = goal > 0 ? Math.min(100, (value / goal) * 100) : 0;
   const done = value >= goal && goal > 0;
 
@@ -35,7 +37,7 @@ export default function ScoreRing({ value, goal, label, color, unit }: Props) {
         </AnimatedCircularProgressBar>
         {done && (
           <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full border border-ink-green-deep bg-paper-raised text-ink-green">
-            <Check className="size-3" strokeWidth={3} aria-label="Goal met" />
+            <Check className="size-3" strokeWidth={3} aria-label={t('prod.goalMet')} />
           </span>
         )}
       </div>

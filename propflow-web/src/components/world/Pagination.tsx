@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 interface PaginationProps {
@@ -11,7 +12,9 @@ interface PaginationProps {
 }
 
 // The ledger's page footer — "1–12 of 38", ruled buttons, no theatrics.
-export function Pagination({ page, pageSize, total, onPageChange, label = 'items' }: PaginationProps) {
+export function Pagination({ page, pageSize, total, onPageChange, label }: PaginationProps) {
+  const { t } = useTranslation();
+  const itemsLabel = label ?? t('common.items');
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   if (totalPages <= 1) return null;
 
@@ -32,17 +35,17 @@ export function Pagination({ page, pageSize, total, onPageChange, label = 'items
 
   return (
     <nav
-      aria-label="Pagination"
+      aria-label={t('common.pagination')}
       className="flex flex-wrap items-center justify-between gap-3 border-t border-rule px-5 py-3 sm:px-6"
     >
       <span className="text-figure text-[12.5px] text-carbon-soft">
-        {from}–{to} of {total} {label}
+        {t('common.rangeOf', { from, to, total, label: itemsLabel })}
       </span>
       <div className="flex items-center gap-1">
         <button
           onClick={() => onPageChange(safePage - 1)}
           disabled={safePage === 1}
-          aria-label="Previous page"
+          aria-label={t('common.prevPage')}
           className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronLeft className="size-4" aria-hidden />
@@ -71,7 +74,7 @@ export function Pagination({ page, pageSize, total, onPageChange, label = 'items
         <button
           onClick={() => onPageChange(safePage + 1)}
           disabled={safePage === totalPages}
-          aria-label="Next page"
+          aria-label={t('common.nextPage')}
           className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronRight className="size-4" aria-hidden />

@@ -1,4 +1,5 @@
 import { Pause, Play, SkipForward, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { useTour, TOUR_STEPS } from './tour';
 import { Button } from '@/components/world/Button';
@@ -9,6 +10,7 @@ const STEP_MS = 9000;
 // auto-advancing with a ruled progress line. Esc or Skip ends it.
 export function TourCoach() {
   const { active, step, playing, stop, next, prev, toggle } = useTour();
+  const { t } = useTranslation();
   if (!active) return null;
 
   const s = TOUR_STEPS[step];
@@ -23,19 +25,17 @@ export function TourCoach() {
       <div className="rounded-sheet border border-rule bg-paper-raised p-4 shadow-sheet-lift sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-rule-label">
-              Guided tour · {step + 1} of {TOUR_STEPS.length}
-            </div>
+            <div className="text-rule-label">{t('tour.status', { current: step + 1, total: TOUR_STEPS.length })}</div>
             <h2 className="mt-1 font-display text-[19px] font-semibold leading-tight text-carbon">
-              {s.title}
+              {t(s.titleKey)}
             </h2>
           </div>
-          <Button variant="ghost" size="icon" onClick={stop} aria-label="End tour" title="End tour (Esc)">
+          <Button variant="ghost" size="icon" onClick={stop} aria-label={t('tour.end')} title={t('tour.endHint')}>
             <X className="size-4" />
           </Button>
         </div>
 
-        <p className="mt-1.5 text-[14px] leading-relaxed text-carbon-soft">{s.body}</p>
+        <p className="mt-1.5 text-[14px] leading-relaxed text-carbon-soft">{t(s.bodyKey)}</p>
 
         {/* ruled progress line — fills per step, pauses with the tour */}
         <div className="mt-3 h-[3px] w-full overflow-hidden rounded-full bg-rule/70">
@@ -53,24 +53,24 @@ export function TourCoach() {
           <button
             onClick={toggle}
             className="flex items-center gap-1.5 rounded-[8px] text-[13px] font-semibold text-carbon-soft transition-colors hover:text-carbon"
-            aria-label={playing ? 'Pause tour' : 'Resume tour'}
+            aria-label={playing ? t('tour.pauseResume') : t('tour.resume')}
           >
             {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
-            {playing ? 'Pause' : 'Play'}
+            {playing ? t('tour.pause') : t('tour.play')}
           </button>
           <div className="flex items-center gap-2">
             <Button variant="secondary" size="sm" onClick={prev} disabled={step === 0}>
               <ChevronLeft className="size-4" aria-hidden />
-              Back
+              {t('tour.back')}
             </Button>
             <Button size="sm" onClick={next}>
               {last ? (
                 <>
-                  Finish <SkipForward className="size-4" aria-hidden />
+                  {t('tour.finish')} <SkipForward className="size-4" aria-hidden />
                 </>
               ) : (
                 <>
-                  Next <ChevronRight className="size-4" aria-hidden />
+                  {t('tour.next')} <ChevronRight className="size-4" aria-hidden />
                 </>
               )}
             </Button>

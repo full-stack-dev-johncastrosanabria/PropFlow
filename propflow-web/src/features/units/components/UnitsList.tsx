@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { DoorOpen } from 'lucide-react';
 import { unitsApi } from '../../../shared/api/units';
 import { UnitStatus, type RentalUnitDto, type PropertyDto } from '../../../shared/types';
 import { unitImageFor } from '@/shared/media';
+import { i18n } from '@/i18n';
 import { Badge, type BadgeTone } from '@/components/world/Stamp';
 import { Button } from '@/components/world/Button';
 import { EmptyState } from '@/components/world/EmptyState';
@@ -14,13 +16,14 @@ interface UnitsListProps {
   onRefetch: () => void;
 }
 
-const statusMeta: Record<UnitStatus, { label: string; tone: BadgeTone; stroke: 'solid' | 'dashed' }> = {
-  [UnitStatus.Available]: { label: 'Available', tone: 'blue', stroke: 'solid' },
-  [UnitStatus.Occupied]: { label: 'Occupied', tone: 'green', stroke: 'solid' },
-  [UnitStatus.Maintenance]: { label: 'Maintenance', tone: 'amber', stroke: 'dashed' },
+const statusMeta: Record<UnitStatus, { labelKey: string; tone: BadgeTone; stroke: 'solid' | 'dashed' }> = {
+  [UnitStatus.Available]: { labelKey: 'units.statusAvailable', tone: 'blue', stroke: 'solid' },
+  [UnitStatus.Occupied]: { labelKey: 'units.statusOccupied', tone: 'green', stroke: 'solid' },
+  [UnitStatus.Maintenance]: { labelKey: 'units.statusMaintenance', tone: 'amber', stroke: 'dashed' },
 };
 
 export default function UnitsList({ units, properties, onEdit, onRefetch }: UnitsListProps) {
+  const { t } = useTranslation();
   const deleteMutation = useMutation({
     mutationFn: unitsApi.delete,
     onSuccess: () => {
@@ -29,22 +32,22 @@ export default function UnitsList({ units, properties, onEdit, onRefetch }: Unit
   });
 
   const handleDelete = async (unit: RentalUnitDto) => {
-    if (window.confirm(`Delete "${unit.name}"? This cannot be undone.`)) {
+    if (window.confirm(t('units.deleteConfirm', { name: unit.name }))) {
       deleteMutation.mutate(unit.id);
     }
   };
 
   const getPropertyName = (propertyId: string) => {
     const property = properties.find((p) => p.id === propertyId);
-    return property?.name || 'Unknown property';
+    return property?.name || t('units.unknownProperty');
   };
 
   if (units.length === 0) {
     return (
       <EmptyState
         icon={DoorOpen}
-        title="No units yet"
-        copy="Add the individual doors inside your properties — each with its rent and status."
+        title={t('units.emptyTitle')}
+        copy={t('units.emptyCopy')}
       />
     );
   }
@@ -61,7 +64,7 @@ export default function UnitsList({ units, properties, onEdit, onRefetch }: Unit
             <div className="relative border-b border-rule">
               <img
                 src={unit.imageUrl ?? unitImageFor(unit.id)}
-                alt={`Interior of ${unit.name}`}
+                alt={t('units.interiorAlt', { name: unit.name })}
                 loading="lazy"
                 className="h-40 w-full object-cover"
               />
@@ -78,27 +81,27 @@ export default function UnitsList({ units, properties, onEdit, onRefetch }: Unit
                     <p className="text-figure mt-0.5 text-[12.5px] text-carbon-faint">#{unit.unitNumber}</p>
                   )}
                 </div>
-                <Badge tone={status.tone} stroke={status.stroke}>{status.label}</Badge>
+                <Badge tone={status.tone} stroke={status.stroke}>{t(status.labelKey)}</Badge>
               </div>
 
               <div className="mt-4 space-y-0 border-t border-rule">
                 <div className="flex items-baseline justify-between border-b border-rule py-2.5">
-                  <span className="text-[13px] font-medium text-carbon-soft">Monthly rent</span>
+                  <span className="text-[13px] font-medium text-carbon-soft">{t('units.monthlyRent')}</span>
                   <span className="text-figure text-[15px] font-semibold text-carbon">
                     {unit.currency} {unit.monthlyRent.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex items-baseline justify-between py-2.5">
-                  <span className="text-[13px] font-medium text-carbon-soft">Listed</span>
+                  <span className="text-[13px] font-medium text-carbon-soft">{t('units.listed')}</span>
                   <span className="text-figure text-[13.5px] text-carbon-faint">
-                    {new Date(unit.createdAtUtc).toLocaleDateString()}
+                    {new Date(unit.createdAtUtc).toLocaleDateString(i18n.language?.toLowerCase().startsWith("es") ? "es" : "en-US")}
                   </span>
                 </div>
               </div>
 
               <div className="mt-auto flex gap-2 pt-4">
                 <Button variant="secondary" size="sm" className="flex-1" onClick={() => onEdit(unit)}>
-                  Edit
+                  {t('common.edit')}
                 </Button>
                 <Button
                   variant="danger"
@@ -108,7 +111,7 @@ export default function UnitsList({ units, properties, onEdit, onRefetch }: Unit
                   disabled={deleteMutation.isPending}
                   loading={deleteMutation.isPending}
                 >
-                  Delete
+                  {t('common.delete')}
                 </Button>
               </div>
             </div>

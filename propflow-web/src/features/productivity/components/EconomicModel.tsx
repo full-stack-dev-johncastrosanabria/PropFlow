@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { ActivityTotalsDto } from '../../../shared/types';
 import { ArrowDown } from 'lucide-react';
 
@@ -8,12 +9,13 @@ interface Props {
 // KW Economic Model: the funnel from contacts down to closed business,
 // with conversion rates between each stage. Computed over the last 30 days.
 export default function EconomicModel({ totals }: Props) {
+  const { t } = useTranslation();
   const stages = [
-    { label: 'Contacts', value: totals.contacts, ink: 'var(--color-ink-blue)' },
-    { label: 'Conversations', value: totals.conversations, ink: 'var(--color-hue-units)' },
-    { label: 'Appointments', value: totals.appointmentsMet, ink: 'var(--color-ink-amber-stroke)' },
-    { label: 'Agreements', value: totals.agreementsSigned, ink: 'var(--color-hue-tenants)' },
-    { label: 'Offers Written', value: totals.offersWritten, ink: 'var(--color-ink-green)' },
+    { labelKey: 'prod.mContacts', value: totals.contacts, ink: 'var(--color-ink-blue)' },
+    { labelKey: 'prod.mConversations', value: totals.conversations, ink: 'var(--color-hue-units)' },
+    { labelKey: 'prod.appointments', value: totals.appointmentsMet, ink: 'var(--color-ink-amber-stroke)' },
+    { labelKey: 'prod.agreements', value: totals.agreementsSigned, ink: 'var(--color-hue-tenants)' },
+    { labelKey: 'prod.offers', value: totals.offersWritten, ink: 'var(--color-ink-green)' },
   ];
   const max = Math.max(1, ...stages.map((s) => s.value));
 
@@ -23,9 +25,9 @@ export default function EconomicModel({ totals }: Props) {
   return (
     <div>
       {stages.map((s, i) => (
-        <div key={s.label}>
+        <div key={s.labelKey}>
           <div className="grid grid-cols-[104px_1fr_auto] items-center gap-3 py-[7px]">
-            <span className="text-[13px] font-semibold text-carbon-soft">{s.label}</span>
+            <span className="text-[13px] font-semibold text-carbon-soft">{t(s.labelKey)}</span>
             <div className="relative h-[16px]">
               <div
                 className="absolute inset-y-0 left-0 rounded-[5px]"
@@ -40,7 +42,7 @@ export default function EconomicModel({ totals }: Props) {
               <span className="text-figure font-semibold text-carbon-soft">
                 {conv(s.value, stages[i + 1].value)}%
               </span>
-              <span>convert</span>
+              <span>{t('prod.convert')}</span>
             </div>
           )}
         </div>

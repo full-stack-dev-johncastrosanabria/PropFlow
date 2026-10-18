@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { Users, Mail, Phone, IdCard, NotebookText, CalendarDays } from 'lucide-react';
 import { tenantsApi } from '../../../shared/api/tenants';
@@ -14,6 +15,7 @@ interface TenantsListProps {
 }
 
 export default function TenantsList({ tenants, onEdit, onRefetch }: TenantsListProps) {
+  const { t } = useTranslation();
   const deleteMutation = useMutation({
     mutationFn: tenantsApi.delete,
     onSuccess: () => {
@@ -22,7 +24,7 @@ export default function TenantsList({ tenants, onEdit, onRefetch }: TenantsListP
   });
 
   const handleDelete = async (tenant: TenantDto) => {
-    if (window.confirm(`Delete "${tenant.fullName}"? Their contact details will be removed.`)) {
+    if (window.confirm(t('tenants.deleteConfirm', { name: tenant.fullName }))) {
       deleteMutation.mutate(tenant.id);
     }
   };
@@ -31,8 +33,8 @@ export default function TenantsList({ tenants, onEdit, onRefetch }: TenantsListP
     return (
       <EmptyState
         icon={Users}
-        title="No tenants yet"
-        copy="Add the people behind your leases — name, email, phone, and ID."
+        title={t('tenants.emptyTitle')}
+        copy={t('tenants.emptyCopy')}
       />
     );
   }
@@ -82,7 +84,7 @@ export default function TenantsList({ tenants, onEdit, onRefetch }: TenantsListP
 
           <div className="mt-auto flex gap-2 pt-4">
             <Button variant="secondary" size="sm" className="flex-1" onClick={() => onEdit(tenant)}>
-              Edit
+              {t('common.edit')}
             </Button>
             <Button
               variant="danger"
@@ -92,7 +94,7 @@ export default function TenantsList({ tenants, onEdit, onRefetch }: TenantsListP
               disabled={deleteMutation.isPending}
               loading={deleteMutation.isPending}
             >
-              Delete
+              {t('common.delete')}
             </Button>
           </div>
         </article>

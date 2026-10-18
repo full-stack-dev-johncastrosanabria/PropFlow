@@ -17,17 +17,17 @@ export type InkTone = 'red' | 'green' | 'blue' | 'amber' | 'plum' | 'teal';
 // Metric metadata for the scorecard rings — each metric gets its stationery ink.
 export interface MetricMeta {
   key: keyof ProductivityGoalsDto;
-  label: string;
+  labelKey: string;
   tone: InkTone;
   color: string;
   unit?: string;
 }
 
 export const RING_METRICS: MetricMeta[] = [
-  { key: 'leadGenHours',    label: 'Lead-Gen Block', tone: 'red',   color: '#b13a25', unit: 'h' },
-  { key: 'contacts',        label: 'Contacts',       tone: 'blue',  color: '#2c4a86' },
-  { key: 'conversations',   label: 'Conversations',  tone: 'teal',  color: '#23707f' },
-  { key: 'appointmentsSet', label: 'Appts Set',      tone: 'plum',  color: '#7a4668' },
-  { key: 'leadsAdded',      label: 'Leads Added',    tone: 'green', color: '#2c6a4e' },
-  { key: 'appointmentsMet', label: 'Appts Met',      tone: 'amber', color: '#b98a2f' },
+  { key: 'leadGenHours',    labelKey: 'prod.mLeadGen', tone: 'red',   color: '#b13a25', unit: 'h' },
+  { key: 'contacts',        labelKey: 'prod.mContacts',     tone: 'blue',  color: '#2c4a86' },
+  { key: 'conversations',   labelKey: 'prod.mConversations', tone: 'teal',  color: '#23707f' },
+  { key: 'appointmentsSet', labelKey: 'prod.mApptsSet',      tone: 'plum',  color: '#7a4668' },
+  { key: 'leadsAdded',      labelKey: 'prod.mLeadsAdded',    tone: 'green', color: '#2c6a4e' },
+  { key: 'appointmentsMet', labelKey: 'prod.mApptsMet',      tone: 'amber', color: '#b98a2f' },
 ];

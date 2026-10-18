@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { paymentsApi } from '../../shared/api/payments';
@@ -12,6 +13,7 @@ import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function PaymentsPage() {
+  const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingPayment, setEditingPayment] = useState<PaymentDto | null>(null);
 
@@ -41,22 +43,22 @@ export default function PaymentsPage() {
     refetch();
   };
 
-  if (isLoading) return <PageLoading label="Balancing the rent roll…" />;
+  if (isLoading) return <PageLoading label={t('pay.opening')} />;
 
   if (error) {
-    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load payments'} />;
+    return <ErrorNote message={error instanceof Error ? error.message : t('pay.fail')} />;
   }
 
   return (
     <div className="space-y-5">
       <BlurFade>
         <PageHeader
-          title="Payments"
-          copy="The rent roll — what's due, what's paid, and what's gone late."
+          title={t('nav.payments')}
+          copy={t('pay.copy')}
           action={
             <Button onClick={handleCreate}>
               <Plus className="size-4" aria-hidden />
-              Add payment
+              {t('pay.add')}
             </Button>
           }
         />

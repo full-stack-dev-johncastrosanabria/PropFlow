@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { maintenanceApi } from '../../../shared/api/maintenance';
 import { Priority, MaintenanceStatus, type MaintenanceRequestDto, type PropertyDto, type RentalUnitDto, type CreateMaintenanceRequestDto, type UpdateMaintenanceRequestDto } from '../../../shared/types';
@@ -22,6 +23,7 @@ interface FormErrors {
 }
 
 export default function MaintenanceForm({ request, properties, units, onClose }: MaintenanceFormProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     propertyId: '',
     rentalUnitId: '',
@@ -53,21 +55,21 @@ export default function MaintenanceForm({ request, properties, units, onClose }:
   const createMutation = useMutation({
     mutationFn: maintenanceApi.create,
     onSuccess: onClose,
-    onError: () => setErrors({ submit: 'Failed to create the request. Please try again.' }),
+    onError: () => setErrors({ submit: t('mt.createFailed') }),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateMaintenanceRequestDto }) =>
       maintenanceApi.update(id, data),
     onSuccess: onClose,
-    onError: () => setErrors({ submit: 'Failed to update the request. Please try again.' }),
+    onError: () => setErrors({ submit: t('mt.updateFailed') }),
   });
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!formData.propertyId) newErrors.propertyId = 'Pick the property this belongs to.';
-    if (!formData.title.trim()) newErrors.title = 'A short title is needed.';
-    if (!formData.description.trim()) newErrors.description = 'Describe what needs fixing.';
+    if (!formData.propertyId) newErrors.propertyId = t('mt.errProperty');
+    if (!formData.title.trim()) newErrors.title = t('mt.errTitle');
+    if (!formData.description.trim()) newErrors.description = t('mt.errDescription');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -111,8 +113,8 @@ export default function MaintenanceForm({ request, properties, units, onClose }:
 
   return (
     <Modal
-      title={request ? 'Edit request' : 'Add request'}
-      subtitle="What needs fixing, where, and how urgent."
+      title={request ? t('mt.edit') : t('mt.add')}
+      subtitle={t('mt.formSubtitle')}
       onClose={onClose}
       wide
     >
@@ -120,7 +122,7 @@ export default function MaintenanceForm({ request, properties, units, onClose }:
         {errors.submit && <ErrorNote message={errors.submit} />}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Property" required error={errors.propertyId}>
+          <Field label={t('nav.properties')} required error={errors.propertyId}>
             <Select
               name="propertyId"
               value={formData.propertyId}
@@ -128,7 +130,7 @@ export default function MaintenanceForm({ request, properties, units, onClose }:
               invalid={!!errors.propertyId}
               disabled={isLoading}
             >
-              <option value="">Select a property</option>
+              <option value="">{t('units.selectProperty')}</option>
               {properties.map((property) => (
                 <option key={property.id} value={property.id}>
                   {property.name} — {property.address}
@@ -137,14 +139,14 @@ export default function MaintenanceForm({ request, properties, units, onClose }:
             </Select>
           </Field>
 
-          <Field label="Unit (optional)">
+          <Field label={t('mt.unitOptional')}>
             <Select
               name="rentalUnitId"
               value={formData.rentalUnitId}
               onChange={handleChange}
               disabled={isLoading || !formData.propertyId}
             >
-              <option value="">General property issue</option>
+              <option value="">{t('mt.general')}</option>
               {filteredUnits.map((unit) => (
                 <option key={unit.id} value={unit.id}>
                   {unit.name} {unit.unitNumber && `(${unit.unitNumber})`}
@@ -155,35 +157,35 @@ export default function MaintenanceForm({ request, properties, units, onClose }:
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Priority">
+          <Field label={t('mt.priority')}>
             <Select name="priority" value={formData.priority} onChange={handleChange} disabled={isLoading}>
-              <option value={Priority.Low}>Low</option>
-              <option value={Priority.Medium}>Medium</option>
-              <option value={Priority.High}>High</option>
+              <option value={Priority.Low}>{t('mt.low')}</option>
+              <option value={Priority.Medium}>{t('mt.medium')}</option>
+              <option value={Priority.High}>{t('mt.high')}</option>
             </Select>
           </Field>
 
-          <Field label="Status">
+          <Field label={t('contracts.status')}>
             <Select name="status" value={formData.status} onChange={handleChange} disabled={isLoading}>
-              <option value={MaintenanceStatus.Open}>Open</option>
-              <option value={MaintenanceStatus.InProgress}>In progress</option>
-              <option value={MaintenanceStatus.Closed}>Closed</option>
+              <option value={MaintenanceStatus.Open}>{t('mt.statusOpen')}</option>
+              <option value={MaintenanceStatus.InProgress}>{t('mt.statusInProgress')}</option>
+              <option value={MaintenanceStatus.Closed}>{t('mt.statusClosed')}</option>
             </Select>
           </Field>
         </div>
 
-        <Field label="Title" required error={errors.title}>
+        <Field label={t('mt.title')} required error={errors.title}>
           <TextInput
             name="title"
             value={formData.title}
             onChange={handleChange}
             invalid={!!errors.title}
             disabled={isLoading}
-            placeholder="Brief description of the issue"
+            placeholder={t('mt.titlePlaceholder')}
           />
         </Field>
 
-        <Field label="Description" required error={errors.description}>
+        <Field label={t('mt.description')} required error={errors.description}>
           <Textarea
             name="description"
             value={formData.description}
@@ -191,16 +193,16 @@ export default function MaintenanceForm({ request, properties, units, onClose }:
             rows={4}
             invalid={!!errors.description}
             disabled={isLoading}
-            placeholder="What's broken, since when, and anything the contractor should know…"
+            placeholder={t('mt.descPlaceholder')}
           />
         </Field>
 
         <div className="flex gap-3 pt-1">
           <Button type="button" variant="secondary" className="flex-1" onClick={onClose} disabled={isLoading}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button type="submit" className="flex-1" loading={isLoading}>
-            {request ? 'Update request' : 'Create request'}
+            {request ? t('mt.update') : t('mt.create')}
           </Button>
         </div>
       </form>

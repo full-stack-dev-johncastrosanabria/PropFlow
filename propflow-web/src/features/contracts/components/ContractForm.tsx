@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { contractsApi } from '../../../shared/api/contracts';
 import { ContractStatus, UnitStatus, type ContractDto, type TenantDto, type RentalUnitDto, type CreateContractDto, type UpdateContractDto } from '../../../shared/types';
@@ -15,6 +16,7 @@ interface ContractFormProps {
 }
 
 export default function ContractForm({ contract, tenants, units, onClose }: ContractFormProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     tenantId: contract?.tenantId || '',
     rentalUnitId: contract?.rentalUnitId || '',
@@ -30,13 +32,13 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
   const createMutation = useMutation({
     mutationFn: contractsApi.create,
     onSuccess: onClose,
-    onError: (err) => setError(err instanceof Error ? err.message : 'Failed to create contract'),
+    onError: (err) => setError(err instanceof Error ? err.message : t('contracts.createFailed')),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateContractDto }) => contractsApi.update(id, data),
     onSuccess: onClose,
-    onError: (err) => setError(err instanceof Error ? err.message : 'Failed to update contract'),
+    onError: (err) => setError(err instanceof Error ? err.message : t('contracts.updateFailed')),
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -44,12 +46,12 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
     setError('');
 
     if (!formData.tenantId || !formData.rentalUnitId || !formData.startDate || formData.monthlyRent <= 0) {
-      setError('A tenant, a unit, a start date, and a rent above zero are needed.');
+      setError(t('contracts.required'));
       return;
     }
 
     if (formData.endDate && new Date(formData.endDate) <= new Date(formData.startDate)) {
-      setError('The end date has to fall after the start date.');
+      setError(t('contracts.endDateAfter'));
       return;
     }
 
@@ -87,21 +89,21 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
 
   return (
     <Modal
-      title={contract ? 'Edit contract' : 'Add contract'}
-      subtitle="Tenant, unit, term — the lease on one sheet."
+      title={contract ? t('contracts.edit') : t('contracts.add')}
+      subtitle={t('contracts.formSubtitle')}
       onClose={onClose}
       wide
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Tenant" required>
+          <Field label={t('nav.tenants')} required>
             <Select
               value={formData.tenantId}
               onChange={(e) => setFormData({ ...formData, tenantId: e.target.value })}
               required
               disabled={!!contract}
             >
-              <option value="">Select a tenant</option>
+              <option value="">{t('contracts.selectTenant')}</option>
               {tenants.map((tenant) => (
                 <option key={tenant.id} value={tenant.id}>
                   {tenant.fullName} ({tenant.email})
@@ -110,14 +112,14 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
             </Select>
           </Field>
 
-          <Field label="Rental unit" required>
+          <Field label={t('nav.units')} required>
             <Select
               value={formData.rentalUnitId}
               onChange={(e) => setFormData({ ...formData, rentalUnitId: e.target.value })}
               required
               disabled={!!contract}
             >
-              <option value="">Select a unit</option>
+              <option value="">{t('units.selectProperty')}</option>
               {availableUnits.map((unit) => (
                 <option key={unit.id} value={unit.id}>
                   {unit.name} — {unit.currency} {unit.monthlyRent.toLocaleString()}
@@ -128,7 +130,7 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Start date" required>
+          <Field label={t('contracts.startDate')} required>
             <TextInput
               type="date"
               value={formData.startDate}
@@ -136,7 +138,7 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
               required
             />
           </Field>
-          <Field label="End date">
+          <Field label={t('contracts.endDate')}>
             <TextInput
               type="date"
               value={formData.endDate}
@@ -146,7 +148,7 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Monthly rent" required>
+          <Field label={t('units.monthlyRent')} required>
             <TextInput
               type="number"
               step="0.01"
@@ -156,7 +158,7 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
               required
             />
           </Field>
-          <Field label="Deposit amount">
+          <Field label={t('contracts.depositAmount')}>
             <TextInput
               type="number"
               step="0.01"
@@ -168,7 +170,7 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Currency">
+          <Field label={t('leads.currency')}>
             <Select
               value={formData.currency}
               onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
@@ -178,14 +180,14 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
               <option value="CRC">CRC</option>
             </Select>
           </Field>
-          <Field label="Status">
+          <Field label={t('contracts.status')}>
             <Select
               value={formData.status}
               onChange={(e) => setFormData({ ...formData, status: parseInt(e.target.value) as ContractStatus })}
             >
-              <option value={ContractStatus.Active}>Active</option>
-              <option value={ContractStatus.Finished}>Finished</option>
-              <option value={ContractStatus.Cancelled}>Cancelled</option>
+              <option value={ContractStatus.Active}>{t('contracts.statusActive')}</option>
+              <option value={ContractStatus.Finished}>{t('contracts.statusFinished')}</option>
+              <option value={ContractStatus.Cancelled}>{t('contracts.statusCancelled')}</option>
             </Select>
           </Field>
         </div>
@@ -194,10 +196,10 @@ export default function ContractForm({ contract, tenants, units, onClose }: Cont
 
         <div className="flex gap-3 pt-1">
           <Button type="button" variant="secondary" className="flex-1" onClick={onClose} disabled={isLoading}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button type="submit" className="flex-1" loading={isLoading}>
-            {contract ? 'Update contract' : 'Create contract'}
+            {contract ? t('contracts.update') : t('contracts.create')}
           </Button>
         </div>
       </form>

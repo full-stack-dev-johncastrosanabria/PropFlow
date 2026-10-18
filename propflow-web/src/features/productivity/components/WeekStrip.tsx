@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n';
 import type { DayPointDto } from '../../../shared/types';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 
 // 7-day lead-gen block strip: ink stroke height = hours, dashed rule = goal.
 export default function WeekStrip({ days, goalHours }: Props) {
+  const locale = i18n.language?.toLowerCase().startsWith('es') ? 'es' : 'en-US';
   const max = Math.max(goalHours, ...days.map((d) => d.leadGenHours), 1);
 
   return (
@@ -34,13 +36,13 @@ export default function WeekStrip({ days, goalHours }: Props) {
                   d.blockDone ? 'bg-ink-green' : 'bg-ink-amber-stroke/70'
                 }`}
                 style={{ height: `${Math.max(2.5, h)}%` }}
-                title={`${d.leadGenHours}h · ${d.contacts} contacts`}
+                title={`${d.leadGenHours}h · ${d.contacts} ${i18n.t('prod.contacts')}`}
               />
             </div>
             <span className="text-figure text-[12px] font-semibold text-carbon">
               {d.leadGenHours > 0 ? `${d.leadGenHours}h` : '–'}
             </span>
-            <span className="text-[11px] font-semibold uppercase tracking-wide text-carbon-faint">{d.label}</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-carbon-faint">{new Date(d.date).toLocaleDateString(locale, { weekday: 'short' })}</span>
           </div>
         );
       })}

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Button } from './Button';
 
@@ -14,6 +15,7 @@ interface ModalProps {
 
 // A sheet lifted off the planner — the only interruption the world allows.
 export function Modal({ title, subtitle, onClose, children, wide }: ModalProps) {
+  const { t } = useTranslation();
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,7 +54,7 @@ export function Modal({ title, subtitle, onClose, children, wide }: ModalProps) 
             <h2 className="font-display text-lg font-semibold text-carbon">{title}</h2>
             {subtitle && <p className="mt-0.5 text-[13px] text-carbon-faint">{subtitle}</p>}
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close dialog">
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label={t('common.closeDialog')}>
             <X className="size-4.5" />
           </Button>
         </header>
