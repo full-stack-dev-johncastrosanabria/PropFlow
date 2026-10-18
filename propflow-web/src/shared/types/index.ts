@@ -65,6 +65,7 @@ export interface LandlordDto {
   email: string;
   fullName: string;
   createdAtUtc: string;
+  imageUrl?: string;
 }
 
 export interface AuthResponseDto {
@@ -81,6 +82,7 @@ export interface PropertyDto {
   country: string;
   notes?: string;
   createdAtUtc: string;
+  imageUrl?: string;
 }
 
 export interface CreatePropertyDto {
@@ -103,6 +105,7 @@ export interface RentalUnitDto {
   currency: string;
   status: UnitStatus;
   createdAtUtc: string;
+  imageUrl?: string;
 }
 
 export interface CreateRentalUnitDto {
@@ -131,6 +134,7 @@ export interface TenantDto {
   identificationNumber?: string;
   notes?: string;
   createdAtUtc: string;
+  imageUrl?: string;
 }
 
 export interface CreateTenantDto {
@@ -248,6 +252,7 @@ export interface LeadDto {
   notes?: string;
   lastContactedUtc?: string;
   createdAtUtc: string;
+  imageUrl?: string;
 }
 
 export interface CreateLeadDto {

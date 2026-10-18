@@ -12,14 +12,16 @@ import MaintenancePage from '../features/maintenance/MaintenancePage';
 import LeadsPage from '../features/leads/LeadsPage';
 import ProductivityPage from '../features/productivity/ProductivityPage';
 import Layout from './Layout';
+import { TourProvider } from './tour';
+import { PageLoading } from '@/components/world/EmptyState';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <div className="spinner" />
+      <div className="flex min-h-screen items-center justify-center bg-paper">
+        <PageLoading label="Opening PropFlow…" />
       </div>
     );
   }
@@ -32,8 +34,8 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <div className="spinner" />
+      <div className="flex min-h-screen items-center justify-center bg-paper">
+        <PageLoading label="Opening PropFlow…" />
       </div>
     );
   }
@@ -90,9 +92,11 @@ export default function App() {
   const Router = import.meta.env.VITE_DEMO_MODE === 'true' ? HashRouter : BrowserRouter;
   return (
     <Router>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <TourProvider>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </TourProvider>
     </Router>
   );
 }

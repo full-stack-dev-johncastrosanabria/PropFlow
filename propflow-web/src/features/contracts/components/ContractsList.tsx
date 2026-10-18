@@ -1,6 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
+import { FileText } from 'lucide-react';
 import { contractsApi } from '../../../shared/api/contracts';
 import { ContractStatus, type ContractDto } from '../../../shared/types';
+import { Badge, type BadgeTone } from '@/components/world/Stamp';
+import { Button } from '@/components/world/Button';
+import { EmptyState } from '@/components/world/EmptyState';
 
 interface ContractsListProps {
   contracts: ContractDto[];
@@ -8,10 +12,10 @@ interface ContractsListProps {
   onRefetch: () => void;
 }
 
-const statusConfig = {
-  [ContractStatus.Active]: { label: 'Active', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
-  [ContractStatus.Finished]: { label: 'Finished', color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-200' },
-  [ContractStatus.Cancelled]: { label: 'Cancelled', color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200' },
+const statusMeta: Record<ContractStatus, { label: string; tone: BadgeTone; stroke: 'solid' | 'dashed' }> = {
+  [ContractStatus.Active]: { label: 'Active', tone: 'green', stroke: 'solid' },
+  [ContractStatus.Finished]: { label: 'Finished', tone: 'carbon', stroke: 'solid' },
+  [ContractStatus.Cancelled]: { label: 'Cancelled', tone: 'red', stroke: 'dashed' },
 };
 
 export default function ContractsList({ contracts, onEdit, onRefetch }: ContractsListProps) {
@@ -23,108 +27,86 @@ export default function ContractsList({ contracts, onEdit, onRefetch }: Contract
   });
 
   const handleDelete = async (contract: ContractDto) => {
-    const contractName = `${contract.tenantName} - ${contract.unitName}`;
-    if (window.confirm(`Are you sure you want to delete the contract for "${contractName}"?`)) {
+    const contractName = `${contract.tenantName} — ${contract.unitName}`;
+    if (window.confirm(`Delete the contract for "${contractName}"?`)) {
       deleteMutation.mutate(contract.id);
     }
   };
 
   if (contracts.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="text-6xl mb-4">📄</div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No contracts yet</h3>
-        <p className="text-gray-600 mb-6">Create your first rental contract to get started</p>
-      </div>
+      <EmptyState
+        icon={FileText}
+        title="No contracts yet"
+        copy="Create the first lease — tenant, unit, term, and deposit in one sheet."
+      />
     );
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
       {contracts.map((contract) => {
-        const status = statusConfig[contract.status];
-        const isActive = contract.status === ContractStatus.Active;
-        
+        const status = statusMeta[contract.status];
         return (
-          <div key={contract.id} className="card hover:shadow-lg transition-all duration-200">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                  {contract.tenantName || 'Unknown Tenant'}
+          <article
+            key={contract.id}
+            className="flex h-full flex-col rounded-sheet border border-rule bg-paper-raised p-5 shadow-sheet transition-colors hover:border-rule-strong"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h3 className="truncate font-display text-[16.5px] font-semibold text-carbon">
+                  {contract.tenantName || 'Unknown tenant'}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  {contract.unitName || 'Unknown Unit'}
-                </p>
+                <p className="mt-0.5 truncate text-[13.5px] text-carbon-soft">{contract.unitName || 'Unknown unit'}</p>
               </div>
-              <div className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color} ${status.border} border`}>
-                {status.label}
-              </div>
+              <Badge tone={status.tone} stroke={status.stroke}>{status.label}</Badge>
             </div>
 
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Monthly Rent:</span>
-                <span className="font-semibold text-gray-900">
-                  {contract.currency} {contract.monthlyRent.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Deposit:</span>
-                <span className="font-semibold text-gray-900">
-                  {contract.currency} {contract.depositAmount.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Start Date:</span>
-                <span className="text-sm text-gray-700">
-                  {new Date(contract.startDate).toLocaleDateString()}
-                </span>
-              </div>
-              {contract.endDate && (
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">End Date:</span>
-                  <span className="text-sm text-gray-700">
-                    {new Date(contract.endDate).toLocaleDateString()}
+            <div className="mt-4 border-t border-rule">
+              <div className="grid grid-cols-2 gap-x-6">
+                <div className="flex items-baseline justify-between border-b border-rule py-2.5">
+                  <span className="text-[13px] font-medium text-carbon-soft">Rent</span>
+                  <span className="text-figure text-[14.5px] font-semibold text-carbon">
+                    {contract.currency} {contract.monthlyRent.toLocaleString()}
                   </span>
                 </div>
-              )}
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Created:</span>
-                <span className="text-sm text-gray-500">
-                  {new Date(contract.createdAtUtc).toLocaleDateString()}
-                </span>
-              </div>
-            </div>
-
-            {isActive && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✅</span>
-                  <span className="text-sm font-medium text-green-800">Active Contract</span>
+                <div className="flex items-baseline justify-between border-b border-rule py-2.5">
+                  <span className="text-[13px] font-medium text-carbon-soft">Deposit</span>
+                  <span className="text-figure text-[14.5px] font-semibold text-carbon">
+                    {contract.currency} {contract.depositAmount.toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex items-baseline justify-between py-2.5">
+                  <span className="text-[13px] font-medium text-carbon-soft">Starts</span>
+                  <span className="text-figure text-[13.5px] text-carbon-soft">
+                    {new Date(contract.startDate).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex items-baseline justify-between py-2.5">
+                  <span className="text-[13px] font-medium text-carbon-soft">Ends</span>
+                  <span className="text-figure text-[13.5px] text-carbon-soft">
+                    {contract.endDate ? new Date(contract.endDate).toLocaleDateString() : '—'}
+                  </span>
                 </div>
               </div>
-            )}
+            </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => onEdit(contract)}
-                className="btn btn-secondary flex-1"
-              >
+            <div className="mt-auto flex gap-2 pt-4">
+              <Button variant="secondary" size="sm" className="flex-1" onClick={() => onEdit(contract)}>
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                className="flex-1"
                 onClick={() => handleDelete(contract)}
                 disabled={deleteMutation.isPending}
-                className="btn btn-secondary text-red-600 hover:bg-red-50 hover:border-red-300"
+                loading={deleteMutation.isPending}
               >
-                {deleteMutation.isPending ? (
-                  <div className="spinner w-4 h-4"></div>
-                ) : (
-                  'Delete'
-                )}
-              </button>
+                Delete
+              </Button>
             </div>
-          </div>
+          </article>
         );
       })}
     </div>

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-18T17:05:00Z",
+  "title": "Design System: PropFlow — The Field Planner",
+  "extensions": {
+    "colorMeta": {
+      "ink-red": { "role": "primary", "displayName": "Vermilion Ink", "canonical": "#b13a25", "tonalRamp": ["#4a150b", "#71200f", "#8f2e1d", "#b13a25", "#c2402a", "#d0654f", "#e0907d", "#f0c3b5"] },
+      "ink-green": { "role": "secondary", "displayName": "Ledger Green", "canonical": "#2c6a4e", "tonalRamp": ["#123024", "#1a4534", "#20503a", "#2c6a4e", "#3d8265", "#5f9c82", "#8bb8a3", "#bcd8ca"] },
+      "ink-blue": { "role": "tertiary", "displayName": "Ultramarine Ballpoint", "canonical": "#2c4a86", "tonalRamp": ["#131f39", "#1b2e55", "#22396a", "#2c4a86", "#3c5fa0", "#5f7fb5", "#8aa3ca", "#b8c8e0"] },
+      "ink-amber": { "role": "tertiary", "displayName": "Amber Ink", "canonical": "#8a6516", "tonalRamp": ["#3a2a08", "#57400e", "#6e5112", "#8a6516", "#a1741f", "#b98a2f", "#cba95c", "#dfc791"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#f3eee2", "tonalRamp": ["#d8d0bc", "#e0d8c5", "#e7dfcd", "#ebe4d3", "#f3eee2", "#f6f1e6", "#faf6ec", "#fdfaf3"] },
+      "carbon": { "role": "neutral", "displayName": "Carbon Ink", "canonical": "#201d18", "tonalRamp": ["#201d18", "#37332c", "#4a443a", "#57503f", "#6e6454", "#8a8072", "#a9a190", "#c9c2b4"] },
+      "rule": { "role": "neutral", "displayName": "Rule", "canonical": "#ddd2ba", "tonalRamp": ["#b3a685", "#c0b394", "#cfc3a8", "#ddd2ba", "#e6ddc9", "#ece5d4", "#f1ebdd", "#f7f2e9"] },
+      "hue-leads": { "role": "accent", "displayName": "Leads Persimmon", "canonical": "#bf5426", "tonalRamp": ["#4f210e", "#6f3015", "#8a3c1b", "#a3481f", "#bf5426", "#cd7147", "#dc9370", "#ebb89e"] },
+      "hue-productivity": { "role": "accent", "displayName": "Productivity Moss", "canonical": "#55753c", "tonalRamp": ["#23301a", "#334626", "#415a2f", "#55753c", "#65884a", "#7d9c67", "#9ab488", "#bcd0ae"] },
+      "hue-properties": { "role": "accent", "displayName": "Properties Ultramarine", "canonical": "#2c4a86", "tonalRamp": ["#131f39", "#1b2e55", "#22396a", "#2c4a86", "#3c5fa0", "#5f7fb5", "#8aa3ca", "#b8c8e0"] },
+      "hue-units": { "role": "accent", "displayName": "Units Teal", "canonical": "#23707f", "tonalRamp": ["#0e2e34", "#15434c", "#1a5560", "#23707f", "#2f8494", "#4d9ba8", "#79b7c1", "#a8d2d9"] },
+      "hue-tenants": { "role": "accent", "displayName": "Tenants Plum", "canonical": "#7a4668", "tonalRamp": ["#321c2b", "#48293e", "#5d3550", "#7a4668", "#8d5779", "#a3768f", "#bb9aab", "#d4c0ca"] },
+      "hue-contracts": { "role": "accent", "displayName": "Contracts Ochre", "canonical": "#8a6516", "tonalRamp": ["#3a2a08", "#57400e", "#6e5112", "#8a6516", "#a1741f", "#b98a2f", "#cba95c", "#dfc791"] },
+      "hue-payments": { "role": "accent", "displayName": "Payments Pine", "canonical": "#2c6a4e", "tonalRamp": ["#123024", "#1a4534", "#20503a", "#2c6a4e", "#3d8265", "#5f9c82", "#8bb8a3", "#bcd8ca"] },
+      "hue-maintenance": { "role": "accent", "displayName": "Maintenance Brick", "canonical": "#a03428", "tonalRamp": ["#431510", "#5e1e17", "#74271e", "#8a2c22", "#a03428", "#b25043", "#c47569", "#d9a096"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "One page title per surface; never repeated mid-page." },
+      "headline": { "displayName": "Headline", "purpose": "Panel and card titles." },
+      "body": { "displayName": "Body", "purpose": "All reading text; 62–75ch measure." },
+      "label": { "displayName": "Ledger Label", "purpose": "Uppercase micro-labels on ruled lines, table headers, stamps." },
+      "figure": { "displayName": "Figure", "purpose": "Tabular mono numerals for every comparable number." }
+    },
+    "shadows": [
+      { "name": "sheet", "value": "0 1px 2px rgb(62 52 32 / 0.05), 0 10px 28px -10px rgb(62 52 32 / 0.14)", "purpose": "Resting panels and cards." },
+      { "name": "sheet-lift", "value": "0 2px 4px rgb(62 52 32 / 0.06), 0 16px 36px -12px rgb(62 52 32 / 0.18)", "purpose": "Modals and dragged cards." },
+      { "name": "tab", "value": "0 1px 2px rgb(62 52 32 / 0.08)", "purpose": "Active rail tab and small raised chips." }
+    ],
+    "motion": [
+      { "name": "meter-spring", "value": "spring(stiffness 90, damping 20)", "purpose": "Ink meter fills; one orchestrated entrance, no bounce." },
+      { "name": "ticker-spring", "value": "spring(stiffness 100, damping 60)", "purpose": "Number ticker convergence on money figures." },
+      { "name": "blur-fade", "value": "0.4s easeOut, 6px blur, 6px offset, staggered 0.04–0.15s", "purpose": "Section entrance reveals; content visible by default." },
+      { "name": "sheet-spring", "value": "spring(stiffness 320, damping 34)", "purpose": "Mobile More-sheet slide-up." },
+      { "name": "reduced-motion", "value": "all durations 0.01ms under prefers-reduced-motion", "purpose": "Motion is never required to read state." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px — tab rail appears, bottom bar retires" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Vermilion action button — the only filled-red control.",
+      "html": "<button class=\"ds-btn-primary\">Record payment</button>",
+      "css": ".ds-btn-primary { background: var(--color-ink-red, #b13a25); color: #fdf8ec; border: 1px solid rgb(143 46 29 / 0.6); border-radius: 9px; padding: 10px 20px; font: 600 15px 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif; min-height: 44px; cursor: pointer; transition: background 0.2s, transform 0.15s; } .ds-btn-primary:hover { background: var(--color-ink-red-bright, #c2402a); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-ink-blue, #2c4a86); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Paper button for non-primary actions.",
+      "html": "<button class=\"ds-btn-secondary\">Cancel</button>",
+      "css": ".ds-btn-secondary { background: var(--color-paper-raised, #faf6ec); color: var(--color-carbon, #201d18); border: 1px solid var(--color-rule-strong, #c0b394); border-radius: 9px; padding: 10px 20px; font: 600 15px 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif; min-height: 44px; cursor: pointer; transition: background 0.2s; } .ds-btn-secondary:hover { background: var(--color-paper-deep, #eae2cf); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-ink-blue, #2c4a86); outline-offset: 2px; }"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The raised ruled sheet every section of content sits on.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h2>Rent collected</h2><span>Collected vs expected · last 6 months</span></header><div class=\"ds-panel-body\">Content on the sheet.</div></section>",
+      "css": ".ds-panel { background: var(--color-paper-raised, #faf6ec); border: 1px solid var(--color-rule, #ddd2ba); border-radius: 14px; box-shadow: 0 1px 2px rgb(62 52 32 / 0.05), 0 10px 28px -10px rgb(62 52 32 / 0.14); overflow: hidden; } .ds-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 24px; border-bottom: 1px solid var(--color-rule, #ddd2ba); } .ds-panel-head h2 { font: 600 17px/1.3 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.02em; color: var(--color-carbon, #201d18); margin: 0; } .ds-panel-head span { font-size: 13px; color: var(--color-carbon-faint, #6e6454); } .ds-panel-body { padding: 24px; }"
+    },
+    {
+      "name": "Stamp",
+      "kind": "chip",
+      "refersTo": "stamp",
+      "description": "Rubber-stamp badge for loud states — rotated, bordered, uppercase.",
+      "html": "<span class=\"ds-stamp\">Overdue</span>",
+      "css": ".ds-stamp { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--color-ink-red, #b13a25); color: var(--color-ink-red, #b13a25); border-radius: 4px; padding: 2px 8px; font: 700 11px 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.11em; text-transform: uppercase; transform: rotate(-1.2deg); }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Quiet ink chip with a state stroke — solid settled, dashed waiting.",
+      "html": "<span class=\"ds-badge\"><span class=\"ds-badge-stroke ds-badge-stroke-dashed\"></span>Pending</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 9999px; border: 1px solid rgb(138 101 22 / 0.5); background: rgb(185 138 47 / 0.15); color: var(--color-ink-amber, #8a6516); padding: 3px 10px; font: 600 12px 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif; } .ds-badge-stroke { width: 12px; height: 2px; border-radius: 9999px; background: currentColor; } .ds-badge-stroke-dashed { background-image: repeating-linear-gradient(90deg, currentColor 0 3px, transparent 3px 5px); background-color: transparent; }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Paper field with ultramarine focus and red caret.",
+      "html": "<input class=\"ds-input\" placeholder=\"you@example.com\" />",
+      "css": ".ds-input { width: 100%; background: var(--color-paper-raised, #faf6ec); color: var(--color-carbon, #201d18); border: 1px solid var(--color-rule-strong, #c0b394); border-radius: 9px; padding: 10px 14px; font: 400 15px 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif; caret-color: var(--color-ink-red, #b13a25); transition: border-color 0.15s, box-shadow 0.15s; } .ds-input::placeholder { color: var(--color-carbon-faint, #6e6454); } .ds-input:focus { outline: none; border-color: var(--color-ink-blue, #2c4a86); box-shadow: 0 0 0 2px rgb(44 74 134 / 0.25); }"
+    },
+    {
+      "name": "Ink Meter",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "The signature goal-vs-actual meter: ruled track, spring ink fill, dashed goal tick; dashed = overdue, doubled = won.",
+      "html": "<div class=\"ds-meter\" role=\"meter\" aria-valuenow=\"79\" aria-valuemax=\"100\"><div class=\"ds-meter-track\"></div><div class=\"ds-meter-fill\" style=\"width: 79%\"></div><div class=\"ds-meter-tick\" style=\"left: 100%\"></div></div>",
+      "css": ".ds-meter { position: relative; width: 100%; height: 6px; } .ds-meter-track { position: absolute; inset: 0; border-radius: 9999px; background: rgb(221 210 186 / 0.7); } .ds-meter-fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 9999px; background: var(--color-ink-green, #2c6a4e); transition: width 1s cubic-bezier(0.22, 1, 0.36, 1); } .ds-meter-fill-dashed { background-image: repeating-linear-gradient(115deg, var(--color-ink-red, #b13a25) 0 5px, transparent 5px 9px); background-color: transparent; } .ds-meter-tick { position: absolute; top: -3px; bottom: -3px; width: 2px; background-image: repeating-linear-gradient(to bottom, var(--color-carbon-soft, #57503f) 0 3px, transparent 3px 6px); }"
+    },
+    {
+      "name": "Rail Tab",
+      "kind": "nav",
+      "refersTo": "panel",
+      "description": "Manila section tab — active state raises onto paper with a cut corner and the section's hue dot.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-tab ds-tab-active\" href=\"#\" style=\"--hue: #2c4a86\"><span class=\"ds-tab-dot\"></span>Properties</a><a class=\"ds-tab\" href=\"#\">Tenants</a></nav>",
+      "css": ".ds-rail { display: flex; flex-direction: column; gap: 2px; width: 220px; padding: 0 12px; } .ds-tab { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 10px; font: 600 14.5px 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif; color: var(--color-carbon-soft, #57503f); text-decoration: none; } .ds-tab:hover { background: var(--color-paper-well, #efe9da); color: var(--color-carbon, #201d18); } .ds-tab-active { background: var(--color-paper-raised, #faf6ec); color: var(--color-carbon, #201d18); box-shadow: 0 1px 2px rgb(62 52 32 / 0.08); clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%); margin-left: -4px; padding-left: 16px; } .ds-tab-dot { width: 6px; height: 6px; border-radius: 9999px; background: var(--hue, #2c4a86); margin-left: auto; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Field Planner",
+    "overview": "PropFlow looks like an agent's working stationery planner that learned to run a portfolio. The surface is warm paper, never white; text is carbon ink; and exactly four ballpoint inks do real state jobs — vermilion red for anything urgent or actionable, ledger green for anything won or settled, ultramarine blue for selection and links, amber for anything pending or awaiting. Ruled hairlines and faint graph dots supply the material; rubber stamps and dashed strokes carry state; figures are set in a tabular mono like entries in a rent roll. The category's generic white-card admin is the anti-reference: cards become ruled sheets, KPI rows become ledger strips, and every number that has a target renders against it.",
+    "keyCharacteristics": [
+      "Warm paper ground with raised sheets and 1px rule borders — tone and hairlines before shadow",
+      "Four working inks plus one stationery hue per app section — color always means something",
+      "Goal-vs-actual inked meters with state carried in stroke form, never hue alone",
+      "Rubber-stamp badges for loud states, quiet ink chips for routine ones",
+      "Tabular mono figures on every amount, date, and count"
+    ],
+    "rules": [
+      { "name": "The Four-Ink Rule", "body": "Red, green, blue, and amber are the only data colors. A hue that carries no state doesn't ship.", "section": "colors" },
+      { "name": "The Action-Red Rule", "body": "Red appears on actionable or urgent elements only; if nothing can be done and nothing is wrong, it isn't red.", "section": "colors" },
+      { "name": "The Section-Hue Rule", "body": "A section's stationery hue lives in its rail tab and section accents — it never recolors data inks.", "section": "colors" },
+      { "name": "The Ledger Rule", "body": "Every number a user might compare — money, dates, counts, IDs — is set in Spline Mono with tabular numerals. Prose never goes mono.", "section": "typography" },
+      { "name": "The Ruled-Sheet Rule", "body": "If a hairline border can do the separating, no shadow ships.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do set every money figure, date, and count in Spline Mono tabular.",
+      "Do render a goal-vs-actual Ink Meter wherever a number has a target — collection rate, occupancy, funnel stages, daily goals.",
+      "Do keep one stationery hue per section, confined to the rail and section accents.",
+      "Do use lucide icons at 16–20px, one stroke weight, currentColor.",
+      "Do theme the browser: ultramarine selection, red caret, thin rule-strong scrollbars, visible focus rings."
+    ],
+    "donts": [
+      "Don't use white backgrounds, gray-100 admin neutrals, or Tailwind's default blue anywhere.",
+      "Don't ship emoji as icons or decorative glyphs.",
+      "Don't put a kicker or eyebrow label above a heading; the heading carries its own weight.",
+      "Don't use border-style dashed borders or hard offset (4px 4px 0) shadows — dashes come from gradient strokes, depth from the warm shadow vocabulary.",
+      "Don't color data with section hues; they wayfind, they don't measure."
+    ]
+  }
+}

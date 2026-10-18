@@ -1,6 +1,12 @@
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { Pencil, Trash2, Wallet } from 'lucide-react';
 import { paymentsApi } from '../../../shared/api/payments';
 import { PaymentStatus, type PaymentDto } from '../../../shared/types';
+import { Badge } from '@/components/world/Stamp';
+import { Button } from '@/components/world/Button';
+import { Pagination } from '@/components/world/Pagination';
+import { EmptyState } from '@/components/world/EmptyState';
 
 interface PaymentsListProps {
   payments: PaymentDto[];
@@ -8,7 +14,22 @@ interface PaymentsListProps {
   onRefetch: () => void;
 }
 
+const PAGE_SIZE = 12;
+
+const statusBadge = (status: PaymentStatus) => {
+  switch (status) {
+    case PaymentStatus.Paid:
+      return <Badge tone="green" stroke="solid">Paid</Badge>;
+    case PaymentStatus.Late:
+      return <Badge tone="red" stroke="dashed">Late</Badge>;
+    default:
+      return <Badge tone="amber" stroke="dashed">Pending</Badge>;
+  }
+};
+
 export default function PaymentsList({ payments, onEdit, onRefetch }: PaymentsListProps) {
+  const [page, setPage] = useState(1);
+
   const deleteMutation = useMutation({
     mutationFn: paymentsApi.delete,
     onSuccess: () => {
@@ -16,163 +37,146 @@ export default function PaymentsList({ payments, onEdit, onRefetch }: PaymentsLi
     },
   });
 
+  const totalPages = Math.max(1, Math.ceil(payments.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pagedPayments = payments.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
   const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this payment?')) {
+    if (window.confirm('Delete this payment record?')) {
       deleteMutation.mutate(id);
     }
   };
 
-  const getStatusBadge = (status: PaymentStatus) => {
-    switch (status) {
-      case PaymentStatus.Paid:
-        return <span className="badge badge-success">Paid</span>;
-      case PaymentStatus.Late:
-        return <span className="badge badge-danger">Late</span>;
-      case PaymentStatus.Pending:
-      default:
-        return <span className="badge badge-warning">Pending</span>;
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
-
-  const formatCurrency = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency || 'USD',
-    }).format(amount);
-  };
-
   if (payments.length === 0) {
     return (
-      <div className="card">
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">💰</div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No payments yet</h3>
-          <p className="text-gray-600 mb-6">Start by adding your first payment record</p>
-        </div>
-      </div>
+      <EmptyState
+        icon={Wallet}
+        title="No payments yet"
+        copy="Record the first rent payment — due date, amount, and status."
+      />
     );
   }
 
   return (
-    <div className="space-y-4">
-      {/* Desktop Table */}
-      <div className="card table-responsive">
-        <table className="table">
+    <div className="space-y-5">
+      {/* Desktop ledger table */}
+      <div className="hidden overflow-hidden rounded-sheet border border-rule bg-paper-raised shadow-sheet md:block">
+        <table className="w-full text-[14px]">
           <thead>
-            <tr>
-              <th>Contract</th>
-              <th>Amount</th>
-              <th>Due Date</th>
-              <th>Paid Date</th>
-              <th>Status</th>
-              <th>Actions</th>
+            <tr className="border-b border-rule-strong bg-paper-well/60 text-left">
+              <th className="px-5 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Contract</th>
+              <th className="px-4 py-3 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Amount</th>
+              <th className="px-4 py-3 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Due</th>
+              <th className="px-4 py-3 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Paid</th>
+              <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Status</th>
+              <th className="px-5 py-3 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {payments.map((payment) => (
-              <tr key={payment.id}>
-                <td>
-                  <div className="font-medium text-gray-900">
-                    Contract #{payment.contractId.slice(0, 8)}
-                  </div>
+            {pagedPayments.map((payment) => (
+              <tr key={payment.id} className="border-b border-rule/70 transition-colors last:border-b-0 hover:bg-paper-well/50">
+                <td className="px-5 py-3">
+                  <span className="text-figure font-medium text-carbon">#{payment.contractId.slice(0, 8)}</span>
                 </td>
-                <td>
-                  <div className="font-semibold text-gray-900">
-                    {formatCurrency(payment.amount, payment.currency)}
-                  </div>
+                <td className="text-figure px-4 py-3 text-right font-semibold text-carbon">
+                  {new Intl.NumberFormat('en-US', { style: 'currency', currency: payment.currency || 'USD' }).format(payment.amount)}
                 </td>
-                <td>
-                  <div className="text-gray-900">
-                    {formatDate(payment.dueDate)}
-                  </div>
+                <td className="text-figure px-4 py-3 text-right text-carbon-soft">
+                  {new Date(payment.dueDate).toLocaleDateString()}
                 </td>
-                <td>
-                  <div className="text-gray-900">
-                    {payment.paidDate ? formatDate(payment.paidDate) : '-'}
-                  </div>
+                <td className="text-figure px-4 py-3 text-right text-carbon-soft">
+                  {payment.paidDate ? new Date(payment.paidDate).toLocaleDateString() : '—'}
                 </td>
-                <td>{getStatusBadge(payment.status)}</td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => onEdit(payment)}
-                      className="btn btn-sm btn-secondary"
-                      title="Edit payment"
-                    >
-                      ✏️
-                    </button>
-                    <button
+                <td className="px-4 py-3">{statusBadge(payment.status)}</td>
+                <td className="px-5 py-3">
+                  <div className="flex items-center justify-end gap-1.5">
+                    <Button variant="ghost" size="icon" onClick={() => onEdit(payment)} aria-label="Edit payment" title="Edit">
+                      <Pencil className="size-3.5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => handleDelete(payment.id)}
-                      className="btn btn-sm btn-danger"
-                      title="Delete payment"
                       disabled={deleteMutation.isPending}
+                      aria-label="Delete payment"
+                      title="Delete"
+                      className="hover:bg-ink-red/10 hover:text-ink-red"
                     >
-                      🗑️
-                    </button>
+                      <Trash2 className="size-3.5" />
+                    </Button>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <Pagination
+          page={safePage}
+          pageSize={PAGE_SIZE}
+          total={payments.length}
+          onPageChange={setPage}
+          label="payments"
+        />
       </div>
 
-      {/* Mobile Cards */}
-      <div className="mobile-cards">
-        {payments.map((payment) => (
-          <div key={payment.id} className="card">
-            <div className="flex items-start justify-between mb-3">
+      {/* Mobile cards */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {pagedPayments.map((payment) => (
+          <article key={payment.id} className="rounded-sheet border border-rule bg-paper-raised p-4 shadow-sheet">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="font-semibold text-gray-900 mb-1">
-                  {formatCurrency(payment.amount, payment.currency)}
+                <div className="text-figure text-[17px] font-semibold text-carbon">
+                  {new Intl.NumberFormat('en-US', { style: 'currency', currency: payment.currency || 'USD' }).format(payment.amount)}
                 </div>
-                <div className="text-sm text-gray-600">
-                  Contract #{payment.contractId.slice(0, 8)}
+                <div className="text-figure mt-0.5 text-[12.5px] text-carbon-faint">
+                  #{payment.contractId.slice(0, 8)}
                 </div>
               </div>
-              {getStatusBadge(payment.status)}
+              {statusBadge(payment.status)}
             </div>
 
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Due Date:</span>
-                <span className="text-gray-900">{formatDate(payment.dueDate)}</span>
+            <div className="mt-3 space-y-0 border-t border-rule">
+              <div className="flex justify-between border-b border-rule py-2 text-[13.5px]">
+                <span className="text-carbon-soft">Due date</span>
+                <span className="text-figure text-carbon">{new Date(payment.dueDate).toLocaleDateString()}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Paid Date:</span>
-                <span className="text-gray-900">
-                  {payment.paidDate ? formatDate(payment.paidDate) : 'Not paid'}
+              <div className="flex justify-between py-2 text-[13.5px]">
+                <span className="text-carbon-soft">Paid date</span>
+                <span className="text-figure text-carbon">
+                  {payment.paidDate ? new Date(payment.paidDate).toLocaleDateString() : 'Not paid'}
                 </span>
               </div>
-              {payment.notes && (
-                <div className="text-sm">
-                  <span className="text-gray-600">Notes:</span>
-                  <p className="text-gray-900 mt-1">{payment.notes}</p>
-                </div>
-              )}
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => onEdit(payment)}
-                className="btn btn-sm btn-secondary flex-1"
-              >
-                ✏️ Edit
-              </button>
-              <button
+            {payment.notes && <p className="mt-2 text-[13.5px] italic text-carbon-faint">{payment.notes}</p>}
+
+            <div className="mt-3 flex gap-2">
+              <Button variant="secondary" size="sm" className="flex-1" onClick={() => onEdit(payment)}>
+                <Pencil className="size-3.5" aria-hidden /> Edit
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                className="flex-1"
                 onClick={() => handleDelete(payment.id)}
-                className="btn btn-sm btn-danger flex-1"
                 disabled={deleteMutation.isPending}
+                loading={deleteMutation.isPending}
               >
-                🗑️ Delete
-              </button>
+                <Trash2 className="size-3.5" aria-hidden /> Delete
+              </Button>
             </div>
-          </div>
+          </article>
         ))}
+      </div>
+
+      <div className="rounded-sheet border border-rule bg-paper-raised shadow-sheet md:hidden">
+        <Pagination
+          page={safePage}
+          pageSize={PAGE_SIZE}
+          total={payments.length}
+          onPageChange={setPage}
+          label="payments"
+        />
       </div>
     </div>
   );

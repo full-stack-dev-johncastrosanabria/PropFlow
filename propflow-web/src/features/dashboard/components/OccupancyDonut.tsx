@@ -1,3 +1,5 @@
+import { AnimatedCircularProgressBar } from '@/components/magicui/animated-circular-progress-bar';
+
 interface Props {
   occupied: number;
   available: number;
@@ -5,64 +7,49 @@ interface Props {
   rate: number;
 }
 
-const COLORS = {
-  occupied: '#22c55e',
-  available: '#3b82f6',
-  maintenance: '#f59e0b',
-};
-
+// Occupancy as an inked gauge ring + a ruled legend.
 export default function OccupancyDonut({ occupied, available, maintenance, rate }: Props) {
-  const total = occupied + available + maintenance;
   const segments = [
-    { key: 'Occupied', value: occupied, color: COLORS.occupied },
-    { key: 'Available', value: available, color: COLORS.available },
-    { key: 'Maintenance', value: maintenance, color: COLORS.maintenance },
+    { key: 'Occupied', value: occupied, ink: 'var(--color-ink-green)', form: 'solid' as const },
+    { key: 'Available', value: available, ink: 'var(--color-ink-blue)', form: 'solid' as const },
+    { key: 'Maintenance', value: maintenance, ink: 'var(--color-ink-amber-stroke)', form: 'dashed' as const },
   ];
 
-  const r = 54;
-  const c = 2 * Math.PI * r;
-  let offset = 0;
-
   return (
-    <div className="donut-wrap">
-      <div className="donut-svg-wrap">
-        <svg viewBox="0 0 140 140" className="donut-svg">
-          <circle cx="70" cy="70" r={r} className="donut-track" />
-          {total > 0 &&
-            segments.map((s) => {
-              const len = (s.value / total) * c;
-              const dash = `${len} ${c - len}`;
-              const el = (
-                <circle
-                  key={s.key}
-                  cx="70"
-                  cy="70"
-                  r={r}
-                  fill="none"
-                  stroke={s.color}
-                  strokeWidth="16"
-                  strokeDasharray={dash}
-                  strokeDashoffset={-offset}
-                  strokeLinecap="butt"
-                  transform="rotate(-90 70 70)"
-                />
-              );
-              offset += len;
-              return el;
-            })}
-          <text x="70" y="66" textAnchor="middle" className="donut-center-value">{rate}%</text>
-          <text x="70" y="86" textAnchor="middle" className="donut-center-label">occupied</text>
-        </svg>
-      </div>
-      <div className="donut-legend">
-        {segments.map((s) => (
-          <div key={s.key} className="donut-legend-row">
-            <span className="donut-legend-dot" style={{ background: s.color }} />
-            <span className="donut-legend-label">{s.key}</span>
-            <span className="donut-legend-value">{s.value}</span>
+    <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-8">
+      <div className="relative">
+        <AnimatedCircularProgressBar
+          value={rate}
+          gaugePrimaryColor="var(--color-ink-green)"
+          gaugeSecondaryColor="var(--color-rule)"
+          className="size-[150px] text-[15px]"
+        >
+          <div className="text-center">
+            <div className="text-figure text-[26px] font-semibold leading-none text-carbon">{rate}%</div>
+            <div className="mt-1 text-[11px] font-bold uppercase tracking-[0.1em] text-carbon-faint">
+              occupied
+            </div>
           </div>
-        ))}
+        </AnimatedCircularProgressBar>
       </div>
+
+      <ul className="w-full max-w-[220px] space-y-0">
+        {segments.map((s) => (
+          <li key={s.key} className="flex items-center gap-3 border-b border-rule py-2.5 last:border-b-0">
+            <span
+              className="h-[6px] w-7 rounded-full"
+              style={
+                s.form === 'dashed'
+                  ? { backgroundImage: `repeating-linear-gradient(90deg, ${s.ink} 0 5px, transparent 5px 8px)` }
+                  : { backgroundColor: s.ink }
+              }
+              aria-hidden
+            />
+            <span className="flex-1 text-[13.5px] font-semibold text-carbon-soft">{s.key}</span>
+            <span className="text-figure text-[15px] font-semibold text-carbon">{s.value}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

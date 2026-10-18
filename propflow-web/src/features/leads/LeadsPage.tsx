@@ -1,11 +1,18 @@
 import { useMemo, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
 import { leadsApi } from '../../shared/api/leads';
 import type { LeadDto } from '../../shared/types';
 import { LeadStage } from '../../shared/types';
 import { STAGES, stageMeta, formatCurrency } from './leadMeta';
 import LeadCard from './components/LeadCard';
 import LeadForm from './components/LeadForm';
+import { ShimmerButton } from '@/components/magicui/shimmer-button';
+import { BlurFade } from '@/components/magicui/blur-fade';
+import { NumberTicker } from '@/components/magicui/number-ticker';
+import { FadingScroll } from '@/components/world/FadingScroll';
+import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
+import { cn } from '@/lib/utils';
 
 export default function LeadsPage() {
   const queryClient = useQueryClient();
@@ -87,123 +94,138 @@ export default function LeadsPage() {
     setDraggingId(null);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <div className="text-center">
-          <div className="spinner mb-4" />
-          <p className="text-gray-600">Loading pipeline…</p>
-        </div>
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoading label="Laying out the board…" />;
 
   if (error) {
-    return (
-      <div className="alert alert-danger">
-        <strong>Error:</strong> {error instanceof Error ? error.message : 'Failed to load leads'}
-      </div>
-    );
+    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load leads'} />;
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="funnel-header">
+    <div className="space-y-5">
+      <BlurFade className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="funnel-title">Sales Funnel</h1>
-          <p className="funnel-subtitle">Track and convert your rental leads through the pipeline</p>
+          <h1 className="font-display text-[30px] font-bold leading-tight text-carbon sm:text-[34px]">
+            Sales funnel
+          </h1>
+          <p className="mt-1 text-[15px] text-carbon-soft">
+            Drag a lead across the board as it moves — every column keeps its own count and value.
+          </p>
         </div>
-        <button onClick={() => handleCreate()} className="btn btn-primary">
-          <span className="text-lg">➕</span> New Lead
-        </button>
-      </div>
+        <ShimmerButton onClick={() => handleCreate()} className="h-11 px-5 text-[14.5px]">
+          <Plus className="size-4" aria-hidden />
+          New lead
+        </ShimmerButton>
+      </BlurFade>
 
-      {/* Metrics */}
-      <div className="funnel-metrics">
-        <div className="metric-card">
-          <div className="metric-icon" style={{ background: 'rgba(99,102,241,0.12)' }}>👥</div>
-          <div>
-            <div className="metric-value">{metrics.active}</div>
-            <div className="metric-label">Active Leads</div>
-          </div>
-        </div>
-        <div className="metric-card">
-          <div className="metric-icon" style={{ background: 'rgba(14,165,233,0.12)' }}>💼</div>
-          <div>
-            <div className="metric-value">{formatCurrency(metrics.pipelineValue, 'USD')}</div>
-            <div className="metric-label">Pipeline Value / mo</div>
-          </div>
-        </div>
-        <div className="metric-card">
-          <div className="metric-icon" style={{ background: 'rgba(34,197,94,0.14)' }}>🎉</div>
-          <div>
-            <div className="metric-value">{metrics.won}</div>
-            <div className="metric-label">Won Deals</div>
-          </div>
-        </div>
-        <div className="metric-card">
-          <div className="metric-icon" style={{ background: 'rgba(245,158,11,0.14)' }}>📈</div>
-          <div>
-            <div className="metric-value">{metrics.winRate}%</div>
-            <div className="metric-label">Win Rate</div>
-          </div>
-        </div>
-      </div>
+      {/* the ledger strip */}
+      <BlurFade delay={0.05}>
+        <section
+          aria-label="Pipeline figures"
+          className="grid grid-cols-2 divide-rule rounded-sheet border border-rule bg-paper-raised shadow-sheet lg:grid-cols-4 lg:divide-x"
+        >
+          <MetricCell label="Active leads" value={metrics.active} foot="in play right now" />
+          <MetricCell
+            label="Pipeline / mo"
+            value={formatCurrency(metrics.pipelineValue, 'USD')}
+            foot="estimated monthly value"
+            mono
+          />
+          <MetricCell label="Won deals" value={metrics.won} foot={formatCurrency(metrics.wonValue, 'USD') + ' /mo secured'} cellBorder="max-sm:border-t max-sm:border-rule" />
+          <MetricCell
+            label="Win rate"
+            value={`${metrics.winRate}%`}
+            foot={`${metrics.total} leads all-time`}
+            mono
+            cellBorder="max-sm:border-t max-sm:border-rule"
+          />
+        </section>
+      </BlurFade>
 
-      {/* Kanban board */}
-      <div className="funnel-board">
-        {STAGES.map((s) => {
-          const items = byStage.get(s.stage) ?? [];
-          const colValue = items.reduce((sum, l) => sum + l.estimatedValue, 0);
-          return (
-            <div
-              key={s.stage}
-              className={`funnel-col ${dragOverStage === s.stage ? 'funnel-col-over' : ''}`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                if (dragOverStage !== s.stage) setDragOverStage(s.stage);
-              }}
-              onDragLeave={(e) => {
-                if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOverStage(null);
-              }}
-              onDrop={() => handleDropOn(s.stage)}
-            >
-              <div className="funnel-col-head" style={{ borderTopColor: s.color }}>
-                <div className="funnel-col-title">
-                  <span className="funnel-col-dot" style={{ background: s.color }} />
-                  <span>{s.icon} {s.label}</span>
-                  <span className="funnel-col-count">{items.length}</span>
+      {/* the board */}
+      <BlurFade delay={0.1}>
+        <div className="-mx-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6">
+          <div className="flex min-w-[980px] gap-4">
+            {STAGES.map((s) => {
+              const items = byStage.get(s.stage) ?? [];
+              const colValue = items.reduce((sum, l) => sum + l.estimatedValue, 0);
+              const over = dragOverStage === s.stage;
+              return (
+                <div
+                  key={s.stage}
+                  className={cn(
+                    'flex w-[232px] shrink-0 flex-col rounded-sheet border bg-paper-well/40 transition-colors',
+                    over ? 'border-ink-blue border-dashed bg-ink-blue/5' : 'border-rule'
+                  )}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    if (dragOverStage !== s.stage) setDragOverStage(s.stage);
+                  }}
+                  onDragLeave={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOverStage(null);
+                  }}
+                  onDrop={() => handleDropOn(s.stage)}
+                >
+                  {/* the column's ink tab */}
+                  <div className="px-3.5 pb-2.5 pt-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="flex size-6 items-center justify-center rounded-[7px] text-[#fdf8ec]"
+                          style={{ backgroundColor: s.color }}
+                          aria-hidden
+                        >
+                          <s.icon className="size-3.5" />
+                        </span>
+                        <span className="text-[13.5px] font-bold text-carbon">{s.label}</span>
+                        <span className="text-figure rounded-full bg-paper-deep px-1.5 text-[11.5px] font-semibold text-carbon-soft">
+                          {items.length}
+                        </span>
+                      </div>
+                      <span className="text-figure text-[12px] font-semibold text-carbon-faint">
+                        {formatCurrency(colValue, 'USD')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <FadingScroll
+                    className="min-h-[120px] flex-1"
+                    innerClassName="flex flex-col gap-2 px-2.5 pt-0.5 pb-12 max-h-[380px]"
+                  >
+                    {items.map((lead) => (
+                      <LeadCard
+                        key={lead.id}
+                        lead={lead}
+                        accent={stageMeta(lead.stage).color}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        onDragStart={(l) => setDraggingId(l.id)}
+                        onDragEnd={() => { setDraggingId(null); setDragOverStage(null); }}
+                        isDragging={draggingId === lead.id}
+                        dimmed={!!draggingId && draggingId !== lead.id}
+                      />
+                    ))}
+
+                    {items.length === 0 && (
+                      <div className="flex flex-1 items-center justify-center rounded-[10px] border border-dashed border-rule-strong/70 py-10 text-[12.5px] text-carbon-faint">
+                        Drop leads here
+                      </div>
+                    )}
+                  </FadingScroll>
+
+                  <div className="px-2.5 pb-2.5">
+                    <button
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[9px] border border-dashed border-rule-strong/70 py-2 text-[12.5px] font-semibold text-carbon-soft transition-colors hover:border-ink-blue/60 hover:bg-ink-blue/5 hover:text-ink-blue"
+                      onClick={() => handleCreate(s.stage)}
+                    >
+                      <Plus className="size-3.5" aria-hidden /> Add
+                    </button>
+                  </div>
                 </div>
-                <div className="funnel-col-value">{formatCurrency(colValue, 'USD')}</div>
-              </div>
-
-              <div className="funnel-col-body">
-                {items.map((lead) => (
-                  <LeadCard
-                    key={lead.id}
-                    lead={lead}
-                    accent={stageMeta(lead.stage).color}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    onDragStart={(l) => setDraggingId(l.id)}
-                    onDragEnd={() => { setDraggingId(null); setDragOverStage(null); }}
-                    isDragging={draggingId === lead.id}
-                  />
-                ))}
-
-                {items.length === 0 && (
-                  <div className="funnel-col-empty">Drop leads here</div>
-                )}
-
-                <button className="funnel-add-btn" onClick={() => handleCreate(s.stage)}>
-                  + Add
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </div>
+      </BlurFade>
 
       {isFormOpen && (
         <LeadForm
@@ -212,6 +234,35 @@ export default function LeadsPage() {
           onClose={() => { setIsFormOpen(false); setEditingLead(null); }}
         />
       )}
+    </div>
+  );
+}
+
+function MetricCell({
+  label,
+  value,
+  foot,
+  mono,
+  cellBorder,
+}: {
+  label: string;
+  value: React.ReactNode;
+  foot: string;
+  mono?: boolean;
+  cellBorder?: string;
+}) {
+  return (
+    <div className={`p-4 sm:p-5 ${cellBorder ?? ''}`}>
+      <div className="text-rule-label">{label}</div>
+      <div
+        className={cn(
+          'mt-2 text-[24px] font-semibold leading-none text-carbon sm:text-[26px]',
+          mono && 'text-figure'
+        )}
+      >
+        {typeof value === 'number' ? <NumberTicker value={value} /> : value}
+      </div>
+      <div className="mt-2 text-[12.5px] text-carbon-faint">{foot}</div>
     </div>
   );
 }

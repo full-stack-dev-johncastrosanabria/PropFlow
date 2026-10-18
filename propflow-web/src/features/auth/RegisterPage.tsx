@@ -1,6 +1,10 @@
-import { useState, FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../app/contexts/AuthContext';
+import { ShimmerButton } from '@/components/magicui/shimmer-button';
+import { Field, TextInput } from '@/components/world/fields';
+import { ErrorNote } from '@/components/world/EmptyState';
+import { AnimatedThemeToggler } from '@/components/magicui/animated-theme-toggler';
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -25,97 +29,74 @@ export default function RegisterPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '1rem',
-    }}>
-      <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
-        <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '0.5rem', textAlign: 'center' }}>
-          Create Account
-        </h1>
-        <p style={{ color: 'var(--gray-600)', marginBottom: '2rem', textAlign: 'center' }}>
-          Start managing your properties today
-        </p>
+    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+      <AnimatedThemeToggler className="absolute right-4 top-4 z-20 flex size-10 items-center justify-center rounded-[10px] border border-rule-strong bg-paper-raised text-carbon-soft shadow-tab transition-colors hover:text-carbon [&_svg]:size-[18px]" />
+      <div className="w-full max-w-[420px]">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="flex size-10 items-center justify-center rounded-[11px] bg-ink-red font-display text-[21px] font-bold text-[#fdf8ec] shadow-tab">
+            P
+          </span>
+          <div className="font-display text-[22px] font-bold text-carbon">PropFlow</div>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="fullName" className="form-label">
-              Full Name
-            </label>
-            <input
-              id="fullName"
-              type="text"
-              className="form-input"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              required
-              autoComplete="name"
-            />
-          </div>
+        <div className="rounded-sheet border border-rule bg-paper-raised p-6 shadow-sheet sm:p-8">
+          <h1 className="font-display text-[26px] font-bold text-carbon">Open your planner</h1>
+          <p className="mt-1 text-[14.5px] text-carbon-soft">
+            One account for properties, tenants, contracts and the daily block.
+          </p>
 
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              className="form-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            <Field label="Full name" required>
+              <TextInput
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+                autoComplete="name"
+                placeholder="Alex Morgan"
+              />
+            </Field>
 
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="new-password"
-              minLength={6}
-            />
-          </div>
+            <Field label="Email" required>
+              <TextInput
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+                placeholder="you@example.com"
+              />
+            </Field>
 
-          {error && (
-            <div style={{
-              padding: '0.75rem',
-              backgroundColor: '#fee2e2',
-              color: 'var(--danger)',
-              borderRadius: 'var(--border-radius)',
-              marginBottom: '1rem',
-              fontSize: '0.875rem',
-            }}>
-              {error}
-            </div>
-          )}
+            <Field label="Password" required>
+              <TextInput
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                autoComplete="new-password"
+                placeholder="At least 6 characters"
+              />
+            </Field>
 
-          <button
-            type="submit"
-            className="btn btn-primary btn-lg"
-            disabled={isLoading}
-            style={{ width: '100%' }}
-          >
-            {isLoading ? 'Creating account...' : 'Create Account'}
-          </button>
-        </form>
+            {error && <ErrorNote message={error} />}
 
-        <p style={{ marginTop: '1.5rem', textAlign: 'center', color: 'var(--gray-600)', fontSize: '0.875rem' }}>
-          Already have an account?{' '}
-          <Link to="/login" style={{ color: 'var(--primary)', fontWeight: '500' }}>
-            Sign in
-          </Link>
-        </p>
+            <ShimmerButton type="submit" disabled={isLoading} className="mt-1 h-12 w-full text-[15px]">
+              {isLoading ? 'Creating account…' : 'Create account'}
+            </ShimmerButton>
+          </form>
+
+          <p className="mt-5 text-center text-[14px] text-carbon-soft">
+            Already have an account?{' '}
+            <Link
+              to="/login"
+              className="font-semibold text-ink-blue underline-offset-[3px] hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

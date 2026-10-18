@@ -6,67 +6,95 @@ interface Props {
   currency: string;
 }
 
-// Lightweight SVG column chart: collected (solid) vs expected (track).
+// Inked column chart on graph paper: collected (solid ink) vs expected (ruled track).
 export default function RevenueChart({ data, currency }: Props) {
   const max = Math.max(1, ...data.map((d) => Math.max(d.expected, d.collected)));
   const W = 520;
-  const H = 200;
-  const padB = 28;
-  const padT = 12;
+  const H = 210;
+  const padB = 30;
+  const padT = 10;
   const chartH = H - padB - padT;
   const slot = W / data.length;
-  const barW = Math.min(38, slot * 0.5);
+  const barW = Math.min(40, slot * 0.52);
 
   return (
-    <div className="rev-chart">
-      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="rev-chart-svg" role="img" aria-label="Revenue trend">
-        {/* gridlines */}
-        {[0.25, 0.5, 0.75, 1].map((g) => (
-          <line
-            key={g}
-            x1={0}
-            x2={W}
-            y1={padT + chartH * (1 - g)}
-            y2={padT + chartH * (1 - g)}
-            className="rev-grid"
-          />
-        ))}
-        {data.map((d, i) => {
-          const cx = i * slot + slot / 2;
-          const expH = (d.expected / max) * chartH;
-          const colH = (d.collected / max) * chartH;
-          return (
-            <g key={i}>
-              {/* expected track */}
-              <rect
-                x={cx - barW / 2}
-                y={padT + chartH - expH}
-                width={barW}
-                height={Math.max(expH, 2)}
-                rx={5}
-                className="rev-bar-track"
-              />
-              {/* collected fill */}
-              <rect
-                x={cx - barW / 2}
-                y={padT + chartH - colH}
-                width={barW}
-                height={Math.max(colH, 2)}
-                rx={5}
-                className="rev-bar-fill"
-              />
-              <text x={cx} y={H - 9} textAnchor="middle" className="rev-x-label">
-                {d.month}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-      <div className="rev-legend">
-        <span className="rev-legend-item"><span className="rev-dot rev-dot-fill" /> Collected</span>
-        <span className="rev-legend-item"><span className="rev-dot rev-dot-track" /> Expected</span>
-        <span className="rev-legend-total">
-          Last 6 mo: <strong>{money(data.reduce((s, d) => s + d.collected, 0), currency, true)}</strong>
+    <div>
+      <div className="bg-graph-dots rounded-[10px] border border-rule/70 bg-paper-well/50 p-2">
+        <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label="Revenue trend, collected versus expected, last six months">
+          {[0.25, 0.5, 0.75, 1].map((g) => (
+            <line
+              key={g}
+              x1={0}
+              x2={W}
+              y1={padT + chartH * (1 - g)}
+              y2={padT + chartH * (1 - g)}
+              stroke="var(--color-rule)"
+              strokeWidth={1}
+              strokeDasharray="2 5"
+            />
+          ))}
+          {data.map((d, i) => {
+            const cx = i * slot + slot / 2;
+            const expH = Math.max((d.expected / max) * chartH, 2);
+            const colH = Math.max((d.collected / max) * chartH, 2);
+            const isCurrent = i === data.length - 1;
+            return (
+              <g key={i}>
+                {/* expected — the ruled track */}
+                <rect
+                  x={cx - barW / 2}
+                  y={padT + chartH - expH}
+                  width={barW}
+                  height={expH}
+                  rx={6}
+                  fill="var(--color-paper-raised)"
+                  stroke="var(--color-rule-strong)"
+                  strokeWidth={1.25}
+                />
+                {/* collected — the ink stroke */}
+                <rect
+                  x={cx - barW / 2}
+                  y={padT + chartH - colH}
+                  width={barW}
+                  height={colH}
+                  rx={6}
+                  fill={isCurrent ? 'var(--color-ink-red-bright)' : 'var(--color-ink-green)'}
+                  opacity={isCurrent ? 1 : 0.92}
+                />
+                {isCurrent && (
+                  <rect
+                    x={cx - barW / 2}
+                    y={padT + chartH - colH}
+                    width={barW}
+                    height={colH}
+                    rx={6}
+                    fill="none"
+                    stroke="var(--color-ink-red-deep)"
+                    strokeWidth={1.25}
+                  />
+                )}
+                <text x={cx} y={H - 9} textAnchor="middle" fontSize={12.5} fill="var(--color-carbon-soft)" fontWeight={600}>
+                  {d.month}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-1">
+        <div className="flex items-center gap-5 text-[13px] font-medium text-carbon-soft">
+          <span className="flex items-center gap-2">
+            <span className="size-2.5 rounded-[3px] bg-ink-green" aria-hidden /> Collected
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="size-2.5 rounded-[3px] border border-rule-strong bg-paper-raised" aria-hidden /> Expected
+          </span>
+        </div>
+        <span className="text-[13px] text-carbon-faint">
+          Last 6 mo:{' '}
+          <span className="text-figure font-semibold text-carbon">
+            {money(data.reduce((s, d) => s + d.collected, 0), currency, true)}
+          </span>
         </span>
       </div>
     </div>

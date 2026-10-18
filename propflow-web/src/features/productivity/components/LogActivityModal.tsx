@@ -1,22 +1,26 @@
-import { useState, FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { productivityApi } from '../../../shared/api/productivity';
 import type { DailyActivityDto } from '../../../shared/types';
+import { Modal } from '@/components/world/Modal';
+import { Field, TextInput, Textarea } from '@/components/world/fields';
+import { Button } from '@/components/world/Button';
+import { ErrorNote } from '@/components/world/EmptyState';
 
 interface Props {
   activity: DailyActivityDto;
   onClose: () => void;
 }
 
-const FIELDS: { key: keyof DailyActivityDto; label: string; icon: string; step?: number }[] = [
-  { key: 'leadGenHours', label: 'Lead-gen hours (time block)', icon: '⏱️', step: 0.5 },
-  { key: 'contacts', label: 'Contacts (calls/texts/touches)', icon: '📞' },
-  { key: 'conversations', label: 'Conversations', icon: '💬' },
-  { key: 'leadsAdded', label: 'New leads added to database', icon: '➕' },
-  { key: 'appointmentsSet', label: 'Appointments set', icon: '📅' },
-  { key: 'appointmentsMet', label: 'Appointments met', icon: '🤝' },
-  { key: 'agreementsSigned', label: 'Agreements signed', icon: '✍️' },
-  { key: 'offersWritten', label: 'Offers written', icon: '📝' },
+const FIELDS: { key: keyof DailyActivityDto; label: string; step?: number }[] = [
+  { key: 'leadGenHours', label: 'Lead-gen hours (the time block)', step: 0.5 },
+  { key: 'contacts', label: 'Contacts (calls, texts, touches)' },
+  { key: 'conversations', label: 'Conversations' },
+  { key: 'leadsAdded', label: 'New leads added to database' },
+  { key: 'appointmentsSet', label: 'Appointments set' },
+  { key: 'appointmentsMet', label: 'Appointments met' },
+  { key: 'agreementsSigned', label: 'Agreements signed' },
+  { key: 'offersWritten', label: 'Offers written' },
 ];
 
 export default function LogActivityModal({ activity, onClose }: Props) {
@@ -58,58 +62,42 @@ export default function LogActivityModal({ activity, onClose }: Props) {
     setForm({ ...form, [key]: raw === '' ? 0 : Number(raw) });
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900">Log today's activity</h2>
-            <button onClick={onClose} className="lead-modal-close">✕</button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="form-grid">
-              {FIELDS.map((f) => (
-                <div key={f.key} className="form-group">
-                  <label className="form-label">{f.icon} {f.label}</label>
-                  <input
-                    type="number"
-                    min="0"
-                    step={f.step || 1}
-                    className="form-input"
-                    value={(form as Record<string, number | string>)[f.key] as number}
-                    onChange={(e) => set(f.key, e.target.value)}
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Notes</label>
-              <textarea
-                className="form-input"
-                style={{ minHeight: 70 }}
-                value={form.notes}
-                onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                placeholder="Wins, blockers, follow-ups…"
-                rows={2}
+    <Modal title="Log today's activity" subtitle="The numbers only count if they go on the sheet." onClose={onClose} wide>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {FIELDS.map((f) => (
+            <Field key={f.key} label={f.label}>
+              <TextInput
+                type="number"
+                min="0"
+                step={f.step || 1}
+                value={(form as Record<string, number | string>)[f.key] as number}
+                onChange={(e) => set(f.key, e.target.value)}
               />
-            </div>
-
-            {error && <div className="alert alert-danger"><strong>Error:</strong> {error}</div>}
-
-            <div className="flex gap-3 pt-2">
-              <button type="button" onClick={onClose} className="btn btn-secondary flex-1" disabled={mutation.isPending}>
-                Cancel
-              </button>
-              <button type="submit" className="btn btn-primary flex-1" disabled={mutation.isPending}>
-                {mutation.isPending ? (
-                  <div className="flex items-center gap-2"><div className="spinner w-4 h-4" /> Saving…</div>
-                ) : 'Save activity'}
-              </button>
-            </div>
-          </form>
+            </Field>
+          ))}
         </div>
-      </div>
-    </div>
+
+        <Field label="Notes">
+          <Textarea
+            value={form.notes}
+            onChange={(e) => setForm({ ...form, notes: e.target.value })}
+            placeholder="Wins, blockers, follow-ups…"
+            rows={2}
+          />
+        </Field>
+
+        {error && <ErrorNote message={error} />}
+
+        <div className="flex gap-3 pt-1">
+          <Button type="button" variant="secondary" className="flex-1" onClick={onClose} disabled={mutation.isPending}>
+            Cancel
+          </Button>
+          <Button type="submit" className="flex-1" loading={mutation.isPending}>
+            Save activity
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

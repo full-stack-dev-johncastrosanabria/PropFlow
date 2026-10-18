@@ -9,6 +9,25 @@ const clone = <T>(v: T): T =>
 
 const store: Any = clone(demoData as unknown as Any);
 
+// Demo records reference bundled photos as `asset:<path-under-public/images>`.
+// Resolve them once to runtime URLs (honors the GitHub Pages base path).
+const assetUrl = (v: unknown): string | undefined =>
+  typeof v === 'string' && v.startsWith('asset:')
+    ? `${import.meta.env.BASE_URL}images/${v.slice(6)}`
+    : undefined;
+
+for (const rec of [
+  store.landlord as Any,
+  ...(store.properties as Any[] | undefined ?? []),
+  ...(store.rentalunits as Any[] | undefined ?? []),
+  ...(store.tenants as Any[] | undefined ?? []),
+  ...(store.leads as Any[] | undefined ?? []),
+]) {
+  if (!rec) continue;
+  const u = assetUrl(rec.imageUrl);
+  if (u) rec.imageUrl = u;
+}
+
 const uuid = (): string =>
   typeof crypto !== 'undefined' && 'randomUUID' in crypto
     ? crypto.randomUUID()

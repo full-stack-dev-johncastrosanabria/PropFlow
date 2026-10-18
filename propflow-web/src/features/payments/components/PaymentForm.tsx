@@ -2,11 +2,23 @@ import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { paymentsApi } from '../../../shared/api/payments';
 import { PaymentStatus, type PaymentDto, type ContractDto, type CreatePaymentDto, type UpdatePaymentDto } from '../../../shared/types';
+import { Modal } from '@/components/world/Modal';
+import { Field, TextInput, Select, Textarea } from '@/components/world/fields';
+import { Button } from '@/components/world/Button';
+import { ErrorNote } from '@/components/world/EmptyState';
 
 interface PaymentFormProps {
   payment?: PaymentDto | null;
   contracts: ContractDto[];
   onClose: () => void;
+}
+
+interface FormErrors {
+  contractId?: string;
+  dueDate?: string;
+  amount?: string;
+  paidDate?: string;
+  submit?: string;
 }
 
 export default function PaymentForm({ payment, contracts, onClose }: PaymentFormProps) {
@@ -20,7 +32,7 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
     notes: '',
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
 
   useEffect(() => {
     if (payment) {
@@ -38,41 +50,26 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
 
   const createMutation = useMutation({
     mutationFn: paymentsApi.create,
-    onSuccess: () => {
-      onClose();
-    },
-    onError: (error: any) => {
-      console.error('Create payment error:', error);
-      setErrors({ submit: 'Failed to create payment. Please try again.' });
-    },
+    onSuccess: onClose,
+    onError: () => setErrors({ submit: 'Failed to create payment. Please try again.' }),
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdatePaymentDto }) =>
-      paymentsApi.update(id, data),
-    onSuccess: () => {
-      onClose();
-    },
-    onError: (error: any) => {
-      console.error('Update payment error:', error);
-      setErrors({ submit: 'Failed to update payment. Please try again.' });
-    },
+    mutationFn: ({ id, data }: { id: string; data: UpdatePaymentDto }) => paymentsApi.update(id, data),
+    onSuccess: onClose,
+    onError: () => setErrors({ submit: 'Failed to update payment. Please try again.' }),
   });
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
 
-    if (!formData.contractId) {
-      newErrors.contractId = 'Contract is required';
-    }
-    if (!formData.dueDate) {
-      newErrors.dueDate = 'Due date is required';
-    }
+    if (!formData.contractId) newErrors.contractId = 'Pick the contract this payment belongs to.';
+    if (!formData.dueDate) newErrors.dueDate = 'A due date is needed.';
     if (!formData.amount || parseFloat(formData.amount) <= 0) {
-      newErrors.amount = 'Amount must be greater than 0';
+      newErrors.amount = 'The amount has to be greater than zero.';
     }
     if (formData.status === PaymentStatus.Paid && !formData.paidDate) {
-      newErrors.paidDate = 'Paid date is required when status is Paid';
+      newErrors.paidDate = 'A paid date is needed once the status is Paid.';
     }
 
     setErrors(newErrors);
@@ -81,10 +78,7 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     const submitData = {
       contractId: formData.contractId,
@@ -105,200 +99,125 @@ export default function PaymentForm({ payment, contracts, onClose }: PaymentForm
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2 className="text-xl font-semibold text-gray-900">
-            {payment ? 'Edit Payment' : 'Add New Payment'}
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
-          >
-            ×
-          </button>
+    <Modal
+      title={payment ? 'Edit payment' : 'Add payment'}
+      subtitle="One line on the rent roll."
+      onClose={onClose}
+      wide
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {errors.submit && <ErrorNote message={errors.submit} />}
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label="Contract" required error={errors.contractId}>
+            <Select
+              id="contractId"
+              name="contractId"
+              value={formData.contractId}
+              onChange={handleChange}
+              invalid={!!errors.contractId}
+              disabled={isLoading}
+            >
+              <option value="">Select a contract</option>
+              {contracts.map((contract) => (
+                <option key={contract.id} value={contract.id}>
+                  {contract.tenantName} — {contract.unitName} ({contract.currency} {contract.monthlyRent})
+                </option>
+              ))}
+            </Select>
+          </Field>
+
+          <Field label="Amount" required error={errors.amount}>
+            <TextInput
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              step="0.01"
+              min="0"
+              invalid={!!errors.amount}
+              disabled={isLoading}
+              placeholder="0.00"
+            />
+          </Field>
         </div>
 
-        <form onSubmit={handleSubmit} className="modal-body">
-          {errors.submit && (
-            <div className="alert alert-danger mb-4">
-              {errors.submit}
-            </div>
-          )}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label="Currency">
+            <Select name="currency" value={formData.currency} onChange={handleChange} disabled={isLoading}>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="CAD">CAD</option>
+            </Select>
+          </Field>
 
-          <div className="form-grid">
-            <div className="form-group">
-              <label htmlFor="contractId" className="form-label">
-                Contract *
-              </label>
-              <select
-                id="contractId"
-                name="contractId"
-                value={formData.contractId}
-                onChange={handleChange}
-                className={`form-input ${errors.contractId ? 'error' : ''}`}
-                disabled={isLoading}
-              >
-                <option value="">Select a contract</option>
-                {contracts.map((contract) => (
-                  <option key={contract.id} value={contract.id}>
-                    {contract.tenantName} - {contract.unitName} (${contract.monthlyRent})
-                  </option>
-                ))}
-              </select>
-              {errors.contractId && (
-                <span className="form-error">{errors.contractId}</span>
-              )}
-            </div>
+          <Field label="Status">
+            <Select name="status" value={formData.status} onChange={handleChange} disabled={isLoading}>
+              <option value={PaymentStatus.Pending}>Pending</option>
+              <option value={PaymentStatus.Paid}>Paid</option>
+              <option value={PaymentStatus.Late}>Late</option>
+            </Select>
+          </Field>
+        </div>
 
-            <div className="form-group">
-              <label htmlFor="amount" className="form-label">
-                Amount *
-              </label>
-              <input
-                type="number"
-                id="amount"
-                name="amount"
-                value={formData.amount}
-                onChange={handleChange}
-                step="0.01"
-                min="0"
-                className={`form-input ${errors.amount ? 'error' : ''}`}
-                disabled={isLoading}
-                placeholder="0.00"
-              />
-              {errors.amount && (
-                <span className="form-error">{errors.amount}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="currency" className="form-label">
-                Currency
-              </label>
-              <select
-                id="currency"
-                name="currency"
-                value={formData.currency}
-                onChange={handleChange}
-                className="form-input"
-                disabled={isLoading}
-              >
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="CAD">CAD</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="status" className="form-label">
-                Status
-              </label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="form-input"
-                disabled={isLoading}
-              >
-                <option value={PaymentStatus.Pending}>Pending</option>
-                <option value={PaymentStatus.Paid}>Paid</option>
-                <option value={PaymentStatus.Late}>Late</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="dueDate" className="form-label">
-                Due Date *
-              </label>
-              <input
-                type="date"
-                id="dueDate"
-                name="dueDate"
-                value={formData.dueDate}
-                onChange={handleChange}
-                className={`form-input ${errors.dueDate ? 'error' : ''}`}
-                disabled={isLoading}
-              />
-              {errors.dueDate && (
-                <span className="form-error">{errors.dueDate}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="paidDate" className="form-label">
-                Paid Date {formData.status === PaymentStatus.Paid && '*'}
-              </label>
-              <input
-                type="date"
-                id="paidDate"
-                name="paidDate"
-                value={formData.paidDate}
-                onChange={handleChange}
-                className={`form-input ${errors.paidDate ? 'error' : ''}`}
-                disabled={isLoading}
-              />
-              {errors.paidDate && (
-                <span className="form-error">{errors.paidDate}</span>
-              )}
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="notes" className="form-label">
-              Notes
-            </label>
-            <textarea
-              id="notes"
-              name="notes"
-              value={formData.notes}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label="Due date" required error={errors.dueDate}>
+            <TextInput
+              type="date"
+              name="dueDate"
+              value={formData.dueDate}
               onChange={handleChange}
-              rows={3}
-              className="form-input"
+              invalid={!!errors.dueDate}
               disabled={isLoading}
-              placeholder="Additional notes about this payment..."
             />
-          </div>
+          </Field>
 
-          <div className="modal-footer">
-            <button
-              type="button"
-              onClick={onClose}
-              className="btn btn-secondary"
+          <Field
+            label={`Paid date${formData.status === PaymentStatus.Paid ? '' : ' (optional)'}`}
+            required={formData.status === PaymentStatus.Paid}
+            error={errors.paidDate}
+          >
+            <TextInput
+              type="date"
+              name="paidDate"
+              value={formData.paidDate}
+              onChange={handleChange}
+              invalid={!!errors.paidDate}
               disabled={isLoading}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <span className="spinner-sm"></span>
-                  {payment ? 'Updating...' : 'Creating...'}
-                </>
-              ) : (
-                payment ? 'Update Payment' : 'Create Payment'
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+            />
+          </Field>
+        </div>
+
+        <Field label="Notes">
+          <Textarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            rows={3}
+            disabled={isLoading}
+            placeholder="Anything worth noting about this payment…"
+          />
+        </Field>
+
+        <div className="flex gap-3 pt-1">
+          <Button type="button" variant="secondary" className="flex-1" onClick={onClose} disabled={isLoading}>
+            Cancel
+          </Button>
+          <Button type="submit" className="flex-1" loading={isLoading}>
+            {payment ? 'Update payment' : 'Create payment'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

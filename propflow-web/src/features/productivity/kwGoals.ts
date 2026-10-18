@@ -12,20 +12,22 @@ export const KW_DEFAULT_GOALS: ProductivityGoalsDto = {
   appointmentsMet: 1,  // appointments held
 };
 
-// Metric metadata for the scorecard rings.
+export type InkTone = 'red' | 'green' | 'blue' | 'amber' | 'plum' | 'teal';
+
+// Metric metadata for the scorecard rings — each metric gets its stationery ink.
 export interface MetricMeta {
   key: keyof ProductivityGoalsDto;
   label: string;
-  icon: string;
+  tone: InkTone;
   color: string;
   unit?: string;
 }
 
 export const RING_METRICS: MetricMeta[] = [
-  { key: 'leadGenHours',    label: 'Lead-Gen Block', icon: '⏱️', color: '#e11d48', unit: 'h' },
-  { key: 'contacts',        label: 'Contacts',       icon: '📞', color: '#2563eb' },
-  { key: 'conversations',   label: 'Conversations',  icon: '💬', color: '#0ea5e9' },
-  { key: 'appointmentsSet', label: 'Appts Set',      icon: '📅', color: '#7c3aed' },
-  { key: 'leadsAdded',      label: 'Leads Added',    icon: '➕', color: '#14b8a6' },
-  { key: 'appointmentsMet', label: 'Appts Met',      icon: '🤝', color: '#f59e0b' },
+  { key: 'leadGenHours',    label: 'Lead-Gen Block', tone: 'red',   color: '#b13a25', unit: 'h' },
+  { key: 'contacts',        label: 'Contacts',       tone: 'blue',  color: '#2c4a86' },
+  { key: 'conversations',   label: 'Conversations',  tone: 'teal',  color: '#23707f' },
+  { key: 'appointmentsSet', label: 'Appts Set',      tone: 'plum',  color: '#7a4668' },
+  { key: 'leadsAdded',      label: 'Leads Added',    tone: 'green', color: '#2c6a4e' },
+  { key: 'appointmentsMet', label: 'Appts Met',      tone: 'amber', color: '#b98a2f' },
 ];

@@ -1,49 +1,45 @@
+import { AnimatedCircularProgressBar } from '@/components/magicui/animated-circular-progress-bar';
+import { Check } from 'lucide-react';
+
 interface Props {
   value: number;
   goal: number;
   label: string;
-  icon: string;
   color: string;
   unit?: string;
 }
 
-export default function ScoreRing({ value, goal, label, icon, color, unit }: Props) {
-  const pct = goal > 0 ? Math.min(1, value / goal) : 0;
-  const r = 34;
-  const c = 2 * Math.PI * r;
-  const dash = c * pct;
+// The goal-vs-actual ring: ink stroke to actual, ruled track to goal.
+export default function ScoreRing({ value, goal, label, color, unit }: Props) {
+  const pct = goal > 0 ? Math.min(100, (value / goal) * 100) : 0;
   const done = value >= goal && goal > 0;
 
   return (
-    <div className="score-ring">
-      <div className="score-ring-svg-wrap">
-        <svg viewBox="0 0 84 84" className="score-ring-svg">
-          <circle cx="42" cy="42" r={r} className="score-ring-track" />
-          <circle
-            cx="42"
-            cy="42"
-            r={r}
-            fill="none"
-            stroke={color}
-            strokeWidth="7"
-            strokeLinecap="round"
-            strokeDasharray={`${dash} ${c - dash}`}
-            strokeDashoffset={c * 0.25}
-            transform="rotate(-90 42 42)"
-            style={{ transition: 'stroke-dasharray 0.6s ease' }}
-          />
-          <text x="42" y="40" textAnchor="middle" className="score-ring-value">
-            {value}{unit || ''}
-          </text>
-          <text x="42" y="55" textAnchor="middle" className="score-ring-goal">
-            /{goal}{unit || ''}
-          </text>
-        </svg>
-        {done && <span className="score-ring-check">✓</span>}
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative">
+        <AnimatedCircularProgressBar
+          value={pct}
+          max={100}
+          gaugePrimaryColor={color}
+          gaugeSecondaryColor="var(--color-rule)"
+          className="size-[92px] text-[13px]"
+        >
+          <div className="text-center leading-none">
+            <span className="text-figure text-[16px] font-semibold text-carbon">
+              {value}{unit || ''}
+            </span>
+            <span className="text-figure block pt-0.5 text-[11px] text-carbon-faint">
+              /{goal}{unit || ''}
+            </span>
+          </div>
+        </AnimatedCircularProgressBar>
+        {done && (
+          <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full border border-ink-green-deep bg-paper-raised text-ink-green">
+            <Check className="size-3" strokeWidth={3} aria-label="Goal met" />
+          </span>
+        )}
       </div>
-      <div className="score-ring-label">
-        <span className="score-ring-icon">{icon}</span> {label}
-      </div>
+      <span className="text-center text-[12px] font-semibold text-carbon-soft">{label}</span>
     </div>
   );
 }

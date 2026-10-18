@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
 import { contractsApi } from '../../shared/api/contracts';
 import { tenantsApi } from '../../shared/api/tenants';
 import { unitsApi } from '../../shared/api/units';
 import ContractsList from './components/ContractsList';
 import ContractForm from './components/ContractForm';
 import type { ContractDto } from '../../shared/types';
+import { PageHeader } from '@/components/world/PageHeader';
+import { Button } from '@/components/world/Button';
+import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
+import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function ContractsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -42,50 +47,31 @@ export default function ContractsPage() {
     refetch();
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <div className="text-center">
-          <div className="spinner mb-4"></div>
-          <p className="text-gray-600">Loading contracts...</p>
-        </div>
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoading label="Pulling the lease file…" />;
 
   if (error) {
-    return (
-      <div className="alert alert-danger">
-        <strong>Error:</strong> {error instanceof Error ? error.message : 'Failed to load contracts'}
-      </div>
-    );
+    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load contracts'} />;
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Contracts</h1>
-          <p className="text-gray-600 mt-1">Manage rental contracts and agreements</p>
-        </div>
-        <button
-          onClick={handleCreate}
-          className="btn btn-primary"
-        >
-          <span className="text-lg">📄</span>
-          Add Contract
-        </button>
-      </div>
+    <div className="space-y-5">
+      <BlurFade>
+        <PageHeader
+          title="Contracts"
+          copy="The signed agreements — terms, deposits, and what renews when."
+          action={
+            <Button onClick={handleCreate}>
+              <Plus className="size-4" aria-hidden />
+              Add contract
+            </Button>
+          }
+        />
+      </BlurFade>
 
-      {/* Contracts List */}
-      <ContractsList 
-        contracts={contracts} 
-        onEdit={handleEdit}
-        onRefetch={refetch}
-      />
+      <BlurFade delay={0.05}>
+        <ContractsList contracts={contracts} onEdit={handleEdit} onRefetch={refetch} />
+      </BlurFade>
 
-      {/* Contract Form Modal */}
       {isFormOpen && (
         <ContractForm
           contract={editingContract}

@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
 import { paymentsApi } from '../../shared/api/payments';
 import { contractsApi } from '../../shared/api/contracts';
 import PaymentsList from './components/PaymentsList';
 import PaymentForm from './components/PaymentForm';
 import type { PaymentDto } from '../../shared/types';
+import { PageHeader } from '@/components/world/PageHeader';
+import { Button } from '@/components/world/Button';
+import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
+import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function PaymentsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -36,56 +41,33 @@ export default function PaymentsPage() {
     refetch();
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <div className="text-center">
-          <div className="spinner mb-4"></div>
-          <p className="text-gray-600">Loading payments...</p>
-        </div>
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoading label="Balancing the rent roll…" />;
 
   if (error) {
-    return (
-      <div className="alert alert-danger">
-        <strong>Error:</strong> {error instanceof Error ? error.message : 'Failed to load payments'}
-      </div>
-    );
+    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load payments'} />;
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Payments</h1>
-          <p className="text-gray-600 mt-1">Track rent payments and payment history</p>
-        </div>
-        <button
-          onClick={handleCreate}
-          className="btn btn-primary"
-        >
-          <span className="text-lg">💰</span>
-          Add Payment
-        </button>
-      </div>
-
-      {/* Payments List */}
-      <PaymentsList 
-        payments={payments} 
-        onEdit={handleEdit}
-        onRefetch={refetch}
-      />
-
-      {/* Payment Form Modal */}
-      {isFormOpen && (
-        <PaymentForm
-          payment={editingPayment}
-          contracts={contracts}
-          onClose={handleFormClose}
+    <div className="space-y-5">
+      <BlurFade>
+        <PageHeader
+          title="Payments"
+          copy="The rent roll — what's due, what's paid, and what's gone late."
+          action={
+            <Button onClick={handleCreate}>
+              <Plus className="size-4" aria-hidden />
+              Add payment
+            </Button>
+          }
         />
+      </BlurFade>
+
+      <BlurFade delay={0.05}>
+        <PaymentsList payments={payments} onEdit={handleEdit} onRefetch={refetch} />
+      </BlurFade>
+
+      {isFormOpen && (
+        <PaymentForm payment={editingPayment} contracts={contracts} onClose={handleFormClose} />
       )}
     </div>
   );

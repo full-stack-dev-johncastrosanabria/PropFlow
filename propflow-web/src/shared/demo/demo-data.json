@@ -3,7 +3,8 @@
   "id": "b7093384-6d96-4b3c-ba43-8e503057e10d",
   "email": "demo@propflow.app",
   "fullName": "Alex Morgan",
-  "createdAtUtc": "2026-07-10T23:40:54.661492"
+  "createdAtUtc": "2026-07-10T23:40:54.661492",
+  "imageUrl": "asset:avatars/portrait-02.jpg"
  },
  "dashboard": {
   "currency": "USD",
@@ -13,12 +14,12 @@
   "availableUnits": 2,
   "maintenanceUnits": 1,
   "occupancyRate": 75,
-  "collectedThisMonth": 14850.0,
-  "expectedThisMonth": 18700.0,
+  "collectedThisMonth": 14850,
+  "expectedThisMonth": 18700,
   "collectionRate": 79.4,
-  "outstandingAmount": 22550.0,
-  "overdueAmount": 3850.0,
-  "monthlyRecurringRevenue": 18700.0,
+  "outstandingAmount": 22550,
+  "overdueAmount": 3850,
+  "monthlyRecurringRevenue": 18700,
   "pendingPayments": 9,
   "latePayments": 2,
   "paidPaymentsThisMonth": 7,
@@ -31,87 +32,87 @@
   "totalLeads": 14,
   "activeLeads": 11,
   "wonLeads": 2,
-  "pipelineValue": 18600.0,
+  "pipelineValue": 18600,
   "leadsByStage": [
    {
     "stage": 0,
     "label": "New",
     "count": 3,
-    "value": 4250.0
+    "value": 4250
    },
    {
     "stage": 1,
     "label": "Contacted",
     "count": 1,
-    "value": 1600.0
+    "value": 1600
    },
    {
     "stage": 2,
     "label": "Qualified",
     "count": 3,
-    "value": 4850.0
+    "value": 4850
    },
    {
     "stage": 3,
     "label": "Viewing",
     "count": 2,
-    "value": 3200.0
+    "value": 3200
    },
    {
     "stage": 4,
     "label": "Negotiation",
     "count": 2,
-    "value": 4700.0
+    "value": 4700
    },
    {
     "stage": 5,
     "label": "Won",
     "count": 2,
-    "value": 3750.0
+    "value": 3750
    },
    {
     "stage": 6,
     "label": "Lost",
     "count": 1,
-    "value": 1000.0
+    "value": 1000
    }
   ],
   "revenueTrend": [
    {
     "month": "Feb",
     "year": 2026,
-    "collected": 18700.0,
-    "expected": 18700.0
+    "collected": 18700,
+    "expected": 18700
    },
    {
     "month": "Mar",
     "year": 2026,
-    "collected": 18700.0,
-    "expected": 18700.0
+    "collected": 18700,
+    "expected": 18700
    },
    {
     "month": "Apr",
     "year": 2026,
-    "collected": 18700.0,
-    "expected": 18700.0
+    "collected": 18700,
+    "expected": 18700
    },
    {
     "month": "May",
     "year": 2026,
-    "collected": 18700.0,
-    "expected": 18700.0
+    "collected": 18700,
+    "expected": 18700
    },
    {
     "month": "Jun",
     "year": 2026,
-    "collected": 18700.0,
-    "expected": 18700.0
+    "collected": 18700,
+    "expected": 18700
    },
    {
     "month": "Jul",
     "year": 2026,
-    "collected": 14850.0,
-    "expected": 18700.0
+    "collected": 14850,
+    "expected": 18700
    }
   ],
   "upcomingPayments": [
@@ -119,7 +120,7 @@
     "id": "851675d3-7ba5-4df0-ba7d-bbc3e41fa393",
     "tenantName": "Michael Brown",
     "unitName": "Unit 201",
-    "amount": 2400.0,
+    "amount": 2400,
     "currency": "USD",
     "dueDate": "2026-07-01T00:00:00",
     "status": 2,
@@ -130,7 +131,7 @@
     "id": "88a7fdbc-431d-456b-8f23-92522d469d9f",
     "tenantName": "James O'Connor",
     "unitName": "Unit 303",
-    "amount": 1450.0,
+    "amount": 1450,
     "currency": "USD",
     "dueDate": "2026-07-01T00:00:00",
     "status": 2,
@@ -141,7 +142,7 @@
     "id": "098ba246-b943-4cb9-9d22-94f96108bed2",
     "tenantName": "Fatima Al-Sayed",
     "unitName": "Unit 401",
-    "amount": 2800.0,
+    "amount": 2800,
     "currency": "USD",
     "dueDate": "2026-08-01T00:00:00",
     "status": 0,
@@ -152,7 +153,7 @@
     "id": "21effe1c-3134-4de3-979c-edb6bf39a60e",
     "tenantName": "David Kim",
     "unitName": "Unit 301",
-    "amount": 1500.0,
+    "amount": 1500,
     "currency": "USD",
     "dueDate": "2026-08-01T00:00:00",
     "status": 0,
@@ -163,7 +164,7 @@
     "id": "2fc0da7c-1693-4ef7-b772-d51271ab9c95",
     "tenantName": "Jennifer Lopez",
     "unitName": "Unit 102",
-    "amount": 1950.0,
+    "amount": 1950,
     "currency": "USD",
     "dueDate": "2026-08-01T00:00:00",
     "status": 0,
@@ -174,7 +175,7 @@
     "id": "3894824d-fb02-4171-807c-2e2ce93a271a",
     "tenantName": "Thomas Müller",
     "unitName": "Unit 403",
-    "amount": 3000.0,
+    "amount": 3000,
     "currency": "USD",
     "dueDate": "2026-08-01T00:00:00",
     "status": 0,
@@ -189,7 +190,7 @@
     "unitName": "Unit 101",
     "endDate": "2026-07-25T00:00:00",
     "daysLeft": 14,
-    "monthlyRent": 1800.0,
+    "monthlyRent": 1800,
     "currency": "USD"
    },
    {
@@ -198,7 +199,7 @@
     "unitName": "Unit 102",
     "endDate": "2026-08-01T00:00:00",
     "daysLeft": 21,
-    "monthlyRent": 1950.0,
+    "monthlyRent": 1950,
     "currency": "USD"
    }
   ],
@@ -253,7 +254,7 @@
    "appointmentsMet": 1,
    "agreementsSigned": 0,
    "offersWritten": 0,
-   "leadGenHours": 2.0,
+   "leadGenHours": 2,
    "notes": "block in progress"
   },
   "weekTotals": {
@@ -352,12 +353,12 @@
     "contacts": 13,
     "conversations": 6,
     "appointmentsMet": 1,
-    "leadGenHours": 2.0,
+    "leadGenHours": 2,
     "blockDone": false
    }
   ],
   "goals": {
-   "leadGenHours": 3.0,
+   "leadGenHours": 3,
    "contacts": 20,
    "conversations": 10,
    "appointmentsSet": 2,
@@ -373,12 +374,13 @@
    "phone": "+34 611 234 567",
    "source": 0,
    "stage": 0,
-   "estimatedValue": 1200.0,
+   "estimatedValue": 1200,
    "currency": "EUR",
    "interestedIn": "2BR apartment, city center",
    "notes": "Inquiry from website contact form.",
    "lastContactedUtc": null,
-   "createdAtUtc": "2026-07-08T23:43:08"
+   "createdAtUtc": "2026-07-08T23:43:08",
+   "imageUrl": "asset:avatars/portrait-11.jpg"
   },
   {
    "id": "1a8e9ab6-7cb9-11f1-bdb5-3f7db41139ea",
@@ -387,12 +389,13 @@
    "phone": "+1 415 555 0182",
    "source": 3,
    "stage": 0,
-   "estimatedValue": 2100.0,
+   "estimatedValue": 2100,
    "currency": "USD",
    "interestedIn": "Studio near downtown",
    "notes": "Found us on Zillow portal.",
    "lastContactedUtc": null,
-   "createdAtUtc": "2026-07-09T23:43:08"
+   "createdAtUtc": "2026-07-09T23:43:08",
+   "imageUrl": "asset:avatars/portrait-12.jpg"
   },
   {
    "id": "1a8e9c78-7cb9-11f1-bdb5-3f7db41139ea",
@@ -401,12 +404,13 @@
    "phone": "+34 622 987 321",
    "source": 2,
    "stage": 0,
-   "estimatedValue": 950.0,
+   "estimatedValue": 950,
    "currency": "EUR",
    "interestedIn": "1BR, pet-friendly",
    "notes": "Reached out via Instagram DM.",
    "lastContactedUtc": null,
-   "createdAtUtc": "2026-07-10T18:43:08"
+   "createdAtUtc": "2026-07-10T18:43:08",
+   "imageUrl": "asset:avatars/portrait-13.jpg"
   },
   {
    "id": "1a8e9e62-7cb9-11f1-bdb5-3f7db41139ea",
@@ -415,12 +419,13 @@
    "phone": "+44 7700 900123",
    "source": 0,
    "stage": 1,
-   "estimatedValue": 1600.0,
+   "estimatedValue": 1600,
    "currency": "GBP",
    "interestedIn": "3BR house, suburbs",
    "notes": "Called back, interested in a viewing next week.",
    "lastContactedUtc": "2026-07-09T23:43:08",
-   "createdAtUtc": "2026-07-04T23:43:08"
+   "createdAtUtc": "2026-07-04T23:43:08",
+   "imageUrl": "asset:avatars/portrait-14.jpg"
   },
   {
    "id": "1a8e9fc0-7cb9-11f1-bdb5-3f7db41139ea",
@@ -429,12 +434,13 @@
    "phone": "+33 6 12 34 56 78",
    "source": 1,
    "stage": 2,
-   "estimatedValue": 1350.0,
+   "estimatedValue": 1350,
    "currency": "EUR",
    "interestedIn": "2BR with balcony",
    "notes": "Referred by current tenant. Sent brochure.",
    "lastContactedUtc": "2026-07-08T23:43:08",
-   "createdAtUtc": "2026-07-02T23:43:08"
+   "createdAtUtc": "2026-07-02T23:43:08",
+   "imageUrl": "asset:avatars/portrait-15.jpg"
   },
   {
    "id": "1a8ea114-7cb9-11f1-bdb5-3f7db41139ea",
@@ -443,12 +449,13 @@
    "phone": "+52 55 1234 5678",
    "source": 4,
    "stage": 2,
-   "estimatedValue": 1100.0,
+   "estimatedValue": 1100,
    "currency": "USD",
    "interestedIn": "1BR loft",
    "notes": "Budget confirmed, employment verified.",
    "lastContactedUtc": "2026-07-07T23:43:08",
-   "createdAtUtc": "2026-06-28T23:43:08"
+   "createdAtUtc": "2026-06-28T23:43:08",
+   "imageUrl": "asset:avatars/portrait-16.jpg"
   },
   {
    "id": "1a8ea24a-7cb9-11f1-bdb5-3f7db41139ea",
@@ -457,12 +464,13 @@
    "phone": "+971 50 123 4567",
    "source": 0,
    "stage": 2,
-   "estimatedValue": 2400.0,
+   "estimatedValue": 2400,
    "currency": "USD",
    "interestedIn": "Luxury 2BR, sea view",
    "notes": "Pre-qualified, high intent buyer.",
    "lastContactedUtc": "2026-07-06T23:43:08",
-   "createdAtUtc": "2026-06-26T23:43:08"
+   "createdAtUtc": "2026-06-26T23:43:08",
+   "imageUrl": "asset:avatars/portrait-17.jpg"
   },
   {
    "id": "1a8ea376-7cb9-11f1-bdb5-3f7db41139ea",
@@ -471,12 +479,13 @@
    "phone": "+34 633 111 222",
    "source": 1,
    "stage": 3,
-   "estimatedValue": 1450.0,
+   "estimatedValue": 1450,
    "currency": "EUR",
    "interestedIn": "2BR renovated",
    "notes": "Property tour scheduled for Friday.",
    "lastContactedUtc": "2026-07-09T23:43:08",
-   "createdAtUtc": "2026-06-30T23:43:08"
+   "createdAtUtc": "2026-06-30T23:43:08",
+   "imageUrl": "asset:avatars/portrait-18.jpg"
   },
   {
    "id": "1a8ea4a2-7cb9-11f1-bdb5-3f7db41139ea",
@@ -485,12 +494,13 @@
    "phone": "+49 151 23456789",
    "source": 3,
    "stage": 3,
-   "estimatedValue": 1750.0,
+   "estimatedValue": 1750,
    "currency": "EUR",
    "interestedIn": "Penthouse studio",
    "notes": "Viewed unit A-12, liked it a lot.",
    "lastContactedUtc": "2026-07-08T23:43:08",
-   "createdAtUtc": "2026-06-29T23:43:08"
+   "createdAtUtc": "2026-06-29T23:43:08",
+   "imageUrl": "asset:avatars/portrait-19.jpg"
   },
   {
    "id": "1a8ea5c4-7cb9-11f1-bdb5-3f7db41139ea",
@@ -499,12 +509,13 @@
    "phone": "+1 650 555 0147",
    "source": 4,
    "stage": 4,
-   "estimatedValue": 2800.0,
+   "estimatedValue": 2800,
    "currency": "USD",
    "interestedIn": "3BR family home",
    "notes": "Negotiating deposit terms and move-in date.",
    "lastContactedUtc": "2026-07-09T23:43:08",
-   "createdAtUtc": "2026-06-22T23:43:08"
+   "createdAtUtc": "2026-06-22T23:43:08",
+   "imageUrl": "asset:avatars/portrait-20.jpg"
   },
   {
    "id": "1a8ea70e-7cb9-11f1-bdb5-3f7db41139ea",
@@ -513,12 +524,13 @@
    "phone": "+39 320 123 4567",
    "source": 1,
    "stage": 4,
-   "estimatedValue": 1900.0,
+   "estimatedValue": 1900,
    "currency": "EUR",
    "interestedIn": "2BR historic center",
    "notes": "Reviewing final contract draft.",
    "lastContactedUtc": "2026-07-10T11:43:08",
-   "createdAtUtc": "2026-06-20T23:43:08"
+   "createdAtUtc": "2026-06-20T23:43:08",
+   "imageUrl": "asset:avatars/portrait-21.jpg"
   },
   {
    "id": "1a8ea83a-7cb9-11f1-bdb5-3f7db41139ea",
@@ -527,12 +539,13 @@
    "phone": "+20 100 123 4567",
    "source": 0,
    "stage": 5,
-   "estimatedValue": 1550.0,
+   "estimatedValue": 1550,
    "currency": "USD",
    "interestedIn": "1BR modern",
    "notes": "Signed contract! Moves in next month.",
    "lastContactedUtc": "2026-07-07T23:43:08",
-   "createdAtUtc": "2026-06-15T23:43:08"
+   "createdAtUtc": "2026-06-15T23:43:08",
+   "imageUrl": "asset:avatars/portrait-22.jpg"
   },
   {
    "id": "1a8ea966-7cb9-11f1-bdb5-3f7db41139ea",
@@ -541,12 +554,13 @@
    "phone": "+33 7 88 99 00 11",
    "source": 1,
    "stage": 5,
-   "estimatedValue": 2200.0,
+   "estimatedValue": 2200,
    "currency": "EUR",
    "interestedIn": "2BR duplex",
    "notes": "Deal closed, deposit received.",
    "lastContactedUtc": "2026-07-05T23:43:08",
-   "createdAtUtc": "2026-06-10T23:43:08"
+   "createdAtUtc": "2026-06-10T23:43:08",
+   "imageUrl": "asset:avatars/portrait-23.jpg"
   },
   {
    "id": "1a8eab46-7cb9-11f1-bdb5-3f7db41139ea",
@@ -555,12 +569,13 @@
    "phone": "+44 7700 900999",
    "source": 2,
    "stage": 6,
-   "estimatedValue": 1000.0,
+   "estimatedValue": 1000,
    "currency": "GBP",
    "interestedIn": "Studio",
    "notes": "Chose a competitor, budget mismatch.",
    "lastContactedUtc": "2026-07-03T23:43:08",
-   "createdAtUtc": "2026-06-18T23:43:08"
+   "createdAtUtc": "2026-06-18T23:43:08",
+   "imageUrl": "asset:avatars/portrait-24.jpg"
   }
  ],
  "properties": [
@@ -571,7 +586,8 @@
    "city": "Miami",
    "country": "USA",
    "notes": null,
-   "createdAtUtc": "2025-06-05T12:00:00"
+   "createdAtUtc": "2025-06-05T12:00:00",
+   "imageUrl": "asset:properties/sunset-residences.jpg"
   },
   {
    "id": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
@@ -580,7 +596,8 @@
    "city": "Miami",
    "country": "USA",
    "notes": null,
-   "createdAtUtc": "2025-06-05T12:00:00"
+   "createdAtUtc": "2025-06-05T12:00:00",
+   "imageUrl": "asset:properties/harbor-view.jpg"
   },
   {
    "id": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
@@ -589,7 +606,8 @@
    "city": "Austin",
    "country": "USA",
    "notes": null,
-   "createdAtUtc": "2025-06-05T12:00:00"
+   "createdAtUtc": "2025-06-05T12:00:00",
+   "imageUrl": "asset:properties/maple-court.jpg"
   },
   {
    "id": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
@@ -598,7 +616,8 @@
    "city": "Austin",
    "country": "USA",
    "notes": null,
-   "createdAtUtc": "2025-06-05T12:00:00"
+   "createdAtUtc": "2025-06-05T12:00:00",
+   "imageUrl": "asset:properties/grove-lofts.jpg"
   }
  ],
  "rentalunits": [
@@ -607,120 +626,132 @@
    "propertyId": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
    "name": "Unit 201",
    "unitNumber": "201",
-   "monthlyRent": 2400.0,
+   "monthlyRent": 2400,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-01.jpg"
   },
   {
    "id": "3142f3bd-4fe0-4ae6-a51c-20f784ca3f5c",
    "propertyId": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
    "name": "Unit 303",
    "unitNumber": "303",
-   "monthlyRent": 1450.0,
+   "monthlyRent": 1450,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-02.jpg"
   },
   {
    "id": "498f7406-08a1-4ff1-b06c-7bd95728672f",
    "propertyId": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
    "name": "Unit 301",
    "unitNumber": "301",
-   "monthlyRent": 1500.0,
+   "monthlyRent": 1500,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-03.jpg"
   },
   {
    "id": "6869d94d-05c2-421d-98b7-010c0a8c33a0",
    "propertyId": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
    "name": "Unit 203",
    "unitNumber": "203",
-   "monthlyRent": 2100.0,
+   "monthlyRent": 2100,
    "currency": "USD",
    "status": 2,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-04.jpg"
   },
   {
    "id": "7e18fb8a-a43b-477d-9cfc-aab452b0cb37",
    "propertyId": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
    "name": "Unit 403",
    "unitNumber": "403",
-   "monthlyRent": 3000.0,
+   "monthlyRent": 3000,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-05.jpg"
   },
   {
    "id": "80a7c771-b255-4b50-950c-793f55cd9023",
    "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
    "name": "Unit 102",
    "unitNumber": "102",
-   "monthlyRent": 1950.0,
+   "monthlyRent": 1950,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-06.jpg"
   },
   {
    "id": "a6f0da9f-0b46-432f-8bb2-4f8cb67a3a80",
    "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
    "name": "Unit 103",
    "unitNumber": "103",
-   "monthlyRent": 1750.0,
+   "monthlyRent": 1750,
    "currency": "USD",
    "status": 0,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-07.jpg"
   },
   {
    "id": "b41743ac-25c4-4532-8b6b-545668d1b9bc",
    "propertyId": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
    "name": "Unit 401",
    "unitNumber": "401",
-   "monthlyRent": 2800.0,
+   "monthlyRent": 2800,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-08.jpg"
   },
   {
    "id": "b88b6d12-17f3-4d5d-8008-e0567763118f",
    "propertyId": "4a56d951-c921-4ea5-bfa1-61b61c82918c",
    "name": "Unit 202",
    "unitNumber": "202",
-   "monthlyRent": 2200.0,
+   "monthlyRent": 2200,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-09.jpg"
   },
   {
    "id": "c71b3eeb-0bf3-4d74-9975-716b7022fd09",
    "propertyId": "cae87200-74a6-4640-bb73-54b4bcdf01ac",
    "name": "Unit 302",
    "unitNumber": "302",
-   "monthlyRent": 1600.0,
+   "monthlyRent": 1600,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-10.jpg"
   },
   {
    "id": "f20544c6-1957-43d8-a272-7773a9cb3f37",
    "propertyId": "28983368-a936-4c7d-bf02-31dbf1df68da",
    "name": "Unit 101",
    "unitNumber": "101",
-   "monthlyRent": 1800.0,
+   "monthlyRent": 1800,
    "currency": "USD",
    "status": 1,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-11.jpg"
   },
   {
    "id": "f791693c-016a-4f01-91b0-3aca63c84b13",
    "propertyId": "d21f8bac-f7f4-4cd1-b74b-f8b9504313b7",
    "name": "Unit 402",
    "unitNumber": "402",
-   "monthlyRent": 2600.0,
+   "monthlyRent": 2600,
    "currency": "USD",
    "status": 0,
-   "createdAtUtc": "2025-06-15T12:00:00"
+   "createdAtUtc": "2025-06-15T12:00:00",
+   "imageUrl": "asset:interiors/interior-12.jpg"
   }
  ],
  "tenants": [
@@ -731,7 +762,8 @@
    "phone": "+1 305 555 0106",
    "identificationNumber": "ID90006",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-04.jpg"
   },
   {
    "id": "247a147d-d32f-44e0-a018-f6e27f0bd8a0",
@@ -740,7 +772,8 @@
    "phone": "+1 305 555 0108",
    "identificationNumber": "ID90008",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-07.jpg"
   },
   {
    "id": "6464897b-ee36-44c3-8f03-f4ba610a18f7",
@@ -749,7 +782,8 @@
    "phone": "+1 305 555 0105",
    "identificationNumber": "ID90005",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-01.jpg"
   },
   {
    "id": "709a6ac2-51f2-4957-b87b-f5c6c7df06be",
@@ -758,7 +792,8 @@
    "phone": "+1 305 555 0104",
    "identificationNumber": "ID90004",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-08.jpg"
   },
   {
    "id": "a27b43e6-08b1-4e1f-abbf-c1cd127c9e22",
@@ -767,7 +802,8 @@
    "phone": "+1 305 555 0101",
    "identificationNumber": "ID90001",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-09.jpg"
   },
   {
    "id": "a77df1c0-6e8c-47b9-ad3a-2847f1fced33",
@@ -776,7 +812,8 @@
    "phone": "+1 305 555 0107",
    "identificationNumber": "ID90007",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-06.jpg"
   },
   {
    "id": "d2206054-be48-45a8-a931-c1ec574eaf66",
@@ -785,7 +822,8 @@
    "phone": "+1 305 555 0100",
    "identificationNumber": "ID90000",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-03.jpg"
   },
   {
    "id": "f311489d-be48-4f59-8765-3e5a2d080660",
@@ -794,7 +832,8 @@
    "phone": "+1 305 555 0102",
    "identificationNumber": "ID90002",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-05.jpg"
   },
   {
    "id": "ffd3da8f-90c4-4d83-9517-b65b4e78e711",
@@ -803,7 +842,8 @@
    "phone": "+1 305 555 0103",
    "identificationNumber": "ID90003",
    "notes": null,
-   "createdAtUtc": "2025-06-25T12:00:00"
+   "createdAtUtc": "2025-06-25T12:00:00",
+   "imageUrl": "asset:avatars/portrait-10.jpg"
   }
  ],
  "contracts": [
@@ -813,8 +853,8 @@
    "rentalUnitId": "7e18fb8a-a43b-477d-9cfc-aab452b0cb37",
    "startDate": "2025-12-02T12:00:00",
    "endDate": "2027-05-10T00:00:00",
-   "monthlyRent": 3000.0,
-   "depositAmount": 3000.0,
+   "monthlyRent": 3000,
+   "depositAmount": 3000,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-12-02T12:00:00",
@@ -827,8 +867,8 @@
    "rentalUnitId": "3142f3bd-4fe0-4ae6-a51c-20f784ca3f5c",
    "startDate": "2025-11-12T12:00:00",
    "endDate": "2027-03-31T00:00:00",
-   "monthlyRent": 1450.0,
-   "depositAmount": 1450.0,
+   "monthlyRent": 1450,
+   "depositAmount": 1450,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-11-12T12:00:00",
@@ -841,8 +881,8 @@
    "rentalUnitId": "498f7406-08a1-4ff1-b06c-7bd95728672f",
    "startDate": "2025-10-23T12:00:00",
    "endDate": "2027-02-19T00:00:00",
-   "monthlyRent": 1500.0,
-   "depositAmount": 1500.0,
+   "monthlyRent": 1500,
+   "depositAmount": 1500,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-10-23T12:00:00",
@@ -855,8 +895,8 @@
    "rentalUnitId": "c71b3eeb-0bf3-4d74-9975-716b7022fd09",
    "startDate": "2025-11-02T12:00:00",
    "endDate": "2027-03-11T00:00:00",
-   "monthlyRent": 1600.0,
-   "depositAmount": 1600.0,
+   "monthlyRent": 1600,
+   "depositAmount": 1600,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-11-02T12:00:00",
@@ -869,8 +909,8 @@
    "rentalUnitId": "80a7c771-b255-4b50-950c-793f55cd9023",
    "startDate": "2025-09-23T12:00:00",
    "endDate": "2026-08-01T00:00:00",
-   "monthlyRent": 1950.0,
-   "depositAmount": 1950.0,
+   "monthlyRent": 1950,
+   "depositAmount": 1950,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-09-23T12:00:00",
@@ -883,8 +923,8 @@
    "rentalUnitId": "0efaffdf-76ca-43f1-ae46-317402c1c7e9",
    "startDate": "2025-10-03T12:00:00",
    "endDate": "2027-01-10T00:00:00",
-   "monthlyRent": 2400.0,
-   "depositAmount": 2400.0,
+   "monthlyRent": 2400,
+   "depositAmount": 2400,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-10-03T12:00:00",
@@ -897,8 +937,8 @@
    "rentalUnitId": "f20544c6-1957-43d8-a272-7773a9cb3f37",
    "startDate": "2025-09-13T12:00:00",
    "endDate": "2026-07-25T00:00:00",
-   "monthlyRent": 1800.0,
-   "depositAmount": 1800.0,
+   "monthlyRent": 1800,
+   "depositAmount": 1800,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-09-13T12:00:00",
@@ -911,8 +951,8 @@
    "rentalUnitId": "b88b6d12-17f3-4d5d-8008-e0567763118f",
    "startDate": "2025-10-13T12:00:00",
    "endDate": "2027-01-30T00:00:00",
-   "monthlyRent": 2200.0,
-   "depositAmount": 2200.0,
+   "monthlyRent": 2200,
+   "depositAmount": 2200,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-10-13T12:00:00",
@@ -925,8 +965,8 @@
    "rentalUnitId": "b41743ac-25c4-4532-8b6b-545668d1b9bc",
    "startDate": "2025-11-22T12:00:00",
    "endDate": "2027-04-20T00:00:00",
-   "monthlyRent": 2800.0,
-   "depositAmount": 2800.0,
+   "monthlyRent": 2800,
+   "depositAmount": 2800,
    "currency": "USD",
    "status": 0,
    "createdAtUtc": "2025-11-22T12:00:00",
@@ -940,7 +980,7 @@
    "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 2400.0,
+   "amount": 2400,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -951,7 +991,7 @@
    "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 3000.0,
+   "amount": 3000,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -962,7 +1002,7 @@
    "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 2800.0,
+   "amount": 2800,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -973,7 +1013,7 @@
    "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 1450.0,
+   "amount": 1450,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -984,7 +1024,7 @@
    "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 1450.0,
+   "amount": 1450,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -995,7 +1035,7 @@
    "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 2200.0,
+   "amount": 2200,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1006,7 +1046,7 @@
    "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 1500.0,
+   "amount": 1500,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1017,7 +1057,7 @@
    "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": "2026-07-04T00:00:00",
-   "amount": 3000.0,
+   "amount": 3000,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1028,7 +1068,7 @@
    "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 2200.0,
+   "amount": 2200,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1039,7 +1079,7 @@
    "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": "2026-07-04T00:00:00",
-   "amount": 1800.0,
+   "amount": 1800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1050,7 +1090,7 @@
    "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 1950.0,
+   "amount": 1950,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1061,7 +1101,7 @@
    "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 1800.0,
+   "amount": 1800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1072,7 +1112,7 @@
    "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 2400.0,
+   "amount": 2400,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1083,7 +1123,7 @@
    "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 1950.0,
+   "amount": 1950,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1094,7 +1134,7 @@
    "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 3000.0,
+   "amount": 3000,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1105,7 +1145,7 @@
    "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 2200.0,
+   "amount": 2200,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1116,7 +1156,7 @@
    "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": "2026-07-04T00:00:00",
-   "amount": 2200.0,
+   "amount": 2200,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1127,7 +1167,7 @@
    "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 1600.0,
+   "amount": 1600,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1138,7 +1178,7 @@
    "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 1600.0,
+   "amount": 1600,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1149,7 +1189,7 @@
    "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 2200.0,
+   "amount": 2200,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1160,7 +1200,7 @@
    "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 1450.0,
+   "amount": 1450,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1171,7 +1211,7 @@
    "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 2400.0,
+   "amount": 2400,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1182,7 +1222,7 @@
    "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 2400.0,
+   "amount": 2400,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1193,7 +1233,7 @@
    "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 3000.0,
+   "amount": 3000,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1204,7 +1244,7 @@
    "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 3000.0,
+   "amount": 3000,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1215,7 +1255,7 @@
    "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 1450.0,
+   "amount": 1450,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1226,7 +1266,7 @@
    "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 2800.0,
+   "amount": 2800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1237,7 +1277,7 @@
    "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": null,
-   "amount": 2400.0,
+   "amount": 2400,
    "currency": "USD",
    "status": 2,
    "notes": null,
@@ -1248,7 +1288,7 @@
    "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 1800.0,
+   "amount": 1800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1259,7 +1299,7 @@
    "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": null,
-   "amount": 1450.0,
+   "amount": 1450,
    "currency": "USD",
    "status": 2,
    "notes": null,
@@ -1270,7 +1310,7 @@
    "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 1950.0,
+   "amount": 1950,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1281,7 +1321,7 @@
    "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 1800.0,
+   "amount": 1800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1292,7 +1332,7 @@
    "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 2200.0,
+   "amount": 2200,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1303,7 +1343,7 @@
    "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 1500.0,
+   "amount": 1500,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1314,7 +1354,7 @@
    "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 2400.0,
+   "amount": 2400,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1325,7 +1365,7 @@
    "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 1500.0,
+   "amount": 1500,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1336,7 +1376,7 @@
    "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 1950.0,
+   "amount": 1950,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1347,7 +1387,7 @@
    "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 1950.0,
+   "amount": 1950,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1358,7 +1398,7 @@
    "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 3000.0,
+   "amount": 3000,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1369,7 +1409,7 @@
    "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 1450.0,
+   "amount": 1450,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1380,7 +1420,7 @@
    "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 2800.0,
+   "amount": 2800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1391,7 +1431,7 @@
    "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": "2026-07-04T00:00:00",
-   "amount": 2800.0,
+   "amount": 2800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1402,7 +1442,7 @@
    "contractId": "62ad8133-10d2-4a28-866b-916a49004b30",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 1450.0,
+   "amount": 1450,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1413,7 +1453,7 @@
    "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 1800.0,
+   "amount": 1800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1424,7 +1464,7 @@
    "contractId": "90f0bb6d-2fa9-407c-bb68-9d70aed0329b",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 2400.0,
+   "amount": 2400,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1435,7 +1475,7 @@
    "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 1950.0,
+   "amount": 1950,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1446,7 +1486,7 @@
    "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 1600.0,
+   "amount": 1600,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1457,7 +1497,7 @@
    "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 1600.0,
+   "amount": 1600,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1468,7 +1508,7 @@
    "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 1800.0,
+   "amount": 1800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1479,7 +1519,7 @@
    "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": "2026-07-04T00:00:00",
-   "amount": 1500.0,
+   "amount": 1500,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1490,7 +1530,7 @@
    "contractId": "c4519a6d-7fdb-4e57-adfb-94ce391774e9",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 2200.0,
+   "amount": 2200,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1501,7 +1541,7 @@
    "contractId": "3f8ebb34-d15e-4f82-82b6-80626171d850",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 3000.0,
+   "amount": 3000,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1512,7 +1552,7 @@
    "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": "2026-07-04T00:00:00",
-   "amount": 1600.0,
+   "amount": 1600,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1523,7 +1563,7 @@
    "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
    "dueDate": "2026-06-01T00:00:00",
    "paidDate": "2026-06-03T00:00:00",
-   "amount": 1500.0,
+   "amount": 1500,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1534,7 +1574,7 @@
    "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
    "dueDate": "2026-02-01T00:00:00",
    "paidDate": "2026-02-03T00:00:00",
-   "amount": 1500.0,
+   "amount": 1500,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1545,7 +1585,7 @@
    "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
    "dueDate": "2026-03-01T00:00:00",
    "paidDate": "2026-03-03T00:00:00",
-   "amount": 2800.0,
+   "amount": 2800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1556,7 +1596,7 @@
    "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 1600.0,
+   "amount": 1600,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1567,7 +1607,7 @@
    "contractId": "74282431-2107-4080-ab4c-1a31735b8f96",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 1600.0,
+   "amount": 1600,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1578,7 +1618,7 @@
    "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 2800.0,
+   "amount": 2800,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1589,7 +1629,7 @@
    "contractId": "a0e2302a-ecfd-42d7-9390-d4a6d2e41986",
    "dueDate": "2026-08-01T00:00:00",
    "paidDate": null,
-   "amount": 1800.0,
+   "amount": 1800,
    "currency": "USD",
    "status": 0,
    "notes": null,
@@ -1600,7 +1640,7 @@
    "contractId": "81d25f4b-e513-4d0b-8e8a-3112db931c21",
    "dueDate": "2026-07-01T00:00:00",
    "paidDate": "2026-07-04T00:00:00",
-   "amount": 1950.0,
+   "amount": 1950,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1611,7 +1651,7 @@
    "contractId": "68a85cdf-5ad9-45b3-9134-bcffd0d8d342",
    "dueDate": "2026-04-01T00:00:00",
    "paidDate": "2026-04-03T00:00:00",
-   "amount": 1500.0,
+   "amount": 1500,
    "currency": "USD",
    "status": 1,
    "notes": null,
@@ -1622,7 +1662,7 @@
    "contractId": "dfe47999-2022-4759-97b0-c2c9dd3a3d2c",
    "dueDate": "2026-05-01T00:00:00",
    "paidDate": "2026-05-03T00:00:00",
-   "amount": 2800.0,
+   "amount": 2800,
    "currency": "USD",
    "status": 1,
    "notes": null,

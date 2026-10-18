@@ -368,20 +368,16 @@ GET    /api/dashboard               # Get statistics
 
 ## 🎨 Design System
 
-### Mobile-First Approach
-- Base styles optimized for mobile (< 768px)
-- Enhanced styles for desktop (≥ 768px)
-- Touch-friendly components (44px minimum)
-- Readable font sizes (16px minimum)
+**The Field Planner** — PropFlow's UI is styled as an agent's working stationery planner: warm paper surfaces, carbon ink text, and four ballpoint inks doing real state jobs (red = urgent/action, green = settled/won, blue = selection/links, amber = pending). Every number with a target renders as a goal-vs-actual inked meter; loud states are rubber-stamped; figures sit in a tabular mono. Built with Tailwind CSS v4 and [Magic UI](https://magicui.design/) components (Number Ticker, Shimmer Button, Blur Fade, Dot Pattern, Animated Circular Progress Bar, Animated List). The full system is documented in [DESIGN.md](DESIGN.md).
 
-### Color Palette
-| Color | Hex | Usage |
+| Ink | Hex | Usage |
 |-------|-----|-------|
-| Primary | #3b82f6 | Buttons, links, highlights |
-| Success | #22c55e | Success states, badges |
-| Warning | #eab308 | Warnings, pending states |
-| Danger | #ef4444 | Errors, delete actions |
-| Neutral | Gray scale | Text, backgrounds |
+| Paper | #f3eee2 | Ground, sheets, wells |
+| Carbon | #201d18 | Text, display |
+| Vermilion Ink | #b13a25 | Actions, urgent states |
+| Ledger Green | #2c6a4e | Success, won, paid |
+| Ultramarine | #2c4a86 | Links, selection, focus |
+| Amber Ink | #8a6516 | Pending, expiring |
 
 ### Responsive Breakpoints
 - **Mobile**: < 768px

@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
 import { unitsApi } from '../../shared/api/units';
 import { propertiesApi } from '../../shared/api/properties';
 import UnitsList from './components/UnitsList';
 import UnitForm from './components/UnitForm';
 import type { RentalUnitDto } from '../../shared/types';
+import { PageHeader } from '@/components/world/PageHeader';
+import { Button } from '@/components/world/Button';
+import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
+import { BlurFade } from '@/components/magicui/blur-fade';
 
 export default function UnitsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -36,57 +41,33 @@ export default function UnitsPage() {
     refetch();
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <div className="text-center">
-          <div className="spinner mb-4"></div>
-          <p className="text-gray-600">Loading units...</p>
-        </div>
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoading label="Counting the doors…" />;
 
   if (error) {
-    return (
-      <div className="alert alert-danger">
-        <strong>Error:</strong> {error instanceof Error ? error.message : 'Failed to load units'}
-      </div>
-    );
+    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load units'} />;
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Rental Units</h1>
-          <p className="text-gray-600 mt-1">Manage your rental units and their availability</p>
-        </div>
-        <button
-          onClick={handleCreate}
-          className="btn btn-primary"
-        >
-          <span className="text-lg">🏢</span>
-          Add Unit
-        </button>
-      </div>
-
-      {/* Units List */}
-      <UnitsList 
-        units={units} 
-        properties={properties}
-        onEdit={handleEdit}
-        onRefetch={refetch}
-      />
-
-      {/* Unit Form Modal */}
-      {isFormOpen && (
-        <UnitForm
-          unit={editingUnit}
-          properties={properties}
-          onClose={handleFormClose}
+    <div className="space-y-5">
+      <BlurFade>
+        <PageHeader
+          title="Rental units"
+          copy="Each door, its rent, and whether someone is living behind it."
+          action={
+            <Button onClick={handleCreate}>
+              <Plus className="size-4" aria-hidden />
+              Add unit
+            </Button>
+          }
         />
+      </BlurFade>
+
+      <BlurFade delay={0.05}>
+        <UnitsList units={units} properties={properties} onEdit={handleEdit} onRefetch={refetch} />
+      </BlurFade>
+
+      {isFormOpen && (
+        <UnitForm unit={editingUnit} properties={properties} onClose={handleFormClose} />
       )}
     </div>
   );

@@ -1,6 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
+import { Users, Mail, Phone, IdCard, NotebookText, CalendarDays } from 'lucide-react';
 import { tenantsApi } from '../../../shared/api/tenants';
 import type { TenantDto } from '../../../shared/types';
+import { portraitFor } from '@/shared/media';
+import { Avatar } from '@/components/world/Avatar';
+import { Button } from '@/components/world/Button';
+import { EmptyState } from '@/components/world/EmptyState';
 
 interface TenantsListProps {
   tenants: TenantDto[];
@@ -17,84 +22,80 @@ export default function TenantsList({ tenants, onEdit, onRefetch }: TenantsListP
   });
 
   const handleDelete = async (tenant: TenantDto) => {
-    if (window.confirm(`Are you sure you want to delete "${tenant.fullName}"?`)) {
+    if (window.confirm(`Delete "${tenant.fullName}"? Their contact details will be removed.`)) {
       deleteMutation.mutate(tenant.id);
     }
   };
 
   if (tenants.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="text-6xl mb-4">👥</div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No tenants yet</h3>
-        <p className="text-gray-600 mb-6">Add your first tenant to get started</p>
-      </div>
+      <EmptyState
+        icon={Users}
+        title="No tenants yet"
+        copy="Add the people behind your leases — name, email, phone, and ID."
+      />
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 lg:gap-6">
       {tenants.map((tenant) => (
-        <div key={tenant.id} className="card hover:shadow-lg transition-all duration-200">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-xl">👤</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">{tenant.fullName}</h3>
-                <p className="text-sm text-gray-600">{tenant.email}</p>
-              </div>
+        <article
+          key={tenant.id}
+          className="flex h-full flex-col rounded-sheet border border-rule bg-paper-raised p-5 shadow-sheet transition-colors hover:border-rule-strong"
+        >
+          <div className="flex items-center gap-3">
+            <Avatar name={tenant.fullName} src={tenant.imageUrl ?? portraitFor(tenant.fullName)} className="size-11" />
+            <div className="min-w-0">
+              <h3 className="truncate font-display text-[16.5px] font-semibold text-carbon">{tenant.fullName}</h3>
+              <p className="mt-0.5 flex items-center gap-1.5 truncate text-[13px] text-carbon-soft">
+                <Mail className="size-3.5 shrink-0" aria-hidden />
+                {tenant.email}
+              </p>
             </div>
           </div>
 
-          <div className="space-y-2 mb-4">
+          <div className="mt-4 space-y-0 border-t border-rule">
             {tenant.phone && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">📞</span>
-                <span className="text-sm text-gray-700">{tenant.phone}</span>
+              <div className="flex items-center gap-2.5 border-b border-rule py-2.5 text-[13.5px] text-carbon-soft">
+                <Phone className="size-3.5 shrink-0 text-carbon-faint" aria-hidden />
+                {tenant.phone}
               </div>
             )}
             {tenant.identificationNumber && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">🆔</span>
-                <span className="text-sm text-gray-700">{tenant.identificationNumber}</span>
+              <div className="flex items-center gap-2.5 border-b border-rule py-2.5 text-[13.5px] text-carbon-soft">
+                <IdCard className="size-3.5 shrink-0 text-carbon-faint" aria-hidden />
+                <span className="text-figure">{tenant.identificationNumber}</span>
               </div>
             )}
             {tenant.notes && (
-              <div className="flex items-start gap-2">
-                <span className="text-sm text-gray-500 mt-0.5">📝</span>
-                <span className="text-sm text-gray-700 line-clamp-2">{tenant.notes}</span>
+              <div className="flex items-start gap-2.5 border-b border-rule py-2.5 text-[13.5px] text-carbon-soft">
+                <NotebookText className="mt-0.5 size-3.5 shrink-0 text-carbon-faint" aria-hidden />
+                <span className="line-clamp-2">{tenant.notes}</span>
               </div>
             )}
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">📅</span>
-              <span className="text-sm text-gray-500">
-                Added {new Date(tenant.createdAtUtc).toLocaleDateString()}
-              </span>
+            <div className="flex items-center gap-2.5 py-2.5 text-[12.5px] text-carbon-faint">
+              <CalendarDays className="size-3.5 shrink-0" aria-hidden />
+              Added {new Date(tenant.createdAtUtc).toLocaleDateString()}
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <button
-              onClick={() => onEdit(tenant)}
-              className="btn btn-secondary flex-1"
-            >
+          <div className="mt-auto flex gap-2 pt-4">
+            <Button variant="secondary" size="sm" className="flex-1" onClick={() => onEdit(tenant)}>
               Edit
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              className="flex-1"
               onClick={() => handleDelete(tenant)}
               disabled={deleteMutation.isPending}
-              className="btn btn-secondary text-red-600 hover:bg-red-50 hover:border-red-300"
+              loading={deleteMutation.isPending}
             >
-              {deleteMutation.isPending ? (
-                <div className="spinner w-4 h-4"></div>
-              ) : (
-                'Delete'
-              )}
-            </button>
+              Delete
+            </Button>
           </div>
-        </div>
+        </article>
       ))}
     </div>
   );

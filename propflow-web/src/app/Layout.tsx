@@ -1,166 +1,276 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Outlet, Link, NavLink, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
+import { LogOut, X, Map } from 'lucide-react';
+
 import { useAuth } from './contexts/AuthContext';
+import { useTour } from './tour';
+import { TourCoach } from './TourCoach';
+import { NAV } from '@/components/world/sections';
+import { Avatar } from '@/components/world/Avatar';
+import { Stamp } from '@/components/world/Stamp';
+import { AnimatedThemeToggler } from '@/components/magicui/animated-theme-toggler';
+import { DotPattern } from '@/components/magicui/dot-pattern';
+import { cn } from '@/lib/utils';
 
-export default function Layout() {
-  const { user, logout } = useAuth();
-  const location = useLocation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
 
-  const isActive = (path: string) => location.pathname === path;
-
-  const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/leads', label: 'Leads', icon: '🎯' },
-    { path: '/productivity', label: 'Productivity', icon: '🔥' },
-    { path: '/properties', label: 'Properties', icon: '🏠' },
-    { path: '/units', label: 'Units', icon: '🏢' },
-    { path: '/tenants', label: 'Tenants', icon: '👥' },
-    { path: '/contracts', label: 'Contracts', icon: '📄' },
-    { path: '/payments', label: 'Payments', icon: '💰' },
-    { path: '/maintenance', label: 'Maintenance', icon: '🔧' },
-  ];
-
+export function BrandMark({ compact }: { compact?: boolean }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="bg-white shadow border-b border-gray-200 sticky top-0 z-50">
-        <div className="container">
-          <div className="flex items-center justify-between py-3 md:py-4">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <Link
-                to="/dashboard"
-                className="text-xl md:text-2xl font-bold text-blue-600 flex items-center gap-2 hover:text-blue-700 transition-colors"
-              >
-                <span className="text-xl md:text-2xl">🏠</span>
-                PropFlow
-              </Link>
-              {import.meta.env.VITE_DEMO_MODE === 'true' && (
-                <span className="demo-badge" title="Interactive demo with sample data">DEMO</span>
-              )}
-            </div>
+    <Link to="/dashboard" className="group flex items-center gap-2.5">
+      <span className="flex size-9 items-center justify-center rounded-[10px] bg-ink-red font-display text-[19px] font-bold text-[#fdf8ec] shadow-tab">
+        P
+      </span>
+      {!compact && (
+        <span className="font-display text-[21px] font-bold tracking-[-0.02em] text-carbon">
+          PropFlow
+        </span>
+      )}
+      {DEMO_MODE && <Stamp tone="carbon" rotate={false} className="hidden sm:inline-flex">Demo</Stamp>}
+    </Link>
+  );
+}
 
-            {/* Desktop Navigation */}
-            <div className="nav-desktop">
-              <div className="flex items-center gap-2">
-                {navItems.slice(0, 5).map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      isActive(item.path)
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
-                  >
-                    <span className="mr-2">{item.icon}</span>
-                    {item.label}
-                  </Link>
-                ))}
-                
-                {/* User Menu */}
-                <div className="flex items-center gap-4 ml-6 pl-6 border-l border-gray-200">
-                  <div className="text-right">
-                    <div className="text-sm font-semibold text-gray-900">
-                      {user?.fullName}
-                    </div>
-                    <div className="text-xs text-gray-500">Landlord</div>
-                  </div>
-                  <button 
-                    onClick={logout} 
-                    className="btn btn-secondary"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </div>
+function Rail() {
+  const { user, logout } = useAuth();
+  const tour = useTour();
+  return (
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-[236px] flex-col border-r border-rule-strong bg-paper-deep lg:flex">
+      <div className="flex items-center justify-between px-5 pb-4 pt-6">
+        <BrandMark />
+      </div>
 
-            {/* Mobile Menu Button */}
-            <div className="nav-mobile">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {isMobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="nav-mobile border-t border-gray-200 py-4 bg-white">
-              <div className="grid grid-cols-2 gap-2 mb-6">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`mobile-nav-item rounded-xl text-sm font-medium transition-colors ${
-                      isActive(item.path)
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
-                  >
-                    <span className="mobile-nav-icon">{item.icon}</span>
-                    <span className="mobile-nav-label">{item.label}</span>
-                  </Link>
-                ))}
-              </div>
-              
-              {/* Mobile User Section */}
-              <div className="border-t border-gray-200 pt-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-semibold text-gray-900">
-                      {user?.fullName}
-                    </div>
-                    <div className="text-xs text-gray-500">Landlord Account</div>
-                  </div>
-                  <button onClick={logout} className="btn btn-secondary">
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+      <nav aria-label="Sections" className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
+        {NAV.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              cn(
+                'group relative flex items-center gap-3 rounded-[10px] px-3 py-[9px] text-[14.5px] font-semibold text-carbon-soft transition-all',
+                isActive
+                  ? 'tab-edge -ml-1 bg-paper-raised pl-4 text-carbon shadow-tab'
+                  : 'hover:bg-paper-well hover:text-carbon'
+              )
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <item.icon
+                  className="size-[17px] shrink-0"
+                  style={{ color: isActive ? item.hue : 'currentColor' }}
+                  aria-hidden
+                />
+                {item.label}
+                {isActive && (
+                  <span
+                    className="ml-auto size-1.5 rounded-full"
+                    style={{ backgroundColor: item.hue }}
+                    aria-hidden
+                  />
+                )}
+              </>
+            )}
+          </NavLink>
+        ))}
       </nav>
 
-      {/* Main Content */}
-      <main className="flex-1">
-        <div className="container py-4 md:py-8">
+      <div className="border-t border-rule-strong px-4 py-3">
+        <button
+          onClick={() => tour.start()}
+          className="mb-2 flex w-full items-center gap-2.5 rounded-[10px] border border-dashed border-rule-strong/80 px-3 py-2 text-[13px] font-semibold text-carbon-soft transition-colors hover:border-ink-blue/60 hover:bg-ink-blue/5 hover:text-ink-blue"
+        >
+          <Map className="size-4 shrink-0" aria-hidden />
+          Guided tour
+          <span className="text-figure ml-auto text-[11px] font-medium text-carbon-faint">9 stops</span>
+        </button>
+        <div className="flex items-center gap-3">
+          <Avatar name={user?.fullName ?? 'Landlord'} src={user?.imageUrl} className="size-9" />
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-[14px] font-semibold text-carbon">{user?.fullName}</div>
+            <div className="text-[12px] text-carbon-faint">Landlord</div>
+          </div>
+          <AnimatedThemeToggler className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon [&_svg]:size-4" />
+          <button
+            onClick={logout}
+            aria-label="Log out"
+            title="Log out"
+            className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-ink-red"
+          >
+            <LogOut className="size-4" />
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function MobileBar({ onMore }: { onMore: () => void }) {
+  const barItems = NAV.filter((n) => n.mobile === 'bar');
+  return (
+    <nav
+      aria-label="Sections"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-rule-strong bg-paper-raised pb-[env(safe-area-inset-bottom)] lg:hidden"
+    >
+      <div className="grid grid-cols-5">
+        {barItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              cn(
+                'flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold',
+                isActive ? 'text-carbon' : 'text-carbon-faint'
+              )
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <item.icon
+                  className="size-[19px]"
+                  style={{ color: isActive ? item.hue : 'currentColor' }}
+                  aria-hidden
+                />
+                {item.label}
+              </>
+            )}
+          </NavLink>
+        ))}
+        <button
+          onClick={onMore}
+          className="flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold text-carbon-faint"
+        >
+          <span className="flex h-[19px] items-end gap-[3px]" aria-hidden>
+            <span className="size-[4px] rounded-full bg-current" />
+            <span className="size-[4px] rounded-full bg-current" />
+            <span className="size-[4px] rounded-full bg-current" />
+          </span>
+          More
+        </button>
+      </div>
+    </nav>
+  );
+}
+
+function MoreSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const location = useLocation();
+  const tour = useTour();
+  useEffect(() => {
+    onClose();
+    // close the sheet whenever the route changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-50 bg-black/45 backdrop-blur-[2px] lg:hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          role="presentation"
+        >
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="All sections"
+            className="absolute inset-x-0 bottom-0 rounded-t-sheet border-t border-rule-strong bg-paper-raised px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 shadow-sheet-lift"
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', stiffness: 320, damping: 34 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-display text-[16px] font-semibold">All sections</h2>
+              <button
+                onClick={onClose}
+                aria-label="Close"
+                className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft hover:bg-paper-deep"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5 pb-2">
+              {NAV.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-2.5 rounded-[10px] border px-3 py-2.5 text-[14px] font-semibold',
+                      isActive
+                        ? 'border-rule-strong bg-paper-deep text-carbon'
+                        : 'border-rule bg-paper-well text-carbon-soft'
+                    )
+                  }
+                >
+                  <item.icon className="size-4" style={{ color: item.hue }} aria-hidden />
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
+            <button
+              onClick={() => {
+                onClose();
+                tour.start();
+              }}
+              className="mt-1 flex w-full items-center justify-center gap-2 rounded-[10px] border border-dashed border-rule-strong/80 py-2.5 text-[13.5px] font-semibold text-carbon-soft transition-colors hover:border-ink-blue/60 hover:bg-ink-blue/5 hover:text-ink-blue"
+            >
+              <Map className="size-4" aria-hidden />
+              Take the guided tour
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+export default function Layout() {
+  const [moreOpen, setMoreOpen] = useState(false);
+  const { user, logout } = useAuth();
+
+  return (
+    <div className="min-h-screen">
+      {/* graph-paper ground */}
+      <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
+        <DotPattern
+          width={22}
+          height={22}
+          cr={1.1}
+          className="text-rule-strong/45 [mask-image:radial-gradient(ellipse_75%_65%_at_50%_0%,#000_55%,transparent_100%)]"
+        />
+      </div>
+
+      <Rail />
+      <MobileBar onMore={() => setMoreOpen(true)} />
+      <MoreSheet open={moreOpen} onClose={() => setMoreOpen(false)} />
+      <TourCoach />
+
+      {/* mobile top bar */}
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-rule-strong bg-paper/90 px-4 py-3 backdrop-blur-sm lg:hidden">
+        <BrandMark compact />
+        <div className="flex items-center gap-1">
+          <AnimatedThemeToggler className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon [&_svg]:size-4" />
+          <Avatar name={user?.fullName ?? 'Landlord'} src={user?.imageUrl} className="size-8" />
+          <button
+            onClick={logout}
+            aria-label="Log out"
+            className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft hover:text-ink-red"
+          >
+            <LogOut className="size-4" />
+          </button>
+        </div>
+      </header>
+
+      <main className="lg:pl-[236px]">
+        <div className="mx-auto w-full max-w-[1180px] px-4 pb-28 pt-5 sm:px-6 lg:pb-14 lg:pt-8">
           <Outlet />
         </div>
       </main>
-
-      {/* Mobile Bottom Navigation */}
-      <div className="mobile-bottom-nav nav-mobile">
-        <div className="mobile-bottom-nav-grid">
-          {navItems.slice(0, 4).map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`mobile-bottom-nav-item ${
-                isActive(item.path) ? 'active' : ''
-              }`}
-            >
-              <span className="text-lg mb-1">{item.icon}</span>
-              <span className="text-xs font-medium truncate">{item.label}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom padding for mobile nav */}
-      <div className="h-16 nav-mobile"></div>
     </div>
   );
 }

@@ -1,6 +1,12 @@
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { Pencil, Trash2, Wrench } from 'lucide-react';
 import { maintenanceApi } from '../../../shared/api/maintenance';
 import { Priority, MaintenanceStatus, type MaintenanceRequestDto } from '../../../shared/types';
+import { Badge, Stamp, type BadgeTone } from '@/components/world/Stamp';
+import { Button } from '@/components/world/Button';
+import { Pagination } from '@/components/world/Pagination';
+import { EmptyState } from '@/components/world/EmptyState';
 
 interface MaintenanceListProps {
   requests: MaintenanceRequestDto[];
@@ -8,7 +14,23 @@ interface MaintenanceListProps {
   onRefetch: () => void;
 }
 
+const PAGE_SIZE = 12;
+
+const priorityMeta: Record<Priority, { tone: BadgeTone; label: string }> = {
+  [Priority.High]: { tone: 'red', label: 'High' },
+  [Priority.Medium]: { tone: 'amber', label: 'Medium' },
+  [Priority.Low]: { tone: 'carbon', label: 'Low' },
+};
+
+const statusMeta: Record<MaintenanceStatus, { tone: BadgeTone; label: string; stroke: 'solid' | 'dashed' }> = {
+  [MaintenanceStatus.Open]: { tone: 'amber', label: 'Open', stroke: 'dashed' },
+  [MaintenanceStatus.InProgress]: { tone: 'blue', label: 'In progress', stroke: 'solid' },
+  [MaintenanceStatus.Closed]: { tone: 'green', label: 'Closed', stroke: 'solid' },
+};
+
 export default function MaintenanceList({ requests, onEdit, onRefetch }: MaintenanceListProps) {
+  const [page, setPage] = useState(1);
+
   const deleteMutation = useMutation({
     mutationFn: maintenanceApi.delete,
     onSuccess: () => {
@@ -16,167 +38,161 @@ export default function MaintenanceList({ requests, onEdit, onRefetch }: Mainten
     },
   });
 
+  const totalPages = Math.max(1, Math.ceil(requests.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pagedRequests = requests.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
   const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this maintenance request?')) {
+    if (window.confirm('Delete this maintenance request?')) {
       deleteMutation.mutate(id);
     }
   };
 
-  const getPriorityBadge = (priority: Priority) => {
-    switch (priority) {
-      case Priority.High:
-        return <span className="badge badge-danger">High</span>;
-      case Priority.Medium:
-        return <span className="badge badge-warning">Medium</span>;
-      case Priority.Low:
-      default:
-        return <span className="badge badge-secondary">Low</span>;
-    }
-  };
-
-  const getStatusBadge = (status: MaintenanceStatus) => {
-    switch (status) {
-      case MaintenanceStatus.Closed:
-        return <span className="badge badge-success">Closed</span>;
-      case MaintenanceStatus.InProgress:
-        return <span className="badge badge-info">In Progress</span>;
-      case MaintenanceStatus.Open:
-      default:
-        return <span className="badge badge-warning">Open</span>;
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
-
   if (requests.length === 0) {
     return (
-      <div className="card">
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">🔧</div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No maintenance requests</h3>
-          <p className="text-gray-600 mb-6">Start by adding your first maintenance request</p>
-        </div>
-      </div>
+      <EmptyState
+        icon={Wrench}
+        title="No maintenance requests"
+        copy="Log the first work order — what's broken, where, and how urgent."
+      />
     );
   }
 
   return (
-    <div className="space-y-4">
-      {/* Desktop Table */}
-      <div className="card table-responsive">
-        <table className="table">
+    <div className="space-y-5">
+      {/* Desktop work-order table */}
+      <div className="hidden overflow-hidden rounded-sheet border border-rule bg-paper-raised shadow-sheet md:block">
+        <table className="w-full text-[14px]">
           <thead>
-            <tr>
-              <th>Title</th>
-              <th>Property</th>
-              <th>Unit</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Created</th>
-              <th>Actions</th>
+            <tr className="border-b border-rule-strong bg-paper-well/60 text-left">
+              <th className="px-5 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Request</th>
+              <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Where</th>
+              <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Priority</th>
+              <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Status</th>
+              <th className="px-4 py-3 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Logged</th>
+              <th className="px-5 py-3 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-soft">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {requests.map((request) => (
-              <tr key={request.id}>
-                <td>
-                  <div className="font-medium text-gray-900">
-                    {request.title}
-                  </div>
-                  <div className="text-sm text-gray-600 truncate max-w-xs">
-                    {request.description}
-                  </div>
-                </td>
-                <td>
-                  <div className="text-gray-900">
-                    {request.propertyName || 'Unknown Property'}
-                  </div>
-                </td>
-                <td>
-                  <div className="text-gray-900">
-                    {request.unitName || 'General'}
-                  </div>
-                </td>
-                <td>{getPriorityBadge(request.priority)}</td>
-                <td>{getStatusBadge(request.status)}</td>
-                <td>
-                  <div className="text-gray-900">
-                    {formatDate(request.createdAtUtc)}
-                  </div>
-                </td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => onEdit(request)}
-                      className="btn btn-sm btn-secondary"
-                      title="Edit request"
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      onClick={() => handleDelete(request.id)}
-                      className="btn btn-sm btn-danger"
-                      title="Delete request"
-                      disabled={deleteMutation.isPending}
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {pagedRequests.map((request) => {
+              const p = priorityMeta[request.priority];
+              const s = statusMeta[request.status];
+              return (
+                <tr key={request.id} className="border-b border-rule/70 transition-colors last:border-b-0 hover:bg-paper-well/50">
+                  <td className="max-w-[280px] px-5 py-3">
+                    <div className="font-semibold text-carbon">{request.title}</div>
+                    <div className="truncate text-[13px] text-carbon-faint">{request.description}</div>
+                  </td>
+                  <td className="px-4 py-3 text-carbon-soft">
+                    {request.propertyName || 'Unknown'}
+                    <span className="block text-[12.5px] text-carbon-faint">{request.unitName || 'General'}</span>
+                  </td>
+                  <td className="px-4 py-3">
+                    {request.priority === Priority.High ? (
+                      <Stamp tone="red">High</Stamp>
+                    ) : (
+                      <Badge tone={p.tone}>{p.label}</Badge>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <Badge tone={s.tone} stroke={s.stroke}>{s.label}</Badge>
+                  </td>
+                  <td className="text-figure px-4 py-3 text-right text-carbon-soft">
+                    {new Date(request.createdAtUtc).toLocaleDateString()}
+                  </td>
+                  <td className="px-5 py-3">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <Button variant="ghost" size="icon" onClick={() => onEdit(request)} aria-label="Edit request" title="Edit">
+                        <Pencil className="size-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(request.id)}
+                        disabled={deleteMutation.isPending}
+                        aria-label="Delete request"
+                        title="Delete"
+                        className="hover:bg-ink-red/10 hover:text-ink-red"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
+        <Pagination
+          page={safePage}
+          pageSize={PAGE_SIZE}
+          total={requests.length}
+          onPageChange={setPage}
+          label="requests"
+        />
       </div>
 
-      {/* Mobile Cards */}
-      <div className="mobile-cards">
-        {requests.map((request) => (
-          <div key={request.id} className="card">
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex-1">
-                <div className="font-semibold text-gray-900 mb-1">
-                  {request.title}
+      {/* Mobile work-order cards */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {pagedRequests.map((request) => {
+          const p = priorityMeta[request.priority];
+          const s = statusMeta[request.status];
+          return (
+            <article key={request.id} className="rounded-sheet border border-rule bg-paper-raised p-4 shadow-sheet">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="font-semibold text-carbon">{request.title}</div>
+                  <div className="mt-0.5 text-[13px] text-carbon-soft">
+                    {request.propertyName}
+                    {request.unitName && ` — ${request.unitName}`}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600 mb-2">
-                  {request.propertyName} {request.unitName && `- ${request.unitName}`}
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  {request.priority === Priority.High ? (
+                    <Stamp tone="red">High</Stamp>
+                  ) : (
+                    <Badge tone={p.tone}>{p.label}</Badge>
+                  )}
+                  <Badge tone={s.tone} stroke={s.stroke}>{s.label}</Badge>
                 </div>
               </div>
-              <div className="flex gap-2">
-                {getPriorityBadge(request.priority)}
-                {getStatusBadge(request.status)}
-              </div>
-            </div>
 
-            <div className="mb-4">
-              <p className="text-sm text-gray-700 line-clamp-3">
+              <p className="mt-3 line-clamp-3 border-t border-rule pt-2.5 text-[13.5px] text-carbon-soft">
                 {request.description}
               </p>
-            </div>
 
-            <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
-              <span>Created: {formatDate(request.createdAtUtc)}</span>
-            </div>
+              <div className="mt-3 flex items-center justify-between gap-2">
+                <span className="text-figure text-[12.5px] text-carbon-faint">
+                  Logged {new Date(request.createdAtUtc).toLocaleDateString()}
+                </span>
+                <div className="flex gap-2">
+                  <Button variant="secondary" size="sm" onClick={() => onEdit(request)}>
+                    <Pencil className="size-3.5" aria-hidden /> Edit
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleDelete(request.id)}
+                    disabled={deleteMutation.isPending}
+                    loading={deleteMutation.isPending}
+                  >
+                    <Trash2 className="size-3.5" aria-hidden />
+                  </Button>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => onEdit(request)}
-                className="btn btn-sm btn-secondary flex-1"
-              >
-                ✏️ Edit
-              </button>
-              <button
-                onClick={() => handleDelete(request.id)}
-                className="btn btn-sm btn-danger flex-1"
-                disabled={deleteMutation.isPending}
-              >
-                🗑️ Delete
-              </button>
-            </div>
-          </div>
-        ))}
+      <div className="rounded-sheet border border-rule bg-paper-raised shadow-sheet md:hidden">
+        <Pagination
+          page={safePage}
+          pageSize={PAGE_SIZE}
+          total={requests.length}
+          onPageChange={setPage}
+          label="requests"
+        />
       </div>
     </div>
   );

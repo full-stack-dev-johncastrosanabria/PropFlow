@@ -1,44 +1,53 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { ArrowRight, ClipboardList, TriangleAlert, FileClock, Wrench, Map, Play } from 'lucide-react';
 import { dashboardApi } from '../../shared/api/dashboard';
 import { useAuth } from '../../app/contexts/AuthContext';
+import { useTour } from '../../app/tour';
 import { money, shortDate, relativeTime, todayLabel } from './dashboardUtils';
+import { ShimmerButton } from '@/components/magicui/shimmer-button';
+import { NumberTicker } from '@/components/magicui/number-ticker';
+import { BlurFade } from '@/components/magicui/blur-fade';
+import { AnimatedList } from '@/components/magicui/animated-list';
+import { Panel, PanelLink } from '@/components/world/Panel';
+import { InkMeter } from '@/components/world/InkMeter';
+import { Stamp, Badge } from '@/components/world/Stamp';
+import { Avatar, DateStamp } from '@/components/world/Avatar';
+import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
+import { FadingScroll } from '@/components/world/FadingScroll';
+import { Button } from '@/components/world/Button';
+import { portraitFor } from '@/shared/media';
 import RevenueChart from './components/RevenueChart';
 import OccupancyDonut from './components/OccupancyDonut';
 
-const STAGE_COLORS = ['#6366f1', '#0ea5e9', '#14b8a6', '#f59e0b', '#f97316', '#22c55e', '#94a3b8'];
+// one stationery ink per funnel stage — the section-hue discipline
+const activityTypeTone: Record<string, 'red' | 'green' | 'blue' | 'amber' | 'carbon'> = {
+  payment: 'green',
+  lead: 'blue',
+  maintenance: 'red',
+  contract: 'amber',
+};
 
-const activityIcon: Record<string, string> = {
-  payment: '💰',
-  lead: '🎯',
-  maintenance: '🔧',
-  contract: '📄',
+const greeting = () => {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 18) return 'Good afternoon';
+  return 'Good evening';
 };
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const tour = useTour();
   const { data: d, isLoading, error } = useQuery({
     queryKey: ['dashboard'],
     queryFn: dashboardApi.getDashboard,
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <div className="text-center">
-          <div className="spinner mb-4" />
-          <p className="text-gray-600">Loading dashboard…</p>
-        </div>
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoading label="Opening today's sheet…" />;
 
   if (error || !d) {
-    return (
-      <div className="alert alert-danger">
-        <strong>Error:</strong> {error instanceof Error ? error.message : 'Failed to load dashboard'}
-      </div>
-    );
+    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load dashboard'} />;
   }
 
   const firstName = user?.fullName?.split(' ')[0] || 'there';
@@ -47,267 +56,375 @@ export default function DashboardPage() {
   const attention =
     d.overdueAmount > 0 || d.expiringContracts > 0 || d.highPriorityMaintenance > 0;
 
+  const showTourInvite =
+    !tour.active &&
+    (() => {
+      try {
+        return !sessionStorage.getItem('pf-tour-done');
+      } catch {
+        return false;
+      }
+    })();
+
   return (
-    <div className="dash">
-      {/* Header */}
-      <div className="dash-header">
+    <div className="space-y-5 lg:space-y-6">
+      {/* today header */}
+      <BlurFade className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="dash-eyebrow">{todayLabel()}</div>
-          <h1 className="dash-title">Good day, {firstName} 👋</h1>
-          <p className="dash-sub">Here's what's happening across your portfolio today.</p>
+          <h1 className="font-display text-[30px] font-bold leading-tight text-carbon sm:text-[36px]">
+            {greeting()}, {firstName}.
+          </h1>
+          <p className="mt-1 text-[15px] text-carbon-soft">
+            {todayLabel()} — here's where the portfolio stands.
+          </p>
         </div>
-        <div className="dash-header-badge">
-          <div className="dash-badge-value">{d.collectionRate}%</div>
-          <div className="dash-badge-label">Collected this month</div>
+        <div className="flex items-center gap-3">
+          <DateStamp className="hidden sm:inline-flex" />
+          <ShimmerButton onClick={() => navigate('/payments')} className="h-11 px-5 text-[14.5px]">
+            Record payment
+            <ArrowRight className="size-4" aria-hidden />
+          </ShimmerButton>
         </div>
-      </div>
+      </BlurFade>
 
-      {/* Hero KPIs */}
-      <div className="kpi-row">
-        <div className="kpi-card kpi-accent-green">
-          <div className="kpi-top">
-            <span className="kpi-icon">💵</span>
-            <span className="kpi-pill">{d.collectionRate}% collected</span>
-          </div>
-          <div className="kpi-value">{money(d.collectedThisMonth, cur)}</div>
-          <div className="kpi-label">Revenue this month</div>
-          <div className="kpi-foot">of {money(d.expectedThisMonth, cur)} expected</div>
-        </div>
-
-        <div className="kpi-card kpi-accent-blue">
-          <div className="kpi-top">
-            <span className="kpi-icon">🏢</span>
-            <span className="kpi-pill">{d.occupiedUnits}/{d.totalUnits} units</span>
-          </div>
-          <div className="kpi-value">{d.occupancyRate}%</div>
-          <div className="kpi-label">Occupancy rate</div>
-          <div className="kpi-foot">{money(d.monthlyRecurringRevenue, cur)} recurring / mo</div>
-        </div>
-
-        <div className={`kpi-card ${d.overdueAmount > 0 ? 'kpi-accent-red' : 'kpi-accent-slate'}`}>
-          <div className="kpi-top">
-            <span className="kpi-icon">{d.overdueAmount > 0 ? '⚠️' : '✅'}</span>
-            <span className="kpi-pill">{d.latePayments} late</span>
-          </div>
-          <div className="kpi-value">{money(d.overdueAmount, cur)}</div>
-          <div className="kpi-label">Overdue rent</div>
-          <div className="kpi-foot">{money(d.outstandingAmount, cur)} outstanding total</div>
-        </div>
-
-        <div className="kpi-card kpi-accent-indigo">
-          <div className="kpi-top">
-            <span className="kpi-icon">🎯</span>
-            <span className="kpi-pill">{d.wonLeads} won</span>
-          </div>
-          <div className="kpi-value">{money(d.pipelineValue, cur, true)}</div>
-          <div className="kpi-label">Pipeline value / mo</div>
-          <div className="kpi-foot">{d.activeLeads} active leads</div>
-        </div>
-      </div>
-
-      {/* Charts row */}
-      <div className="dash-grid-2">
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Revenue trend</h3>
-            <span className="panel-hint">Collected vs expected · 6 months</span>
-          </div>
-          <RevenueChart data={d.revenueTrend} currency={cur} />
-        </div>
-
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Occupancy</h3>
-            <Link to="/units" className="panel-link">Manage →</Link>
-          </div>
-          <OccupancyDonut
-            occupied={d.occupiedUnits}
-            available={d.availableUnits}
-            maintenance={d.maintenanceUnits}
-            rate={d.occupancyRate}
-          />
-        </div>
-      </div>
-
-      {/* Collection progress + Funnel */}
-      <div className="dash-grid-2">
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Rent collection</h3>
-            <span className="panel-hint">{d.paidPaymentsThisMonth} paid · {d.pendingPayments} pending · {d.latePayments} late</span>
-          </div>
-          <div className="collect-amounts">
-            <span className="collect-strong">{money(d.collectedThisMonth, cur)}</span>
-            <span className="collect-muted">/ {money(d.expectedThisMonth, cur)}</span>
-          </div>
-          <div className="progress-track">
-            <div
-              className="progress-fill"
-              style={{ width: `${Math.min(100, d.collectionRate)}%` }}
-            />
-          </div>
-          <div className="collect-foot">
-            <span>{d.collectionRate}% collected</span>
-            <span>{money(Math.max(0, d.expectedThisMonth - d.collectedThisMonth), cur)} remaining</span>
-          </div>
-        </div>
-
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Sales funnel</h3>
-            <Link to="/leads" className="panel-link">Open →</Link>
-          </div>
-          <div className="funnel-mini">
-            {d.leadsByStage.map((s) => (
-              <div key={s.stage} className="funnel-mini-row">
-                <span className="funnel-mini-label">{s.label}</span>
-                <div className="funnel-mini-bar-track">
-                  <div
-                    className="funnel-mini-bar"
-                    style={{ width: `${(s.count / funnelMax) * 100}%`, background: STAGE_COLORS[s.stage] }}
-                  />
+      {/* guided tour invitation — first visit only */}
+      {showTourInvite && (
+        <BlurFade delay={0.2}>
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-sheet border border-dashed border-rule-strong bg-paper-well/70 px-4 py-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-[10px] border border-rule-strong bg-paper-raised text-ink-blue shadow-tab">
+                <Map className="size-[18px]" aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <div className="text-[14.5px] font-semibold text-carbon">
+                  First time here? Take the guided tour.
                 </div>
-                <span className="funnel-mini-count">{s.count}</span>
+                <div className="text-[13px] text-carbon-soft">
+                  Nine stops around the property, about a minute and a half — it drives itself.
+                </div>
               </div>
-            ))}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => {
+                  try {
+                    sessionStorage.setItem('pf-tour-done', '1');
+                  } catch {
+                    /* private mode */
+                  }
+                }}
+              >
+                No thanks
+              </Button>
+              <Button size="sm" onClick={() => tour.start()}>
+                <Play className="size-4" aria-hidden />
+                Start tour
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Needs attention */}
-      {attention && (
-        <div className="card dash-panel attention-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">⚡ Needs attention today</h3>
-          </div>
-          <div className="attention-grid">
-            {d.overdueAmount > 0 && (
-              <Link to="/payments" className="attention-item attention-red">
-                <div className="attention-num">{d.latePayments}</div>
-                <div className="attention-text">
-                  <div className="attention-h">Overdue payments</div>
-                  <div className="attention-s">{money(d.overdueAmount, cur)} to collect</div>
-                </div>
-              </Link>
-            )}
-            {d.expiringContracts > 0 && (
-              <Link to="/contracts" className="attention-item attention-amber">
-                <div className="attention-num">{d.expiringContracts}</div>
-                <div className="attention-text">
-                  <div className="attention-h">Contracts expiring</div>
-                  <div className="attention-s">within 45 days</div>
-                </div>
-              </Link>
-            )}
-            {d.highPriorityMaintenance > 0 && (
-              <Link to="/maintenance" className="attention-item attention-orange">
-                <div className="attention-num">{d.highPriorityMaintenance}</div>
-                <div className="attention-text">
-                  <div className="attention-h">Urgent maintenance</div>
-                  <div className="attention-s">high priority open</div>
-                </div>
-              </Link>
-            )}
-          </div>
-        </div>
+        </BlurFade>
       )}
 
-      {/* Lists row */}
-      <div className="dash-grid-2">
-        {/* Upcoming payments */}
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Upcoming & overdue rent</h3>
-            <Link to="/payments" className="panel-link">All →</Link>
-          </div>
-          {d.upcomingPayments.length === 0 ? (
-            <div className="empty-mini">🎉 No outstanding payments</div>
-          ) : (
-            <div className="list-rows">
-              {d.upcomingPayments.map((p) => (
-                <div key={p.id} className="list-row">
-                  <div className="list-avatar" style={{ background: p.isOverdue ? 'var(--red-500)' : 'var(--blue-500)' }}>
-                    {p.tenantName.slice(0, 1)}
+      {/* the ledger strip — figures ruled onto one sheet */}
+      <BlurFade delay={0.05}>
+        <section
+          aria-label="Key figures"
+          className="grid grid-cols-2 divide-rule rounded-sheet border border-rule bg-paper-raised shadow-sheet sm:grid-cols-2 lg:grid-cols-4 lg:divide-x"
+        >
+          <LedgerCell
+            label="Collected this month"
+            value={<NumberTicker value={d.collectedThisMonth} format={(v) => money(v, cur)} />}
+            foot={`of ${money(d.expectedThisMonth, cur)} expected`}
+            meter={{ value: d.collectedThisMonth, goal: d.expectedThisMonth, tone: 'green' }}
+            toneClass="text-ink-green-deep"
+          />
+          <LedgerCell
+            label="Occupancy"
+            value={
+              <>
+                <NumberTicker value={d.occupancyRate} />
+                <span className="text-[0.6em]">%</span>
+              </>
+            }
+            foot={`${d.occupiedUnits} of ${d.totalUnits} units · ${money(d.monthlyRecurringRevenue, cur, true)} MRR`}
+            meter={{ value: d.occupiedUnits, goal: d.totalUnits, tone: 'blue' }}
+            toneClass="text-ink-blue-deep"
+          />
+          <LedgerCell
+            label="Overdue rent"
+            value={
+              <span className={d.overdueAmount > 0 ? 'text-ink-red-deep' : ''}>
+                <NumberTicker value={d.overdueAmount} format={(v) => money(v, cur)} />
+              </span>
+            }
+            foot={`${d.latePayments} late · ${money(d.outstandingAmount, cur, true)} outstanding`}
+            meter={{
+              value: d.overdueAmount,
+              goal: d.outstandingAmount || 1,
+              tone: 'red',
+              form: d.overdueAmount > 0 ? 'dashed' : 'solid',
+            }}
+          />
+          <LedgerCell
+            label="Pipeline / mo"
+            value={<NumberTicker value={d.pipelineValue} format={(v) => money(v, cur, true)} />}
+            foot={`${d.activeLeads} active leads · ${d.wonLeads} won`}
+            meter={{ value: d.pipelineValue, goal: d.pipelineValue * 1.25, tone: 'amber', form: 'half' }}
+            className="border-t border-rule lg:border-t-0 sm:border-t-0 max-sm:border-r-0"
+            cellBorder="max-sm:border-t max-sm:border-rule"
+          />
+        </section>
+      </BlurFade>
+
+      {/* charts */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-5 lg:gap-6">
+        <BlurFade delay={0.1} className="lg:col-span-3">
+          <Panel title="Rent collected" hint="Collected vs expected · last 6 months">
+            <RevenueChart data={d.revenueTrend} currency={cur} />
+          </Panel>
+        </BlurFade>
+        <BlurFade delay={0.15} className="lg:col-span-2">
+          <Panel
+            title="Occupancy"
+            action={<PanelLink to="/units">Manage units</PanelLink>}
+          >
+            <OccupancyDonut
+              occupied={d.occupiedUnits}
+              available={d.availableUnits}
+              maintenance={d.maintenanceUnits}
+              rate={d.occupancyRate}
+            />
+          </Panel>
+        </BlurFade>
+      </div>
+
+      {/* funnel + attention */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+        <BlurFade delay={0.05}>
+          <Panel title="Sales funnel" hint={`${d.totalLeads} leads all-time`} action={<PanelLink to="/leads">Open board</PanelLink>}>
+            <div className="space-y-3">
+              {d.leadsByStage.map((s, i) => (
+                <div key={s.stage} className="grid grid-cols-[86px_1fr_auto] items-center gap-3">
+                  <span className="truncate text-[13px] font-semibold text-carbon-soft">{s.label}</span>
+                  <InkMeter
+                    value={s.count}
+                    max={funnelMax}
+                    tone={i === 6 ? 'carbon' : i === 5 ? 'green' : i === 4 ? 'red' : i === 3 ? 'amber' : i === 1 ? 'blue' : 'green'}
+                    form={i === 5 ? 'doubled' : i === 6 ? 'half' : 'solid'}
+                    thin
+                    delay={i * 0.04}
+                  />
+                  <span className="text-figure w-6 text-right text-[13px] font-semibold text-carbon">{s.count}</span>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        </BlurFade>
+
+        <BlurFade delay={0.1}>
+          <Panel title="Needs attention" hint="The day's open items">
+            {attention ? (
+              <ul className="space-y-2.5">
+                {d.overdueAmount > 0 && (
+                  <AttentionRow
+                    to="/payments"
+                    icon={<TriangleAlert className="size-4 text-ink-red" aria-hidden />}
+                    stamp={<Stamp tone="red">Overdue</Stamp>}
+                    title={`${d.latePayments} overdue ${d.latePayments === 1 ? 'payment' : 'payments'}`}
+                    sub={`${money(d.overdueAmount, cur)} to collect`}
+                  />
+                )}
+                {d.expiringContracts > 0 && (
+                  <AttentionRow
+                    to="/contracts"
+                    icon={<FileClock className="size-4 text-ink-amber" aria-hidden />}
+                    stamp={<Stamp tone="amber">Expiring</Stamp>}
+                    title={`${d.expiringContracts} ${d.expiringContracts === 1 ? 'contract' : 'contracts'} expiring`}
+                    sub="within 45 days — line up renewals"
+                  />
+                )}
+                {d.highPriorityMaintenance > 0 && (
+                  <AttentionRow
+                    to="/maintenance"
+                    icon={<Wrench className="size-4 text-ink-red" aria-hidden />}
+                    stamp={<Stamp tone="red">Urgent</Stamp>}
+                    title={`${d.highPriorityMaintenance} urgent maintenance ${d.highPriorityMaintenance === 1 ? 'request' : 'requests'}`}
+                    sub="high priority, still open"
+                  />
+                )}
+              </ul>
+            ) : (
+              <p className="flex items-center gap-2 py-6 text-[14.5px] text-carbon-soft">
+                <ClipboardList className="size-4 text-ink-green" aria-hidden />
+                Nothing overdue, expiring, or urgent. Clean sheet.
+              </p>
+            )}
+          </Panel>
+        </BlurFade>
+      </div>
+
+      {/* lists */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+        <BlurFade delay={0.05}>
+          <Panel
+            title="Upcoming & overdue rent"
+            action={<PanelLink to="/payments">All payments</PanelLink>}
+            bodyClassName="p-3 sm:p-3"
+          >
+            {d.upcomingPayments.length === 0 ? (
+              <p className="px-3 py-8 text-center text-[14.5px] text-carbon-soft">
+                No outstanding payments — the rent roll is clean.
+              </p>
+            ) : (
+              <FadingScroll innerClassName="max-h-[336px]">
+                <ul className="divide-y divide-rule">
+                  {d.upcomingPayments.map((p) => (
+                  <li key={p.id} className="group flex items-center gap-3 px-2 py-2.5 transition-opacity hover:bg-paper-well/60">
+                    <Avatar name={p.tenantName} src={portraitFor(p.tenantName)} />
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-[14.5px] font-semibold text-carbon">{p.tenantName}</div>
+                      <div className="truncate text-[13px] text-carbon-faint">{p.unitName}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-figure text-[14px] font-semibold text-carbon">
+                        {money(p.amount, p.currency)}
+                      </div>
+                      {p.isOverdue ? (
+                        <Badge tone="red" stroke="dashed">{Math.abs(p.daysUntilDue)}d overdue</Badge>
+                      ) : (
+                        <Badge tone="blue">due {shortDate(p.dueDate)}</Badge>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              </FadingScroll>
+            )}
+          </Panel>
+        </BlurFade>
+
+        <BlurFade delay={0.1}>
+          <Panel title="Recent activity" bodyClassName="p-3 sm:p-3">
+            {d.recentActivity.length === 0 ? (
+              <p className="px-3 py-8 text-center text-[14.5px] text-carbon-soft">All caught up.</p>
+            ) : (
+              <FadingScroll innerClassName="max-h-[336px]">
+                <AnimatedList className="gap-0" delay={120}>
+                {d.recentActivity.map((a, i) => (
+                  <div key={i} className="flex items-center gap-3 border-b border-rule px-2 py-2.5 last:border-b-0">
+                    <Badge tone={activityTypeTone[a.type] ?? 'carbon'} stroke="solid" className="uppercase tracking-wide">
+                      {a.type}
+                    </Badge>
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-[14.5px] font-semibold text-carbon">{a.title}</div>
+                      <div className="truncate text-[13px] text-carbon-faint">{a.subtitle}</div>
+                    </div>
+                    <span className="shrink-0 text-[12.5px] text-carbon-faint">{relativeTime(a.when)}</span>
                   </div>
-                  <div className="list-main">
-                    <div className="list-title">{p.tenantName}</div>
-                    <div className="list-sub">{p.unitName}</div>
-                  </div>
-                  <div className="list-right">
-                    <div className="list-amount">{money(p.amount, p.currency)}</div>
-                    <div className={`list-tag ${p.isOverdue ? 'tag-red' : 'tag-blue'}`}>
-                      {p.isOverdue ? `${Math.abs(p.daysUntilDue)}d overdue` : `due ${shortDate(p.dueDate)}`}
+                ))}
+              </AnimatedList>
+              </FadingScroll>
+            )}
+          </Panel>
+        </BlurFade>
+      </div>
+
+      {/* expiring contracts */}
+      {d.expiringContractsList.length > 0 && (
+        <BlurFade delay={0.05}>
+          <Panel
+            title="Contracts expiring soon"
+            action={<PanelLink to="/contracts">Manage</PanelLink>}
+            bodyClassName="p-3 sm:p-3"
+          >
+            <FadingScroll innerClassName="max-h-[336px]">
+              <ul className="divide-y divide-rule">
+                {d.expiringContractsList.map((c) => (
+                <li key={c.id} className="flex items-center gap-3 px-2 py-2.5 hover:bg-paper-well/60">
+                  <Avatar name={c.tenantName} src={portraitFor(c.tenantName)} />
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-[14.5px] font-semibold text-carbon">{c.tenantName}</div>
+                    <div className="truncate text-[13px] text-carbon-faint">
+                      {c.unitName} · {money(c.monthlyRent, c.currency)}/mo
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Recent activity */}
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Recent activity</h3>
-          </div>
-          {d.recentActivity.length === 0 ? (
-            <div className="empty-mini">All caught up!</div>
-          ) : (
-            <div className="list-rows">
-              {d.recentActivity.map((a, i) => (
-                <div key={i} className="activity-row">
-                  <div className={`activity-dot activity-${a.type}`}>{activityIcon[a.type] || '•'}</div>
-                  <div className="list-main">
-                    <div className="list-title">{a.title}</div>
-                    <div className="list-sub">{a.subtitle}</div>
+                  <div className="text-right">
+                    <div className="text-figure text-[14px] font-semibold text-carbon">{shortDate(c.endDate)}</div>
+                    <Badge tone={c.daysLeft <= 15 ? 'red' : 'amber'} stroke={c.daysLeft <= 15 ? 'dashed' : 'solid'}>
+                      {c.daysLeft}d left
+                    </Badge>
                   </div>
-                  <div className="activity-time">{relativeTime(a.when)}</div>
-                </div>
+                </li>
               ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Expiring contracts (only if any) */}
-      {d.expiringContractsList.length > 0 && (
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Contracts expiring soon</h3>
-            <Link to="/contracts" className="panel-link">Manage →</Link>
-          </div>
-          <div className="list-rows">
-            {d.expiringContractsList.map((c) => (
-              <div key={c.id} className="list-row">
-                <div className="list-avatar" style={{ background: 'var(--orange-500)' }}>📄</div>
-                <div className="list-main">
-                  <div className="list-title">{c.tenantName}</div>
-                  <div className="list-sub">{c.unitName} · {money(c.monthlyRent, c.currency)}/mo</div>
-                </div>
-                <div className="list-right">
-                  <div className="list-amount">{shortDate(c.endDate)}</div>
-                  <div className={`list-tag ${c.daysLeft <= 15 ? 'tag-red' : 'tag-amber'}`}>{c.daysLeft}d left</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+            </ul>
+            </FadingScroll>
+          </Panel>
+        </BlurFade>
       )}
-
-      {/* Quick actions */}
-      <div className="card dash-panel">
-        <div className="panel-head">
-          <h3 className="panel-title">⚡ Quick actions</h3>
-        </div>
-        <div className="quick-grid">
-          <Link to="/properties" className="quick-btn"><span>🏠</span> Add Property</Link>
-          <Link to="/tenants" className="quick-btn"><span>👥</span> Add Tenant</Link>
-          <Link to="/payments" className="quick-btn"><span>💰</span> Record Payment</Link>
-          <Link to="/leads" className="quick-btn"><span>🎯</span> New Lead</Link>
-        </div>
-      </div>
-
-      <div className="h-20 md:hidden" />
     </div>
+  );
+}
+
+function LedgerCell({
+  label,
+  value,
+  foot,
+  meter,
+  toneClass,
+  className,
+  cellBorder,
+}: {
+  label: string;
+  value: React.ReactNode;
+  foot: string;
+  meter: { value: number; goal: number; tone: 'red' | 'green' | 'blue' | 'amber' | 'carbon'; form?: 'solid' | 'dashed' | 'half' | 'doubled' };
+  toneClass?: string;
+  className?: string;
+  cellBorder?: string;
+}) {
+  return (
+    <div className={`p-4 sm:p-5 ${cellBorder ?? ''} ${className ?? ''}`}>
+      <div className="text-rule-label">{label}</div>
+      <div className={`text-figure mt-2 text-[24px] font-semibold leading-none sm:text-[27px] ${toneClass ?? 'text-carbon'}`}>
+        {value}
+      </div>
+      <div className="mt-2.5">
+        <InkMeter {...meter} delay={0.15} />
+      </div>
+      <div className="mt-2 text-[12.5px] text-carbon-faint">{foot}</div>
+    </div>
+  );
+}
+
+function AttentionRow({
+  to,
+  icon,
+  stamp,
+  title,
+  sub,
+}: {
+  to: string;
+  icon: React.ReactNode;
+  stamp: React.ReactNode;
+  title: string;
+  sub: string;
+}) {
+  return (
+    <li>
+      <Link
+        to={to}
+        className="group flex items-center gap-3.5 rounded-[10px] border border-rule bg-paper-well/50 px-4 py-3 transition-colors hover:border-rule-strong hover:bg-paper-deep/70"
+      >
+        {icon}
+        <div className="min-w-0 flex-1">
+          <div className="text-[14.5px] font-semibold text-carbon">{title}</div>
+          <div className="text-[13px] text-carbon-soft">{sub}</div>
+        </div>
+        {stamp}
+        <ArrowRight className="size-4 shrink-0 text-carbon-faint transition-transform group-hover:translate-x-0.5" aria-hidden />
+      </Link>
+    </li>
   );
 }

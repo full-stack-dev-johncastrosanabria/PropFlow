@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Flame, Timer, Settings2, PencilLine } from 'lucide-react';
 import { productivityApi } from '../../shared/api/productivity';
 import type { ProductivitySummaryDto, ActivityTotalsDto, ProductivityGoalsDto } from '../../shared/types';
 import { RING_METRICS, KW_DEFAULT_GOALS } from './kwGoals';
@@ -7,20 +8,28 @@ import ScoreRing from './components/ScoreRing';
 import EconomicModel from './components/EconomicModel';
 import WeekStrip from './components/WeekStrip';
 import LogActivityModal from './components/LogActivityModal';
+import { Panel } from '@/components/world/Panel';
+import { InkMeter } from '@/components/world/InkMeter';
+import { Stamp } from '@/components/world/Stamp';
+import { Button } from '@/components/world/Button';
+import { Modal } from '@/components/world/Modal';
+import { Field, TextInput } from '@/components/world/fields';
+import { BlurFade } from '@/components/magicui/blur-fade';
+import { PageLoading, ErrorNote } from '@/components/world/EmptyState';
 
 const formatDayLabel = (iso: string) =>
   new Date(iso).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' });
 
-type RollupKey = { key: keyof ActivityTotalsDto; label: string; icon: string };
+type RollupKey = { key: keyof ActivityTotalsDto; label: string };
 const ROLLUP_ROWS: RollupKey[] = [
-  { key: 'leadGenHours', label: 'Lead-gen hours', icon: '⏱️' },
-  { key: 'contacts', label: 'Contacts', icon: '📞' },
-  { key: 'conversations', label: 'Conversations', icon: '💬' },
-  { key: 'appointmentsSet', label: 'Appts set', icon: '📅' },
-  { key: 'appointmentsMet', label: 'Appts met', icon: '🤝' },
-  { key: 'leadsAdded', label: 'Leads added', icon: '➕' },
-  { key: 'agreementsSigned', label: 'Agreements', icon: '✍️' },
-  { key: 'offersWritten', label: 'Offers', icon: '📝' },
+  { key: 'leadGenHours', label: 'Lead-gen hours' },
+  { key: 'contacts', label: 'Contacts' },
+  { key: 'conversations', label: 'Conversations' },
+  { key: 'appointmentsSet', label: 'Appts set' },
+  { key: 'appointmentsMet', label: 'Appts met' },
+  { key: 'leadsAdded', label: 'Leads added' },
+  { key: 'agreementsSigned', label: 'Agreements' },
+  { key: 'offersWritten', label: 'Offers' },
 ];
 
 export default function ProductivityPage() {
@@ -41,20 +50,14 @@ export default function ProductivityPage() {
     },
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <div className="text-center"><div className="spinner mb-4" /><p className="text-gray-600">Loading your numbers…</p></div>
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoading label="Adding up the day…" />;
+
   if (error || !data) {
-    return <div className="alert alert-danger"><strong>Error:</strong> {error instanceof Error ? error.message : 'Failed to load'}</div>;
+    return <ErrorNote message={error instanceof Error ? error.message : 'Failed to load'} />;
   }
 
   const t = data.todayActivity;
   const goals = data.goals ?? KW_DEFAULT_GOALS;
-  const blockPct = Math.min(100, (t.leadGenHours / goals.leadGenHours) * 100);
   const blockDone = t.leadGenHours >= goals.leadGenHours;
 
   const todayVal = (k: keyof ActivityTotalsDto): number => {
@@ -63,109 +66,173 @@ export default function ProductivityPage() {
   };
 
   return (
-    <div className="prod">
-      {/* Header */}
-      <div className="prod-header">
+    <div className="space-y-5 lg:space-y-6">
+      <BlurFade className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="prod-eyebrow">Keller Williams · Daily Productivity</div>
-          <h1 className="prod-title">Your numbers today</h1>
-          <p className="prod-sub">{formatDayLabel(data.today)} — lead generation is priority #1.</p>
+          <h1 className="font-display text-[30px] font-bold leading-tight text-carbon sm:text-[34px]">
+            Your numbers today
+          </h1>
+          <p className="mt-1 text-[15px] text-carbon-soft">
+            {formatDayLabel(data.today)} — lead generation is priority one.
+          </p>
         </div>
-        <div className="prod-actions">
-          <button className="btn btn-secondary" onClick={() => setGoalsOpen(true)}>⚙️ Goals</button>
-          <button className="btn btn-primary" onClick={() => setLogOpen(true)}>✏️ Log today</button>
+        <div className="flex items-center gap-2.5">
+          <Button variant="secondary" onClick={() => setGoalsOpen(true)}>
+            <Settings2 className="size-4" aria-hidden />
+            Goals
+          </Button>
+          <Button onClick={() => setLogOpen(true)}>
+            <PencilLine className="size-4" aria-hidden />
+            Log today
+          </Button>
         </div>
-      </div>
+      </BlurFade>
 
-      {/* Lead-gen block hero */}
-      <div className={`block-hero ${blockDone ? 'block-hero-done' : ''}`}>
-        <div className="block-hero-left">
-          <div className="block-hero-icon">{blockDone ? '🔥' : '⏱️'}</div>
-          <div>
-            <div className="block-hero-label">3-Hour Lead-Gen Block</div>
-            <div className="block-hero-value">{t.leadGenHours}h <span className="block-hero-goal">/ {goals.leadGenHours}h today</span></div>
-            <div className="block-hero-track"><div className="block-hero-fill" style={{ width: `${blockPct}%` }} /></div>
-          </div>
-        </div>
-        <div className="block-hero-streaks">
-          <div className="streak-box">
-            <div className="streak-num">{data.leadGenStreak}🔥</div>
-            <div className="streak-lbl">Day streak</div>
-          </div>
-          <div className="streak-box">
-            <div className="streak-num">{data.bestStreak}</div>
-            <div className="streak-lbl">Best streak</div>
-          </div>
-        </div>
-      </div>
+      {/* the lead-gen block — the page's headline meter */}
+      <BlurFade delay={0.05}>
+        <section
+          className={`rounded-sheet border bg-paper-raised p-5 shadow-sheet sm:p-6 ${
+            blockDone ? 'border-ink-green/60' : 'border-rule'
+          }`}
+        >
+          <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-5">
+            <div className="min-w-[240px] flex-1">
+              <div className="flex items-center gap-2.5">
+                <Timer className="size-[18px] text-ink-red" aria-hidden />
+                <h2 className="font-display text-[18px] font-semibold text-carbon">
+                  The 3-hour lead-gen block
+                </h2>
+                {blockDone && <Stamp tone="green">Blocked &amp; done</Stamp>}
+              </div>
+              <div className="mt-3 flex items-baseline gap-2">
+                <span className="text-figure text-[34px] font-semibold leading-none text-carbon">
+                  {t.leadGenHours}h
+                </span>
+                <span className="text-figure text-[15px] text-carbon-faint">/ {goals.leadGenHours}h today</span>
+              </div>
+              <div className="mt-3.5 max-w-[520px]">
+                <InkMeter
+                  value={t.leadGenHours}
+                  goal={goals.leadGenHours}
+                  tone={blockDone ? 'green' : 'red'}
+                  form={blockDone ? 'doubled' : 'solid'}
+                />
+              </div>
+            </div>
 
-      {/* Scorecard rings */}
-      <div className="card dash-panel">
-        <div className="panel-head">
-          <h3 className="panel-title">Today's scorecard</h3>
-          <span className="panel-hint">vs your daily goals</span>
-        </div>
-        <div className="rings-row">
-          {RING_METRICS.map((m) => (
-            <ScoreRing
-              key={m.key}
-              value={todayVal(m.key)}
-              goal={goals[m.key]}
-              label={m.label}
-              icon={m.icon}
-              color={m.color}
-              unit={m.unit}
-            />
-          ))}
-        </div>
-        <div className="secondary-counts">
-          <span className="sec-count"><b>{t.agreementsSigned}</b> agreements ✍️</span>
-          <span className="sec-count"><b>{t.offersWritten}</b> offers 📝</span>
-        </div>
-      </div>
-
-      {/* 4-1-1 rollup + Economic model */}
-      <div className="dash-grid-2">
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">The 4-1-1</h3>
-            <span className="panel-hint">Today · Week · Month</span>
+            <div className="flex gap-3">
+              <div className="flex items-center gap-2.5 rounded-[10px] border border-rule bg-paper-well/60 px-4 py-3">
+                <Flame className="size-5 text-ink-red" aria-hidden />
+                <div>
+                  <div className="text-figure text-[20px] font-semibold leading-none text-carbon">
+                    {data.leadGenStreak}
+                  </div>
+                  <div className="mt-1 text-[11.5px] font-semibold uppercase tracking-wide text-carbon-faint">
+                    day streak
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2.5 rounded-[10px] border border-rule bg-paper-well/60 px-4 py-3">
+                <div className="flex size-5 items-center justify-center rounded-full border-[1.5px] border-ink-amber text-[10px] font-bold text-ink-amber">
+                  ★
+                </div>
+                <div>
+                  <div className="text-figure text-[20px] font-semibold leading-none text-carbon">
+                    {data.bestStreak}
+                  </div>
+                  <div className="mt-1 text-[11.5px] font-semibold uppercase tracking-wide text-carbon-faint">
+                    best streak
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <table className="rollup-table">
-            <thead>
-              <tr><th></th><th>Today</th><th>Week</th><th>Month</th></tr>
-            </thead>
-            <tbody>
-              {ROLLUP_ROWS.map((r) => (
-                <tr key={r.key}>
-                  <td className="rollup-metric">{r.icon} {r.label}</td>
-                  <td className="rollup-today">{todayVal(r.key)}</td>
-                  <td>{data.weekTotals[r.key]}</td>
-                  <td>{data.monthTotals[r.key]}</td>
+        </section>
+      </BlurFade>
+
+      {/* scorecard rings */}
+      <BlurFade delay={0.1}>
+        <Panel title="Today's scorecard" hint="against your daily goals">
+          <div className="grid grid-cols-3 gap-x-2 gap-y-6 sm:grid-cols-6">
+            {RING_METRICS.map((m) => (
+              <ScoreRing
+                key={m.key}
+                value={todayVal(m.key)}
+                goal={goals[m.key]}
+                label={m.label}
+                color={m.color}
+                unit={m.unit}
+              />
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 border-t border-rule pt-4 text-[13.5px] text-carbon-soft">
+            <span>
+              <span className="text-figure text-[16px] font-semibold text-carbon">{t.agreementsSigned}</span>{' '}
+              agreements signed
+            </span>
+            <span>
+              <span className="text-figure text-[16px] font-semibold text-carbon">{t.offersWritten}</span>{' '}
+              offers written
+            </span>
+          </div>
+        </Panel>
+      </BlurFade>
+
+      {/* 4-1-1 + economic model */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+        <BlurFade delay={0.05}>
+          <Panel title="The 4-1-1" hint="Today · Week · Month" bodyClassName="p-0 sm:p-0">
+            <table className="w-full text-[14px]">
+              <thead>
+                <tr className="border-b border-rule text-left">
+                  <th className="px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-faint sm:px-6">
+                    Metric
+                  </th>
+                  <th className="px-3 py-2.5 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-ink-red">
+                    Today
+                  </th>
+                  <th className="px-3 py-2.5 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-faint">
+                    Week
+                  </th>
+                  <th className="px-5 py-2.5 text-right text-[11px] font-bold uppercase tracking-[0.08em] text-carbon-faint sm:px-6">
+                    Month
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="rollup-foot">{data.monthTotals.daysLogged} days logged this month</div>
-        </div>
+              </thead>
+              <tbody>
+                {ROLLUP_ROWS.map((r) => (
+                  <tr key={r.key} className="border-b border-rule/70 last:border-b-0">
+                    <td className="px-5 py-2 font-medium text-carbon-soft sm:px-6">{r.label}</td>
+                    <td className="text-figure px-3 py-2 text-right font-semibold text-carbon">
+                      {todayVal(r.key)}
+                    </td>
+                    <td className="text-figure px-3 py-2 text-right text-carbon-soft">{data.weekTotals[r.key]}</td>
+                    <td className="text-figure px-5 py-2 text-right text-carbon-soft sm:px-6">
+                      {data.monthTotals[r.key]}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="border-t border-rule px-5 py-3 text-[12.5px] text-carbon-faint sm:px-6">
+              {data.monthTotals.daysLogged} days logged this month
+            </div>
+          </Panel>
+        </BlurFade>
 
-        <div className="card dash-panel">
-          <div className="panel-head">
-            <h3 className="panel-title">Economic Model</h3>
-            <span className="panel-hint">last 30 days · conversion</span>
-          </div>
-          <EconomicModel totals={data.last30Totals} />
-        </div>
+        <BlurFade delay={0.1}>
+          <Panel title="Economic model" hint="last 30 days · conversion">
+            <EconomicModel totals={data.last30Totals} />
+          </Panel>
+        </BlurFade>
       </div>
 
-      {/* Weekly lead-gen strip */}
-      <div className="card dash-panel">
-        <div className="panel-head">
-          <h3 className="panel-title">Lead-gen block · last 7 days</h3>
-          <span className="panel-hint">green = 3h block done</span>
-        </div>
-        <WeekStrip days={data.last7Days} goalHours={goals.leadGenHours} />
-      </div>
+      {/* weekly block strip */}
+      <BlurFade delay={0.05}>
+        <Panel title="Lead-gen block · last 7 days" hint="dashed rule = your goal">
+          <WeekStrip days={data.last7Days} goalHours={goals.leadGenHours} />
+        </Panel>
+      </BlurFade>
 
       {logOpen && <LogActivityModal activity={t} onClose={() => setLogOpen(false)} />}
       {goalsOpen && (
@@ -176,50 +243,53 @@ export default function ProductivityPage() {
           onSave={(g) => goalsMutation.mutate(g)}
         />
       )}
-
-      <div className="h-20 md:hidden" />
     </div>
   );
 }
 
-function GoalsModal({ goals, saving, onClose, onSave }: { goals: ProductivityGoalsDto; saving: boolean; onClose: () => void; onSave: (g: ProductivityGoalsDto) => void }) {
+function GoalsModal({
+  goals,
+  saving,
+  onClose,
+  onSave,
+}: {
+  goals: ProductivityGoalsDto;
+  saving: boolean;
+  onClose: () => void;
+  onSave: (g: ProductivityGoalsDto) => void;
+}) {
   const [g, setG] = useState<ProductivityGoalsDto>(goals);
   const rows: { key: keyof ProductivityGoalsDto; label: string; step?: number }[] = [
-    { key: 'leadGenHours', label: '⏱️ Lead-gen hours', step: 0.5 },
-    { key: 'contacts', label: '📞 Contacts' },
-    { key: 'conversations', label: '💬 Conversations' },
-    { key: 'appointmentsSet', label: '📅 Appointments set' },
-    { key: 'appointmentsMet', label: '🤝 Appointments met' },
-    { key: 'leadsAdded', label: '➕ Leads added' },
+    { key: 'leadGenHours', label: 'Lead-gen hours', step: 0.5 },
+    { key: 'contacts', label: 'Contacts' },
+    { key: 'conversations', label: 'Conversations' },
+    { key: 'appointmentsSet', label: 'Appointments set' },
+    { key: 'appointmentsMet', label: 'Appointments met' },
+    { key: 'leadsAdded', label: 'Leads added' },
   ];
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 460 }}>
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900">Daily goals</h2>
-            <button onClick={onClose} className="lead-modal-close">✕</button>
-          </div>
-          <div className="space-y-4">
-            {rows.map((r) => (
-              <div key={r.key} className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">{r.label}</label>
-                <input
-                  type="number" min="0" step={r.step || 1} className="form-input"
-                  value={g[r.key]}
-                  onChange={(e) => setG({ ...g, [r.key]: e.target.value === '' ? 0 : Number(e.target.value) })}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="flex gap-3 pt-5">
-            <button className="btn btn-secondary flex-1" onClick={() => setG({ ...KW_DEFAULT_GOALS })} disabled={saving}>Reset to KW</button>
-            <button className="btn btn-primary flex-1" onClick={() => onSave(g)} disabled={saving}>
-              {saving ? 'Saving…' : 'Save goals'}
-            </button>
-          </div>
-        </div>
+    <Modal title="Daily goals" subtitle="What a done day looks like, in numbers." onClose={onClose}>
+      <div className="space-y-4">
+        {rows.map((r) => (
+          <Field key={r.key} label={r.label}>
+            <TextInput
+              type="number"
+              min="0"
+              step={r.step || 1}
+              value={g[r.key]}
+              onChange={(e) => setG({ ...g, [r.key]: e.target.value === '' ? 0 : Number(e.target.value) })}
+            />
+          </Field>
+        ))}
       </div>
-    </div>
+      <div className="mt-6 flex gap-3">
+        <Button variant="secondary" className="flex-1" onClick={() => setG({ ...KW_DEFAULT_GOALS })} disabled={saving}>
+          Reset to KW
+        </Button>
+        <Button className="flex-1" onClick={() => onSave(g)} loading={saving}>
+          Save goals
+        </Button>
+      </div>
+    </Modal>
   );
 }

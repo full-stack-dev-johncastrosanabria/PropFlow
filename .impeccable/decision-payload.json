@@ -1,0 +1,143 @@
+{
+  "title": "PropFlow — choose the visual world",
+  "question": "The roll assigned The Field Planner. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Field Planner",
+      "kicker": "THE ROLL",
+      "lineage": "Keller Williams time-block planner, rent receipts, goal trackers",
+      "thesis": "The agent's working planner, printed and inked: every number sits against a goal and every state is carried in ink.",
+      "palette": ["#f4efe4", "#1c1a17", "#c2402a", "#2e6b4f", "#2f4d8a"],
+      "materials": ["ruled stationery", "ballpoint inks", "rubber stamps", "graph dots"],
+      "viewport": "Left rail inked as manila tabs, one stationery hue per section; the dashboard opens as today's sheet — date stamp, ruled KPI cells with ticker figures and goal-vs-actual inked meters, revenue drawn on graph dots, attention items rubber-stamped.",
+      "risk": "Reads cozy unless density holds; sits near the warm-paper AI default if the four-ink system goes timid.",
+      "wireframe": {
+        "cols": 12,
+        "rows": 8,
+        "regions": [
+          { "label": "tab rail — one ink-hue per section", "x": 0, "y": 0, "w": 2, "h": 8, "accent": true },
+          { "label": "today header + date stamp + primary action", "x": 2, "y": 0, "w": 10, "h": 1 },
+          { "label": "ruled KPI cells w/ goal-vs-actual meters", "x": 2, "y": 1, "w": 10, "h": 2 },
+          { "label": "revenue trend on graph dots", "x": 2, "y": 3, "w": 6, "h": 3 },
+          { "label": "occupancy ring", "x": 8, "y": 3, "w": 4, "h": 3 },
+          { "label": "leads funnel, inked rows", "x": 2, "y": 6, "w": 6, "h": 2 },
+          { "label": "needs attention — stamped", "x": 8, "y": 6, "w": 4, "h": 2 }
+        ]
+      },
+      "raised": [
+        { "from": "Boxed Software Manual", "raise": "One stationery hue per feature area, carried consistently through the tab rail, section headers, and stamps." },
+        { "from": "Emission-Line Rail", "raise": "State carried in form, not hue alone: overdue = dashed stroke, pending = half-height, won = doubled line." },
+        { "from": "Crouwel Grid Specimen", "raise": "Grid courage: strict 8pt column discipline, full-bleed rules, tables allowed their true density." },
+        { "from": "Warm Consumer Canon", "raise": "Comfort discipline: 44px targets, plain-language labels, action color only where something can be done." },
+        { "from": "Streaming Wall", "raise": "Focus isolation: an expanded row dims its neighbors one step." }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "The Drafting Table",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "architect's drawing sets, vellum, title blocks",
+      "thesis": "The portfolio as a drawing set: every surface a sheet on the drafting table, annotated and dimensioned.",
+      "palette": ["#f7f6f2", "#101418", "#0b3d91", "#b98a2f"],
+      "materials": ["vellum", "graphite lineweights", "dimension strings", "title block"],
+      "viewport": "A title-block header (project, sheet no., revision); KPIs read as dimensioned figures with leader-line callouts; properties rendered as hatched plan views; nav as the sheet index.",
+      "risk": "Blueprint aesthetics are the property category's favorite costume — earns its place only at full drafting commitment, and the cool palette reads distant for daily ops.",
+      "wireframe": {
+        "cols": 12,
+        "rows": 8,
+        "regions": [
+          { "label": "title block header", "x": 0, "y": 0, "w": 12, "h": 1, "accent": true },
+          { "label": "sheet index nav", "x": 0, "y": 1, "w": 2, "h": 7 },
+          { "label": "dimensioned KPI figures", "x": 2, "y": 1, "w": 10, "h": 2 },
+          { "label": "hatched plan view / data sheet", "x": 2, "y": 3, "w": 7, "h": 5 },
+          { "label": "leader-line annotations", "x": 9, "y": 3, "w": 3, "h": 5 }
+        ]
+      }
+    },
+    {
+      "id": "challenger-acetate-manual",
+      "label": "The Operating Binder",
+      "verdict": "competitive",
+      "lineage": "boxed-software reference manuals, acetate leaves, tab rails",
+      "thesis": "PropFlow as the office's well-kept binder: every feature a tabbed section on a full-strength hue board.",
+      "palette": ["#f2e8d5", "#1d1d1b", "#d97a1f", "#2a7a8c", "#3a5da8"],
+      "materials": ["milk acetate", "board dividers", "punched holes", "stepped tab rail"],
+      "viewport": "A stepped tab rail down the left edge with one full-strength hue per division; the open section's hue becomes the board the work sits on.",
+      "case": "Fuses cleanly — features map to tabbed divisions and the section-hue system is the strongest wayfinding story; loses narrowly on warmth for daily use.",
+      "risk": "Reads retro-novelty if the tab rail decorates instead of navigating.",
+      "hero": "https://impeccable.style/worlds/cards/rw-manual-acetate-tab-board-hero.webp"
+    },
+    {
+      "id": "challenger-warm-consumer",
+      "label": "Warm Consumer App",
+      "verdict": "declined",
+      "lineage": "friendly consumer fintech surfaces",
+      "palette": ["#fdf1e7", "#e8501f", "#1f2937"],
+      "materials": ["soft cards", "one action color"],
+      "case": "Fuses poorly — it is the incumbent look and the category default; the canon card already owns this lane.",
+      "kept": "Comfort discipline: 44px targets, plain-language labels, action color only where something can be done.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-warm-consumer-app-surface-hero.webp"
+    },
+    {
+      "id": "challenger-crouwel-grid",
+      "label": "Crouwel Grid Specimen",
+      "verdict": "declined",
+      "lineage": "Wim Crouwel gridded type specimens",
+      "palette": ["#ffffff", "#0a0a0a", "#0b3d91"],
+      "materials": ["construction grid", "grid-built letterforms"],
+      "case": "Fuses poorly — the visible construction grid reads as a design-tool portfolio, not a working property tool.",
+      "kept": "Grid courage: strict column discipline and full-bleed rules.",
+      "hero": "https://impeccable.style/worlds/cards/crouwel-grid-specimen-hero.webp"
+    },
+    {
+      "id": "challenger-emission-rail",
+      "label": "Emission-Line Rail",
+      "verdict": "declined",
+      "lineage": "spectrograph viewing benches",
+      "palette": ["#20211f", "#d8d3c4", "#e8c531"],
+      "materials": ["charcoal continuum", "hairline emission lines"],
+      "case": "Fuses poorly — an instrument costume on a working screen; operators do not identify with lab benches.",
+      "kept": "State-as-form discipline: state in dash, height, and doubling, never hue alone.",
+      "hero": "https://impeccable.style/worlds/cards/operate-c-emission-line-rail-hero.webp"
+    },
+    {
+      "id": "challenger-streaming-wall",
+      "label": "Streaming Wall",
+      "verdict": "declined",
+      "lineage": "streaming catalog walls",
+      "palette": ["#141414", "#f5f5f4", "#e8501f"],
+      "materials": ["poster tiles", "dimmed rows"],
+      "case": "Fuses poorly — properties as poster tiles is a listing-site costume, wrong register for operations.",
+      "kept": "Focus isolation: the active row lifts while neighbors dim.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-streaming-title-card-wall-hero.webp"
+    },
+    {
+      "id": "challenger-cassette-jcard",
+      "label": "Mixtape J-Card",
+      "verdict": "declined",
+      "lineage": "cassette j-cards, ballpoint tracklists",
+      "palette": ["#ffffff", "#1d3f8f", "#c2402a"],
+      "materials": ["lined inlay stock", "ballpoint"],
+      "case": "Fuses poorly — music ephemera shares the planner's handwriting but no property resonance.",
+      "kept": "Right-aligned tabular figures, tight against the margin.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-cassette-j-card-hero.webp"
+    }
+  ],
+  "reroll": {
+    "registers": ["safer", "bolder"]
+  },
+  "buildPath": {
+    "value": "code"
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "The clean SaaS admin — sidebar, soft cards, one blue — executed impeccably.",
+    "palette": ["#ffffff", "#111827", "#2563eb"],
+    "materials": ["clean grid", "soft cards"],
+    "viewport": "The arrangement every visitor expects, at full craft.",
+    "risk": "Indistinguishable from the competition by design."
+  },
+  "steer": true
+}
