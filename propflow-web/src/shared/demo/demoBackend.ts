@@ -46,33 +46,39 @@ function resolveLang(): 'en' | 'es' {
     : 'en';
 }
 
-let currentLang: 'en' | 'es' = resolveLang();
-let store: Any = currentLang === 'es' ? translateStrings(clone(demoData as unknown as Any)) : clone(demoData as unknown as Any);
-
-/** Swap the demo dataset's language; in-session mutations reset (as they do on reload). */
-export function setDemoLanguage(lang: 'en' | 'es') {
-  if (lang === currentLang) return;
-  currentLang = lang;
-  store = lang === 'es' ? translateStrings(clone(demoData as unknown as Any)) : clone(demoData as unknown as Any);
-}
-
 // Demo records reference bundled photos as `asset:<path-under-public/images>`.
-// Resolve them once to runtime URLs (honors the GitHub Pages base path).
+// Resolve them once per store build to runtime URLs (honors the GitHub Pages
+// base path) — must run on EVERY store rebuild (including the ES overlay).
 const assetUrl = (v: unknown): string | undefined =>
   typeof v === 'string' && v.startsWith('asset:')
     ? `${import.meta.env.BASE_URL}images/${v.slice(6)}`
     : undefined;
 
-for (const rec of [
-  store.landlord as Any,
-  ...(store.properties as Any[] | undefined ?? []),
-  ...(store.rentalunits as Any[] | undefined ?? []),
-  ...(store.tenants as Any[] | undefined ?? []),
-  ...(store.leads as Any[] | undefined ?? []),
-]) {
-  if (!rec) continue;
-  const u = assetUrl(rec.imageUrl);
-  if (u) rec.imageUrl = u;
+function resolveAssets(store: Any): Any {
+  for (const rec of [
+    store.landlord as Any,
+    ...(store.properties as Any[] | undefined ?? []),
+    ...(store.rentalunits as Any[] | undefined ?? []),
+    ...(store.tenants as Any[] | undefined ?? []),
+    ...(store.leads as Any[] | undefined ?? []),
+  ]) {
+    if (!rec) continue;
+    const u = assetUrl(rec.imageUrl);
+    if (u) rec.imageUrl = u;
+  }
+  return store;
+}
+
+let currentLang: 'en' | 'es' = resolveLang();
+const buildStore = (lang: 'en' | 'es'): Any =>
+  resolveAssets(lang === 'es' ? translateStrings(clone(demoData as unknown as Any)) : clone(demoData as unknown as Any));
+let store: Any = buildStore(currentLang);
+
+/** Swap the demo dataset's language; in-session mutations reset (as they do on reload). */
+export function setDemoLanguage(lang: 'en' | 'es') {
+  if (lang === currentLang) return;
+  currentLang = lang;
+  store = buildStore(lang);
 }
 
 const uuid = (): string =>
