@@ -91,10 +91,10 @@ function Rail() {
         <div className="flex items-center gap-3">
           <Avatar name={user?.fullName ?? t('app.landlord')} src={user?.imageUrl} className="size-9" />
           <div className="min-w-0 flex-1">
-            <div className="truncate text-[14px] font-semibold text-carbon">{user?.fullName}</div>
-            <div className="text-[12px] text-carbon-faint">{t('app.landlord')}</div>
+            <div className="truncate text-[14px] font-semibold text-carbon">{user?.fullName ?? t('app.landlord')}</div>
+            <div className="truncate text-[12px] text-carbon-faint">{t('app.landlord')}</div>
           </div>
-          <LangSwitcher />
+          <LangSwitcher compact />
           <AnimatedThemeToggler className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon [&_svg]:size-4" />
           <button
             onClick={logout}

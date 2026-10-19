@@ -30,6 +30,7 @@ export function resolveLang(): Lang {
 }
 
 i18n.use(initReactI18next).use(inlinePlural).init({
+  postProcess: 'inlinePlural',
   resources: {
     en: { translation: en },
     es: { translation: es },
