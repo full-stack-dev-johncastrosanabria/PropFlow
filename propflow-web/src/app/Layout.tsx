@@ -94,8 +94,11 @@ function Rail() {
             <div className="truncate text-[14px] font-semibold text-carbon">{user?.fullName ?? t('app.landlord')}</div>
             <div className="truncate text-[12px] text-carbon-faint">{t('app.landlord')}</div>
           </div>
-          <LangSwitcher compact />
+        </div>
+        <div className="mt-2 flex items-center gap-1">
+          <LangSwitcher />
           <AnimatedThemeToggler className="flex size-8 items-center justify-center rounded-[8px] text-carbon-soft transition-colors hover:bg-paper-well hover:text-carbon [&_svg]:size-4" />
+          <span className="flex-1" />
           <button
             onClick={logout}
             aria-label={t('nav.logOut')}
